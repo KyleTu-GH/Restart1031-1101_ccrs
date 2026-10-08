@@ -131,6 +131,46 @@
     #filterDropdownModal {
       box-shadow: 0 20px 25px -5px rgba(244, 63, 94, 0.15), 0 8px 10px -6px rgba(244, 63, 94, 0.1);
     }
+
+    /* 住宿房間圖卡：純 CSS / SVG，無新增外部套件。 */
+    .room-view {padding:24px;background:#fff8f5;}
+    .room-toolbar {display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;align-items:center;}
+    .room-toolbar button {background:white;border:1px solid #fecdd3;border-radius:20px;padding:7px 14px;color:#9f1239;font-size:13px;cursor:pointer;}
+    .room-help {color:#9f6674;font-size:13px;margin:0 0 20px;}
+    .hotel-section + .hotel-section {margin-top:30px;}
+    .hotel-title {font-size:20px;font-weight:800;color:#881337;margin:0 0 16px;display:flex;align-items:center;gap:10px;}
+    .hotel-title small {font-size:12px;font-weight:500;color:#9f6674;}
+    .rooms-grid {display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:22px;}
+    .room-card {position:relative;min-width:0;background:#fff;border:1px solid #fecdd3;border-radius:20px;padding:16px 16px 0;box-shadow:0 5px 16px #88133709;outline:none;cursor:pointer;transition:box-shadow .2s,transform .2s;}
+    .room-card:hover,.room-card:focus-visible {box-shadow:0 10px 25px #88133718;transform:translateY(-3px);}
+    .room-card:focus-visible {outline:3px solid #fb7185;outline-offset:3px;}
+    .room-sign {display:flex;justify-content:space-between;align-items:center;gap:8px;color:#881337;font-weight:800;font-size:14px;margin-bottom:12px;}
+    .room-sign span {font-size:12px;background:#fff1f2;padding:4px 9px;border-radius:10px;white-space:nowrap;}
+    .room-facade {position:relative;background:linear-gradient(135deg,#ffe4e6,#fff1e6);border:2px solid #fecdd3;border-bottom:6px solid #fda4af;border-radius:14px 14px 0 0;min-height:230px;padding:18px 12px 12px;}
+    .room-card.hotel-orange .room-facade {background:linear-gradient(135deg,#ffedd5,#fff7ed);border-color:#fed7aa;border-bottom-color:#fdba74;}
+    .room-group-label {font-size:11px;text-align:center;color:#9f6674;letter-spacing:1px;margin-bottom:15px;}
+    .room-door-area {display:flex;gap:12px;align-items:flex-start;justify-content:center;}
+    .room-door {width:76px;min-width:76px;height:150px;border:5px solid #bb7c68;border-bottom:0;border-radius:36px 36px 0 0;background:repeating-linear-gradient(90deg,#d99c80 0,#d99c80 17px,#d29174 18px,#d29174 19px);position:relative;}
+    .room-door:after {content:'';position:absolute;width:9px;height:9px;background:#fde68a;border:2px solid #b77939;border-radius:50%;right:8px;top:85px;}
+    .room-door-window {margin:14px auto;width:36px;height:34px;background:#fff8e7;border:3px solid #bb7c68;border-radius:18px 18px 4px 4px;}
+    .room-roster {flex:1;min-width:0;background:#fffdf8;transform:rotate(2deg);border:1px solid #efd8c1;box-shadow:2px 3px 0 #88133709;border-radius:4px;padding:10px 9px;position:relative;}
+    .room-roster:before {content:'';position:absolute;width:35px;height:12px;background:#fcd8ada0;left:calc(50% - 17px);top:-6px;transform:rotate(-5deg);}
+    .room-roster-title {font-size:11px;color:#9f6674;border-bottom:1px dashed #e7c5b8;padding-bottom:5px;margin-bottom:5px;}
+    .room-roster ul {list-style:none;padding:0;margin:0;}
+    .room-roster li {font-size:13px;line-height:1.7;color:#713f3f;overflow-wrap:anywhere;}
+    .room-roster li.matched {font-weight:800;color:#be123c;}
+    .room-roster .contact {font-size:10px;color:#be123c;display:block;line-height:1.3;}
+    .room-people {display:flex;justify-content:center;flex-wrap:wrap;gap:0;min-height:68px;padding-top:2px;position:relative;}
+    .room-person {width:48px;height:64px;opacity:0;transform:translateY(15px) scale(.7);transition:opacity .2s,transform .3s;transition-delay:calc(var(--person-index) * 45ms);}
+    .room-card:hover .room-person,.room-card:focus .room-person,.room-card.is-open .room-person {opacity:1;transform:translateY(0) scale(1);}
+    .room-hand {transform-box:fill-box;transform-origin:15% 85%;}
+    .room-card:hover .room-hand,.room-card:focus .room-hand,.room-card.is-open .room-hand {animation:room-wave .55s ease-in-out infinite alternate;animation-delay:calc(var(--person-index) * 70ms);}
+    @keyframes room-wave {from{transform:rotate(-12deg)}to{transform:rotate(22deg)}}
+    .room-foot {font-size:11px;color:#9f6674;text-align:center;padding:9px 0 12px;}
+    .room-empty {padding:40px;text-align:center;color:#9f6674;}
+    @media(max-width:540px){.room-view{padding:15px}.rooms-grid{grid-template-columns:1fr}.room-facade{min-height:210px}.hotel-title{font-size:18px}}
+    @media(prefers-reduced-motion:reduce){.room-card,.room-person{transition:none}.room-hand{animation:none!important}}
+    @media print {.room-view{padding:0;background:white}.room-toolbar,.room-help{display:none}.rooms-grid{grid-template-columns:repeat(2,1fr)}.room-card{break-inside:avoid;box-shadow:none}.room-people{display:none}.room-card{transform:none!important}}
   </style>
 </head>
 <body class="bg-gradient-to-br from-rose-50 via-orange-50 to-pink-50 text-rose-950 min-h-screen flex flex-col font-sans antialiased selection:bg-rose-500 selection:text-white">
@@ -347,6 +387,7 @@
     <!-- 主要資料表格區域 (粉橘底色風格邊框) -->
     <div id="printableContent" class="bg-white/95 rounded-2xl shadow-sm border border-rose-200 overflow-hidden flex-1 flex flex-col">
       <div class="table-container flex-1">
+        <section id="lodgingRoomView" class="room-view" hidden aria-label="住宿房間圖"></section>
         <table id="mainDataTable" class="w-full text-left border-collapse table-auto">
           <thead id="tableHead" class="sticky-header border-b border-rose-200 select-none"></thead>
           <tbody id="tableBody" class="divide-y divide-rose-100 text-rose-950"></tbody>
@@ -416,6 +457,23 @@
     let activeSortColumn = null;
     let activeSortDirection = null;
     let columnFilters = {};
+
+    // 重用比較器與每筆資料的搜尋索引；資料更新時清除索引。
+    const strokeCollator = new Intl.Collator('zh-Hant-TW', { collation: 'stroke' });
+    let searchTextCache = new WeakMap();
+    let searchTimer = null;
+    let cloudRefreshInProgress = false;
+    function getSearchText(item, kind) {
+      let text = searchTextCache.get(item);
+      if (text === undefined) {
+        text = kind === 'schedule'
+          ? `${item.date} ${item.startTime} ${item.endTime} ${item.duration} ${item.location} ${item.activity} ${item.note}`.toLowerCase()
+          : `${item.team} ${item.name} ${item.trafficOut} ${item.trafficBack} ${item.restaurant} ${item.diet} ${item.hotel} ${item.roomType} ${item.roommates}`.toLowerCase();
+        searchTextCache.set(item, text);
+      }
+      return text;
+    }
+
 
     // 預設活動流程資料庫 (作為離線或備援基準)
     let scheduleData = [
@@ -529,24 +587,26 @@
     }
 
     async function fetchCloudDataSilently() {
+      if (cloudRefreshInProgress) return;
+      cloudRefreshInProgress = true;
+      let dataChanged = false;
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 3500);
       const refreshIcon = document.getElementById('refreshIcon');
       refreshIcon.classList.add('fa-spin');
       
       try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 3500);
 
         // 同時非同步抓取「成員名單」與指定路徑之「活動流程 (gid=1928975316)」
         const [dirRes, scheduleRes] = await Promise.allSettled([
-          fetch(`${GOOGLE_SHEET_DIR_URL}&_t=${Date.now()}`, { signal: controller.signal, cache: 'no-store' }),
-          fetch(`${GOOGLE_SHEET_SCHEDULE_URL}&_t=${Date.now()}`, { signal: controller.signal, cache: 'no-store' })
+          fetch(`${GOOGLE_SHEET_DIR_URL}&_t=${Date.now()}`, { signal: controller.signal, cache: 'no-store' }).then(async response => ({ ok: response.ok, csv: response.ok ? await response.text() : '' })),
+          fetch(`${GOOGLE_SHEET_SCHEDULE_URL}&_t=${Date.now()}`, { signal: controller.signal, cache: 'no-store' }).then(async response => ({ ok: response.ok, csv: response.ok ? await response.text() : '' }))
         ]);
 
-        clearTimeout(timeoutId);
 
         // 1. 解析指定來源的重啟活動流程 (gid=1928975316)
         if (scheduleRes.status === 'fulfilled' && scheduleRes.value.ok) {
-          const scheduleCsv = await scheduleRes.value.text();
+          const scheduleCsv = scheduleRes.value.csv;
           Papa.parse(scheduleCsv, {
             header: true,
             skipEmptyLines: true,
@@ -586,7 +646,10 @@
                 }).filter(item => item.date || item.activity);
 
                 if (parsedSchedule.length > 0) {
-                  scheduleData = parsedSchedule;
+                  if (JSON.stringify(scheduleData) !== JSON.stringify(parsedSchedule)) {
+                    scheduleData = parsedSchedule;
+                    dataChanged = true;
+                  }
                 }
               }
             }
@@ -595,7 +658,7 @@
 
         // 2. 解析成員總表
         if (dirRes.status === 'fulfilled' && dirRes.value.ok) {
-          const csvText = await dirRes.value.text();
+          const csvText = dirRes.value.csv;
           Papa.parse(csvText, {
             header: true,
             skipEmptyLines: true,
@@ -623,8 +686,10 @@
                 }).filter(i => i.name);
 
                 if (parsed.length > 0) {
+                  const previousData = JSON.stringify(rawDirectoryData);
                   rawDirectoryData = parsed;
                   calculateDirectoryRoommates();
+                  if (JSON.stringify(rawDirectoryData) !== previousData) dataChanged = true;
                 }
               }
             }
@@ -633,8 +698,10 @@
       } catch (err) {
         console.warn('雲端更新連線略過，維持原始數據集');
       } finally {
+        clearTimeout(timeoutId);
+        cloudRefreshInProgress = false;
         refreshIcon.classList.remove('fa-spin');
-        renderCurrentTab();
+        if (dataChanged) renderCurrentTab();
       }
     }
 
@@ -647,7 +714,8 @@
        3. 室友關聯演算
        ========================================================= */
     function calculateDirectoryRoommates() {
-      const roomMap = {};
+      searchTextCache = new WeakMap();
+      const roomMap = Object.create(null);
       rawDirectoryData.forEach(item => {
         if (!item.roomGroup || item.roomGroup === '無-無_無' || item.roomGroup === 'NONE') return;
         if (!roomMap[item.roomGroup]) roomMap[item.roomGroup] = [];
@@ -673,6 +741,7 @@
        4. 分頁切換與搜尋提示
        ========================================================= */
     function switchTab(tabKey) {
+      clearTimeout(searchTimer);
       currentTab = tabKey;
 
       const tabs = ['schedule', 'overview', 'traffic', 'dining', 'lodging'];
@@ -718,18 +787,24 @@
     }
 
     function handleSearchInput(val) {
-      searchQuery = val.trim().toLowerCase();
-      renderCurrentTab();
+      const nextQuery = val.trim().toLowerCase();
+      if (nextQuery === searchQuery) return;
+      searchQuery = nextQuery;
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(renderCurrentTab, 100);
     }
 
     /* =========================================================
        5. 渲染各分頁內容（字級均放大一級，全面粉紅/粉橘調配）
        ========================================================= */
     function renderCurrentTab() {
+      clearTimeout(searchTimer);
       const thead = document.getElementById('tableHead');
       const tbody = document.getElementById('tableBody');
       const countBadge = document.getElementById('rowCountBadge');
 
+      document.getElementById('mainDataTable').hidden = currentTab === 'lodging';
+      document.getElementById('lodgingRoomView').hidden = currentTab !== 'lodging';
       if (currentTab === 'schedule') {
         renderScheduleTab(thead, tbody, countBadge);
       } else if (currentTab === 'overview') {
@@ -759,7 +834,7 @@
 
       let list = scheduleData.filter(item => {
         if (!searchQuery) return true;
-        const text = `${item.date} ${item.startTime} ${item.endTime} ${item.duration} ${item.location} ${item.activity} ${item.note}`.toLowerCase();
+        const text = getSearchText(item, 'schedule');
         return text.includes(searchQuery);
       });
 
@@ -1076,56 +1151,68 @@
 
     /* --- [分頁5] 重啟-住宿服務 --- */
     function renderLodgingTab(thead, tbody, countBadge) {
-      thead.innerHTML = `
-        <tr class="text-base font-semibold">
-          <th class="py-3.5 px-3 text-center w-12 text-rose-700">#</th>
-          ${renderHeaderTh('住宿飯店', 'hotel', 'w-40')}
-          ${renderHeaderTh('房型', 'roomType', 'w-32')}
-          ${renderHeaderTh('姓名', 'name', 'w-40')}
-          ${renderHeaderTh('同房室友', 'roommates', '')}
-        </tr>
-      `;
-
-      let list = getProcessedDirectoryList().filter(i => i.name !== '彭偉峰');
-      countBadge.textContent = `共 ${list.length} 位住宿人員`;
-
-      if (list.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="py-12 text-center text-rose-400 text-base">無符合的住宿資料</td></tr>`;
-        return;
-      }
-
-      tbody.innerHTML = list.map((item, idx) => {
-        const bgClass = getLodgingComboBgClass(item.hotel, item.roomType);
-        const hotelIcon = item.hotel.includes('正巧')
-          ? '<span class="icon-circle w-6 h-6 bg-orange-100 text-orange-700 mr-2"><i class="fa-solid fa-tree-city text-xs"></i></span>'
-          : '<span class="icon-circle w-6 h-6 bg-rose-100 text-rose-700 mr-2"><i class="fa-solid fa-hotel text-xs"></i></span>';
-
-        let nameCellHtml = `<div class="font-bold text-rose-950">${escapeHtml(item.name)}</div>`;
-        if (item.name === '杜志峰') {
-          nameCellHtml = `
-            <div class="font-bold text-rose-950">${escapeHtml(item.name)}</div>
-            <div class="text-xs font-bold text-rose-600 leading-tight mt-0.5 flex items-center"><span class="icon-circle w-4 h-4 bg-rose-200 text-rose-700 mr-1"><i class="fa-solid fa-key text-[9px]"></i></span>（知達 聯絡人）</div>
-          `;
-        } else if (item.name === '吳緁苓') {
-          nameCellHtml = `
-            <div class="font-bold text-rose-950">${escapeHtml(item.name)}</div>
-            <div class="text-xs font-bold text-rose-600 leading-tight mt-0.5 flex items-center"><span class="icon-circle w-4 h-4 bg-rose-200 text-rose-700 mr-1"><i class="fa-solid fa-key text-[9px]"></i></span>（正巧 聯絡人）</div>
-          `;
-        }
-
-        return `
-          <tr class="text-base border-b border-rose-100 transition-colors ${bgClass}">
-            <td class="py-3.5 px-3 text-center text-rose-400 font-medium align-middle">${idx + 1}</td>
-            <td class="py-3.5 px-3 font-bold text-rose-900 align-middle flex items-center">
-              ${hotelIcon}
-              <span>${escapeHtml(item.hotel)}</span>
-            </td>
-            <td class="py-3.5 px-3 font-semibold text-rose-800 align-middle">${escapeHtml(item.roomType)}</td>
-            <td class="py-3.5 px-3 align-middle">${nameCellHtml}</td>
-            <td class="py-3.5 px-3 align-middle">${renderRoommateChips(item.roommates)}</td>
-          </tr>
-        `;
+      const view = document.getElementById('lodgingRoomView');
+      const matched = getProcessedDirectoryList().filter(i => i.name !== '彭偉峰');
+      const roomKey = item => item.roomGroup && !['無-無_無', 'NONE'].includes(item.roomGroup)
+        ? JSON.stringify([item.hotel, item.roomGroup]) : JSON.stringify([item.hotel, item.roomType, item.name]);
+      const allRooms = new Map();
+      rawDirectoryData.filter(i => i.name !== '彭偉峰').forEach(item => {
+        const key = roomKey(item);
+        if (!allRooms.has(key)) allRooms.set(key, []);
+        allRooms.get(key).push(item);
+      });
+      const visibleRooms = new Map();
+      const matchedPeople = new Set(matched);
+      matched.forEach(item => {
+        const key = roomKey(item);
+        if (!visibleRooms.has(key)) visibleRooms.set(key, allRooms.get(key));
+      });
+      const residents = Array.from(visibleRooms.values()).reduce((sum, room) => sum + room.length, 0);
+      countBadge.textContent = `共 ${visibleRooms.size} 間房・${residents} 位住宿人員`;
+      const controls = [['住宿飯店', 'hotel'], ['房型', 'roomType'], ['姓名', 'name'], ['同房室友', 'roommates']].map(([title, key]) => {
+        const selected = columnFilters[key] && columnFilters[key].size > 0;
+        return `<button type="button" onclick="openFilterModal('${key}', '${title}', event)">${title}${selected ? ' · 已篩選' : ''}${activeSortColumn === key ? (activeSortDirection === 'asc' ? ' ↑' : ' ↓') : ' ▾'}</button>`;
       }).join('');
+      const hotels = new Map();
+      visibleRooms.forEach(room => {
+        const hotel = room[0].hotel || '未指定飯店';
+        if (!hotels.has(hotel)) hotels.set(hotel, []);
+        hotels.get(hotel).push(room);
+      });
+      view.innerHTML = `<div class="room-toolbar no-print">${controls}</div>
+        <p class="room-help">移入房間看大家揮手，手機可點一下。搜尋會顯示整間房的完整名單。分組編號為資料中的住宿分組，並非飯店實際房號。</p>` +
+        (hotels.size ? Array.from(hotels, ([hotel, rooms]) => {
+          const hotelName = hotel === '知達' ? '知達工藝會館' : hotel === '正巧' ? '正巧文旅' : hotel;
+          return `<section class="hotel-section"><h2 class="hotel-title">${escapeHtml(hotelName)} <small>${rooms.length} 間房</small></h2><div class="rooms-grid">${rooms.map(room => {
+            const first = room[0];
+            const groupMatch = (first.roomGroup || '').match(/_(.+)$/);
+            const groupLabel = groupMatch ? `住宿分組 ${groupMatch[1]}` : '住宿分組待確認';
+            const names = room.map(person => `<li class="${searchQuery && matchedPeople.has(person) ? 'matched' : ''}">${escapeHtml(person.name)}${person.name === '杜志峰' ? '<span class="contact">知達聯絡人</span>' : person.name === '吳緁苓' ? '<span class="contact">正巧聯絡人</span>' : ''}</li>`).join('');
+            return `<article class="room-card ${hotel.includes('正巧') ? 'hotel-orange' : ''}" tabindex="0" role="button" aria-pressed="false" aria-label="${escapeHtml(hotelName)}，${escapeHtml(first.roomType)}，${escapeHtml(groupLabel)}，${room.length} 位：${escapeHtml(room.map(p => p.name).join('、'))}" onclick="toggleRoomGreeting(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleRoomGreeting(this)}">
+              <div class="room-sign">${escapeHtml(hotelName)}<span>${escapeHtml(first.roomType || '房型待確認')}</span></div>
+              <div class="room-facade"><div class="room-group-label">${escapeHtml(groupLabel)}</div><div class="room-door-area"><div class="room-door" aria-hidden="true"><div class="room-door-window"></div></div><div class="room-roster"><div class="room-roster-title">住宿人員 · ${room.length} 位</div><ul>${names}</ul></div></div></div>
+              <div class="room-people" aria-hidden="true">${room.map((person, idx) => renderWavingPerson(idx)).join('')}</div><div class="room-foot">${room.length} 位入住 · 歡迎回房休息</div>
+            </article>`;
+          }).join('')}</div></section>`;
+        }).join('') : '<div class="room-empty">無符合的住宿資料</div>');
+    }
+
+    function toggleRoomGreeting(card) {
+      const open = card.classList.toggle('is-open');
+      card.setAttribute('aria-pressed', String(open));
+    }
+
+    function renderWavingPerson(index) {
+      const colors = ['#f43f5e', '#f97316', '#8b5cf6', '#14b8a6', '#3b82f6'];
+      return `<svg class="room-person" style="--person-index:${index}" viewBox="0 0 64 80" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="32" cy="76" rx="15" ry="3" fill="#88133712"/>
+        <path d="M26 57 L24 73 M38 57 L40 73" stroke="#713f3f" stroke-width="7" stroke-linecap="round"/>
+        <path d="M23 35 Q32 29 41 35 L42 59 L22 59 Z" fill="${colors[index % colors.length]}"/>
+        <path d="M24 38 L15 53" stroke="#f4bb92" stroke-width="6" stroke-linecap="round"/>
+        <g class="room-hand"><path d="M40 38 L50 29 L52 13" fill="none" stroke="#f4bb92" stroke-width="6" stroke-linecap="round"/><path d="M52 15 L47 9 M52 15 L52 6 M53 15 L58 9" stroke="#f4bb92" stroke-width="3" stroke-linecap="round"/></g>
+        <circle cx="32" cy="20" r="12" fill="#f4bb92"/><path d="M20 19 Q19 5 32 6 Q45 5 44 19 L39 12 Q31 16 24 12 Z" fill="#713f3f"/>
+        <circle cx="28" cy="20" r="1.3" fill="#713f3f"/><circle cx="36" cy="20" r="1.3" fill="#713f3f"/><path d="M28 25 Q32 29 36 25" fill="none" stroke="#a34a46" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>`;
     }
 
     function getLodgingComboBgClass(hotel, roomType) {
@@ -1190,22 +1277,17 @@
 
       if (searchQuery) {
         list = list.filter(item => {
-          const rowText = `${item.team} ${item.name} ${item.trafficOut} ${item.trafficBack} ${item.restaurant} ${item.diet} ${item.hotel} ${item.roomType} ${item.roommates}`.toLowerCase();
+          const rowText = getSearchText(item, 'directory');
           return rowText.includes(searchQuery);
         });
       }
 
-      Object.keys(columnFilters).forEach(colKey => {
-        const allowedSet = columnFilters[colKey];
-        if (allowedSet && allowedSet.size > 0) {
-          list = list.filter(item => {
-            const val = getColumnValue(item, colKey);
-            return allowedSet.has(val);
-          });
-        }
-      });
+      const activeFilters = Object.entries(columnFilters).filter(([, set]) => set && set.size > 0);
+      if (activeFilters.length) {
+        list = list.filter(item => activeFilters.every(([key, set]) => set.has(getColumnValue(item, key))));
+      }
 
-      const strokeSort = (a, b) => (a || '').localeCompare(b || '', 'zh-Hant-TW', { collation: 'stroke' });
+      const strokeSort = (a, b) => strokeCollator.compare(a || '', b || '');
 
       if (activeSortColumn && activeSortDirection) {
         list.sort((a, b) => {
@@ -1321,7 +1403,8 @@
       const allVals = Array.from(new Set(rawDirectoryData.map(i => getColumnValue(i, activeFilterColumn)))).filter(Boolean);
       const currentSelected = columnFilters[activeFilterColumn] || new Set(allVals);
 
-      const filteredVals = allVals.filter(v => !searchTerm || v.toLowerCase().includes(searchTerm.toLowerCase()));
+      const normalizedTerm = searchTerm.toLowerCase();
+      const filteredVals = allVals.filter(v => !normalizedTerm || v.toLowerCase().includes(normalizedTerm));
 
       listContainer.innerHTML = filteredVals.map(val => {
         const isChecked = currentSelected.has(val);
