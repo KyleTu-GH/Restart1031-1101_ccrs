@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>重啟人生-翻轉實驗室 10/31-11/01</title>
+  <title>10/31-11/01 重啟人生-翻轉實驗室</title>
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -11,16 +11,30 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- PapaParse for CSV parsing -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-  <!-- html2pdf.js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
   <style>
     @media print {
-      body { background-color: #fff !important; }
+      body { background-color: #ffffff !important; color: #1e293b !important; }
       .no-print { display: none !important; }
       thead { display: table-header-group !important; }
       tr { break-inside: avoid !important; page-break-inside: avoid !important; }
       .table-container { max-height: none !important; overflow: visible !important; border: none !important; }
+    }
+
+    /* 自訂捲軸樣式 - 粉橘粉紅適配 */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #fff1f2;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #fecdd3;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #fda4af;
     }
 
     .table-container {
@@ -30,105 +44,116 @@
       position: relative;
     }
 
-    /* 表頭固定且實心背景，防止向下滾動時文字穿透重疊 */
+    /* 表頭固定且實心粉橘背景，防止向下滾動時文字穿透重疊 */
     .sticky-header th {
       position: sticky !important;
       top: 0 !important;
       z-index: 25 !important;
-      background-color: #f1f5f9 !important;
-      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      background-color: #ffe4e6 !important;
+      color: #881337 !important;
+      box-shadow: 0 1px 3px 0 rgba(244, 63, 94, 0.08);
     }
     
-    /* 總表隊別底色 */
-    .bg-team-white { background-color: #f1f5f9; }
+    /* 總表隊別底色 - 溫暖粉橘粉紅家族適配 */
+    .bg-team-white { background-color: #ffffff; }
     .bg-team-red { background-color: #ffe4e6; }
-    .bg-team-green { background-color: #ecfdf5; }
-    .bg-team-successor { background-color: #fef9c3; }
+    .bg-team-green { background-color: #ffedd5; } /* 原綠改為溫潤粉橙 */
+    .bg-team-successor { background-color: #fef3c7; }
 
-    /* 活動流程階層項目符號樣式 */
+    /* 活動流程階層項目符號樣式 (粉橘粉紅版) */
     .bullet-level-1 {
       position: relative;
-      padding-left: 1.1rem;
-      margin-bottom: 0.25rem;
+      padding-left: 1.3rem;
+      margin-bottom: 0.35rem;
     }
     .bullet-level-1::before {
       content: "•";
       position: absolute;
-      left: 0.2rem;
+      left: 0.25rem;
       top: -0.05rem;
       font-weight: bold;
-      color: #64748b;
+      color: #f43f5e;
+      font-size: 1.15rem;
     }
 
     .bullet-level-2 {
       position: relative;
-      padding-left: 1.85rem;
-      margin-bottom: 0.25rem;
+      padding-left: 2.1rem;
+      margin-bottom: 0.35rem;
     }
     .bullet-level-2::before {
       content: "◦";
       position: absolute;
-      left: 0.95rem;
+      left: 1.1rem;
       top: -0.05rem;
       font-weight: bold;
-      color: #94a3b8;
+      color: #fb7185;
+      font-size: 1.15rem;
     }
 
     .bullet-level-3 {
       position: relative;
-      padding-left: 2.6rem;
-      margin-bottom: 0.25rem;
+      padding-left: 2.9rem;
+      margin-bottom: 0.35rem;
     }
     .bullet-level-3::before {
       content: "▪";
       position: absolute;
-      left: 1.75rem;
-      top: 0rem;
-      font-size: 0.75rem;
-      color: #cbd5e1;
+      left: 1.95rem;
+      top: 0.1rem;
+      font-size: 0.85rem;
+      color: #f97316;
     }
 
-    /* 需行政支援醒目卡片 */
+    /* 需行政支援醒目卡片 (高亮暖珊瑚橙粉色) */
     .admin-support-item {
-      background: linear-gradient(90deg, #f5f3ff 0%, #faf5ff 100%);
-      border-left: 3px solid #8b5cf6;
-      border-radius: 4px;
-      padding: 3px 8px;
-      margin-top: 3px;
-      margin-bottom: 3px;
-      color: #5b21b6;
-      font-weight: 500;
+      background: linear-gradient(90deg, #fff1f2 0%, #fff7ed 100%);
+      border-left: 4px solid #f43f5e;
+      border-radius: 8px;
+      padding: 6px 12px;
+      margin-top: 6px;
+      margin-bottom: 6px;
+      color: #be123c;
+      font-weight: 600;
+      box-shadow: 0 1px 3px rgba(244, 63, 94, 0.12);
+    }
+
+    /* 圓形圖示微徽章樣式 */
+    .icon-circle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 9999px;
+      flex-shrink: 0;
     }
 
     /* 篩選彈窗 */
     #filterDropdownModal {
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 20px 25px -5px rgba(244, 63, 94, 0.15), 0 8px 10px -6px rgba(244, 63, 94, 0.1);
     }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans antialiased">
+<body class="bg-gradient-to-br from-rose-50 via-orange-50 to-pink-50 text-rose-950 min-h-screen flex flex-col font-sans antialiased selection:bg-rose-500 selection:text-white">
 
   <!-- 頂部導覽列 -->
-  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm no-print">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      <div class="flex items-center space-x-3">
-        <div class="w-9 h-9 rounded-lg bg-emerald-600 flex items-center justify-center text-white shadow">
-          <i class="fa-solid fa-compass text-lg"></i>
+  <header class="bg-white/95 backdrop-blur-md border-b border-rose-200/80 sticky top-0 z-30 shadow-xs no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between py-2.5">
+      <div class="flex items-center space-x-3.5">
+        <div class="w-11 h-11 rounded-full bg-gradient-to-tr from-rose-500 to-orange-400 flex items-center justify-center text-white shadow-md shadow-rose-500/25">
+          <i class="fa-solid fa-compass text-xl"></i>
         </div>
-        <div class="flex items-baseline space-x-2.5">
-          <h1 class="text-lg sm:text-xl font-bold tracking-tight text-slate-900">重啟人生-翻轉實驗室 10/31-11/01</h1>
-          <span id="updateTimestamp" class="text-[10px] text-slate-400 font-mono tracking-tight select-none"></span>
+        <div class="flex flex-col sm:flex-row sm:items-baseline sm:space-x-3">
+          <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-rose-950">10/31-11/01 重啟人生-翻轉實驗室</h1>
+          <span id="updateTimestamp" class="text-xs text-rose-700 font-mono tracking-tight select-none bg-rose-100/70 px-2.5 py-0.5 rounded-full border border-rose-200/90 w-fit mt-1 sm:mt-0"></span>
         </div>
       </div>
       
       <div class="flex items-center space-x-2">
-        <button id="refreshBtn" onclick="manualRefreshData()" class="px-3 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors flex items-center space-x-1.5 shadow-sm">
-          <i id="refreshIcon" class="fa-solid fa-arrows-rotate"></i>
+        <button id="refreshBtn" onclick="manualRefreshData()" class="px-3.5 py-2 text-sm font-medium text-rose-800 hover:text-rose-950 bg-rose-100/60 hover:bg-rose-200/70 border border-rose-200 rounded-full transition-colors flex items-center space-x-2 shadow-2xs">
+          <span class="icon-circle w-6 h-6 bg-white text-rose-600 shadow-2xs">
+            <i id="refreshIcon" class="fa-solid fa-arrows-rotate text-xs"></i>
+          </span>
           <span>重新整理</span>
-        </button>
-        <button onclick="promptExportPDF()" class="px-3 py-1.5 text-xs font-semibold text-white bg-slate-800 hover:bg-slate-900 rounded-lg transition-colors flex items-center space-x-1.5 shadow-sm">
-          <i class="fa-solid fa-file-pdf text-rose-400"></i>
-          <span>匯出 (限工作人員使用)</span>
         </button>
       </div>
     </div>
@@ -137,266 +162,262 @@
   <!-- 主要操作區 -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex-1 w-full flex flex-col">
     
-    <!-- 分頁導航列 -->
-    <div class="flex border-b border-slate-200 overflow-x-auto space-x-2 pb-px no-print select-none">
-      <button onclick="switchTab('schedule')" id="tab-schedule" class="tab-btn px-4 py-2.5 font-medium text-sm rounded-t-lg transition-all flex items-center space-x-2 text-white bg-emerald-600 shadow-sm border-t-2 border-emerald-600">
-        <i class="fa-solid fa-clock-rotate-left"></i>
-        <span>活動流程</span>
+    <!-- 分頁導航列 (「安排」全面更新為「服務」，風格切換為粉紅／粉橘) -->
+    <div class="flex border-b border-rose-200 overflow-x-auto space-x-2.5 pb-px no-print select-none">
+      <button onclick="switchTab('schedule')" id="tab-schedule" class="tab-btn px-5 py-3 font-semibold text-base rounded-t-xl transition-all flex items-center space-x-2.5 text-white bg-gradient-to-r from-rose-500 to-orange-400 shadow-sm border-t-2 border-rose-400">
+        <span class="icon-circle w-7 h-7 bg-white/20 text-white">
+          <i class="fa-solid fa-clock-rotate-left text-sm"></i>
+        </span>
+        <span>重啟-活動流程</span>
       </button>
-      <button onclick="switchTab('overview')" id="tab-overview" class="tab-btn px-4 py-2.5 font-medium text-sm rounded-t-lg transition-all flex items-center space-x-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100">
-        <i class="fa-solid fa-table-cells"></i>
-        <span>總表</span>
+      <button onclick="switchTab('overview')" id="tab-overview" class="tab-btn px-5 py-3 font-medium text-base rounded-t-xl transition-all flex items-center space-x-2.5 text-rose-800 hover:text-rose-950 hover:bg-rose-100/60">
+        <span class="icon-circle w-7 h-7 bg-rose-100 text-rose-700">
+          <i class="fa-solid fa-table-cells text-sm"></i>
+        </span>
+        <span>重啟-總表</span>
       </button>
-      <button onclick="switchTab('traffic')" id="tab-traffic" class="tab-btn px-4 py-2.5 font-medium text-sm rounded-t-lg transition-all flex items-center space-x-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100">
-        <i class="fa-solid fa-bus"></i>
-        <span>交通安排</span>
+      <button onclick="switchTab('traffic')" id="tab-traffic" class="tab-btn px-5 py-3 font-medium text-base rounded-t-xl transition-all flex items-center space-x-2.5 text-rose-800 hover:text-rose-950 hover:bg-rose-100/60">
+        <span class="icon-circle w-7 h-7 bg-rose-100 text-rose-700">
+          <i class="fa-solid fa-bus text-sm"></i>
+        </span>
+        <span>重啟-交通服務</span>
       </button>
-      <button onclick="switchTab('dining')" id="tab-dining" class="tab-btn px-4 py-2.5 font-medium text-sm rounded-t-lg transition-all flex items-center space-x-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100">
-        <i class="fa-solid fa-utensils"></i>
-        <span>餐飲安排</span>
+      <button onclick="switchTab('dining')" id="tab-dining" class="tab-btn px-5 py-3 font-medium text-base rounded-t-xl transition-all flex items-center space-x-2.5 text-rose-800 hover:text-rose-950 hover:bg-rose-100/60">
+        <span class="icon-circle w-7 h-7 bg-rose-100 text-rose-700">
+          <i class="fa-solid fa-utensils text-sm"></i>
+        </span>
+        <span>重啟-餐飲服務</span>
       </button>
-      <button onclick="switchTab('lodging')" id="tab-lodging" class="tab-btn px-4 py-2.5 font-medium text-sm rounded-t-lg transition-all flex items-center space-x-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100">
-        <i class="fa-solid fa-bed"></i>
-        <span>住宿安排</span>
+      <button onclick="switchTab('lodging')" id="tab-lodging" class="tab-btn px-5 py-3 font-medium text-base rounded-t-xl transition-all flex items-center space-x-2.5 text-rose-800 hover:text-rose-950 hover:bg-rose-100/60">
+        <span class="icon-circle w-7 h-7 bg-rose-100 text-rose-700">
+          <i class="fa-solid fa-bed text-sm"></i>
+        </span>
+        <span>重啟-住宿服務</span>
       </button>
     </div>
 
     <!-- 檢索與控制欄 -->
-    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 my-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 no-print">
+    <div class="bg-white/90 backdrop-blur-sm border border-rose-200/90 rounded-2xl shadow-sm p-4 my-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 no-print">
       <div class="relative flex-1 max-w-lg">
-        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+        <span class="icon-circle w-7 h-7 bg-rose-100 text-rose-500 absolute left-2.5 top-1/2 -translate-y-1/2">
+          <i class="fa-solid fa-magnifying-glass text-xs"></i>
+        </span>
         <input 
           type="text" 
           id="globalSearchInput" 
           oninput="handleSearchInput(this.value)"
-          placeholder="即時全文檢索（活動流程）..." 
-          class="w-full pl-10 pr-4 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all shadow-inner"
+          placeholder="即時全文檢索（重啟-活動流程）..." 
+          class="w-full pl-11 pr-4 py-2.5 text-base bg-rose-50/50 border border-rose-200 rounded-xl text-rose-950 placeholder-rose-400 focus:outline-none focus:ring-2 focus:ring-rose-400 focus:bg-white transition-all shadow-inner"
         >
       </div>
 
-      <!-- 右側動作狀態按鈕 -->
+      <!-- 右側資料筆數標籤 -->
       <div class="flex items-center space-x-3">
-        <div id="scheduleEditControls" class="hidden flex items-center space-x-2">
-          <button id="addScheduleRowBtn" onclick="addScheduleRow()" class="hidden px-2.5 py-1 text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-300 rounded hover:bg-emerald-100 transition-colors">
-            <i class="fa-solid fa-plus mr-1"></i>新增一筆
-          </button>
-          <button id="toggleEditModeBtn" onclick="handleScheduleEditToggle()" class="px-2.5 py-1 text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-300 rounded hover:bg-slate-200 transition-colors flex items-center space-x-1">
-            <i class="fa-solid fa-pen-to-square text-slate-500"></i>
-            <span id="editBtnText">編輯流程</span>
-          </button>
-        </div>
-
-        <div id="rowCountBadge" class="text-xs font-medium px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
+        <div id="rowCountBadge" class="text-sm font-semibold px-3.5 py-1.5 rounded-full bg-rose-100/80 text-rose-900 border border-rose-300 shadow-2xs">
           載入中
         </div>
       </div>
     </div>
 
-    <!-- 餐飲安排四家餐廳資訊導覽卡片（僅在餐飲安排分頁顯示） -->
-    <div id="diningInfoCard" class="hidden bg-white border border-slate-200 rounded-xl p-3.5 mb-4 shadow-sm text-xs no-print">
-      <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2.5 flex items-center">
-        <i class="fa-solid fa-utensils mr-1.5 text-emerald-600"></i>午間餐訪餐廳聯絡資訊
+    <!-- 餐飲服務四家餐廳資訊導覽卡片（極簡緊湊版，大幅降低垂直高度） -->
+    <div id="diningInfoCard" class="hidden bg-white/95 border border-rose-200 rounded-xl px-3 py-2 mb-3 shadow-xs text-xs no-print">
+      <div class="flex items-center justify-between pb-1.5 mb-1.5 border-b border-rose-100">
+        <div class="text-xs font-bold text-rose-800 flex items-center">
+          <span class="icon-circle w-5 h-5 bg-rose-100 text-rose-700 mr-1.5">
+            <i class="fa-solid fa-utensils text-[10px]"></i>
+          </span>
+          午間餐訪餐廳聯絡資訊
+        </div>
+        <span class="text-[11px] text-rose-600 font-medium">點擊按鈕可快速導航</span>
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
         <!-- 弎食鉄板料理 -->
-        <div class="p-2.5 bg-rose-50/70 border border-rose-100 rounded-lg flex flex-col justify-between">
-          <div>
-            <div class="font-bold text-slate-900 text-xs flex items-center">
-              <i class="fa-solid fa-fire-burner text-rose-600 mr-1.5"></i>弎食鉄板料理
+        <div class="px-2.5 py-1.5 bg-rose-50/80 border border-rose-200/90 rounded-lg flex items-center justify-between">
+          <div class="min-w-0 pr-1.5">
+            <div class="font-bold text-rose-950 text-xs truncate flex items-center">
+              <span class="icon-circle w-4 h-4 bg-rose-200 text-rose-700 mr-1 text-[9px]"><i class="fa-solid fa-fire-burner"></i></span>
+              <span class="truncate">弎食鉄板料理</span>
             </div>
-            <div class="text-slate-600 mt-1">
-              TEL：<a href="tel:0981930305" class="font-semibold text-rose-800 hover:underline">0981-930305</a>
+            <div class="text-[11px] text-rose-800 mt-0.5">
+              <a href="tel:0981930305" class="hover:underline font-semibold font-mono">0981-930305</a>
             </div>
           </div>
-          <div class="mt-2 text-right">
-            <a href="https://maps.app.goo.gl/c1w7ijdQV4kwLfw86" target="_blank" class="inline-flex items-center space-x-1 px-2 py-0.5 bg-rose-600 text-white rounded text-[11px] hover:bg-rose-700 transition-colors">
-              <i class="fa-solid fa-location-dot text-[10px]"></i><span>地圖導航</span>
-            </a>
-          </div>
+          <a href="https://maps.app.goo.gl/c1w7ijdQV4kwLfw86" target="_blank" class="shrink-0 inline-flex items-center px-2 py-0.5 bg-gradient-to-r from-rose-500 to-pink-500 text-white rounded-full text-[10px] hover:from-rose-600 hover:to-pink-600 transition-colors shadow-2xs">
+            <i class="fa-solid fa-location-dot mr-1 text-[9px]"></i>導航
+          </a>
         </div>
 
         <!-- 植田割烹 -->
-        <div class="p-2.5 bg-emerald-50/70 border border-emerald-100 rounded-lg flex flex-col justify-between">
-          <div>
-            <div class="font-bold text-slate-900 text-xs flex items-center">
-              <i class="fa-solid fa-fish text-emerald-600 mr-1.5"></i>植田割烹
+        <div class="px-2.5 py-1.5 bg-orange-50/80 border border-orange-200/90 rounded-lg flex items-center justify-between">
+          <div class="min-w-0 pr-1.5">
+            <div class="font-bold text-orange-950 text-xs truncate flex items-center">
+              <span class="icon-circle w-4 h-4 bg-orange-200 text-orange-700 mr-1 text-[9px]"><i class="fa-solid fa-fish"></i></span>
+              <span class="truncate">植田割烹</span>
             </div>
-            <div class="text-slate-600 mt-1">
-              TEL：<a href="tel:0928385269" class="font-semibold text-emerald-800 hover:underline">0928-385269</a>
+            <div class="text-[11px] text-orange-800 mt-0.5">
+              <a href="tel:0928385269" class="hover:underline font-semibold font-mono">0928-385269</a>
             </div>
           </div>
-          <div class="mt-2 text-right">
-            <a href="https://maps.app.goo.gl/iaRERmMCGPQs8jzFA" target="_blank" class="inline-flex items-center space-x-1 px-2 py-0.5 bg-emerald-600 text-white rounded text-[11px] hover:bg-emerald-700 transition-colors">
-              <i class="fa-solid fa-location-dot text-[10px]"></i><span>地圖導航</span>
-            </a>
-          </div>
+          <a href="https://maps.app.goo.gl/iaRERmMCGPQs8jzFA" target="_blank" class="shrink-0 inline-flex items-center px-2 py-0.5 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-full text-[10px] hover:from-orange-600 hover:to-amber-600 transition-colors shadow-2xs">
+            <i class="fa-solid fa-location-dot mr-1 text-[9px]"></i>導航
+          </a>
         </div>
 
         <!-- 湫禾壽喜燒 -->
-        <div class="p-2.5 bg-indigo-50/70 border border-indigo-100 rounded-lg flex flex-col justify-between">
-          <div>
-            <div class="font-bold text-slate-900 text-xs flex items-center">
-              <i class="fa-solid fa-plate-wheat text-indigo-600 mr-1.5"></i>湫禾壽喜燒
+        <div class="px-2.5 py-1.5 bg-pink-50/80 border border-pink-200/90 rounded-lg flex items-center justify-between">
+          <div class="min-w-0 pr-1.5">
+            <div class="font-bold text-pink-950 text-xs truncate flex items-center">
+              <span class="icon-circle w-4 h-4 bg-pink-200 text-pink-700 mr-1 text-[9px]"><i class="fa-solid fa-plate-wheat"></i></span>
+              <span class="truncate">湫禾壽喜燒</span>
             </div>
-            <div class="text-slate-600 mt-1">
-              TEL：<a href="tel:0972822535" class="font-semibold text-indigo-800 hover:underline">0972-822535</a>
+            <div class="text-[11px] text-pink-800 mt-0.5">
+              <a href="tel:0972822535" class="hover:underline font-semibold font-mono">0972-822535</a>
             </div>
           </div>
-          <div class="mt-2 text-right">
-            <a href="https://maps.app.goo.gl/9uTNFLocg2wbAAMn8" target="_blank" class="inline-flex items-center space-x-1 px-2 py-0.5 bg-indigo-600 text-white rounded text-[11px] hover:bg-indigo-700 transition-colors">
-              <i class="fa-solid fa-location-dot text-[10px]"></i><span>地圖導航</span>
-            </a>
-          </div>
+          <a href="https://maps.app.goo.gl/9uTNFLocg2wbAAMn8" target="_blank" class="shrink-0 inline-flex items-center px-2 py-0.5 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-full text-[10px] hover:from-pink-600 hover:to-rose-600 transition-colors shadow-2xs">
+            <i class="fa-solid fa-location-dot mr-1 text-[9px]"></i>導航
+          </a>
         </div>
 
         <!-- 麵五三屋台ラーメン -->
-        <div class="p-2.5 bg-amber-50/70 border border-amber-100 rounded-lg flex flex-col justify-between">
-          <div>
-            <div class="font-bold text-slate-900 text-xs flex items-center">
-              <i class="fa-solid fa-bowl-food text-amber-600 mr-1.5"></i>麵五三屋台ラーメン
+        <div class="px-2.5 py-1.5 bg-amber-50/80 border border-amber-200/90 rounded-lg flex items-center justify-between">
+          <div class="min-w-0 pr-1.5">
+            <div class="font-bold text-amber-950 text-xs truncate flex items-center">
+              <span class="icon-circle w-4 h-4 bg-amber-200 text-amber-700 mr-1 text-[9px]"><i class="fa-solid fa-bowl-food"></i></span>
+              <span class="truncate">麵五三屋台ラーメン</span>
             </div>
-            <div class="text-slate-600 mt-1">
-              TEL：<a href="tel:0933581872" class="font-semibold text-amber-800 hover:underline">0933-581872</a>
+            <div class="text-[11px] text-amber-800 mt-0.5">
+              <a href="tel:0933581872" class="hover:underline font-semibold font-mono">0933-581872</a>
             </div>
           </div>
-          <div class="mt-2 text-right">
-            <a href="https://maps.app.goo.gl/1quzSasgPxd1onwAA" target="_blank" class="inline-flex items-center space-x-1 px-2 py-0.5 bg-amber-600 text-white rounded text-[11px] hover:bg-amber-700 transition-colors">
-              <i class="fa-solid fa-location-dot text-[10px]"></i><span>地圖導航</span>
-            </a>
-          </div>
+          <a href="https://maps.app.goo.gl/1quzSasgPxd1onwAA" target="_blank" class="shrink-0 inline-flex items-center px-2 py-0.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-full text-[10px] hover:from-amber-600 hover:to-orange-600 transition-colors shadow-2xs">
+            <i class="fa-solid fa-location-dot mr-1 text-[9px]"></i>導航
+          </a>
         </div>
       </div>
     </div>
 
-    <!-- 住宿資訊導覽卡片（僅在住宿安排分頁顯示） -->
-    <div id="lodgingInfoCard" class="hidden bg-white border border-slate-200 rounded-xl p-3 mb-4 shadow-sm text-xs no-print">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+    <!-- 住宿服務資訊導覽卡片（極簡緊湊版，大幅降低垂直高度） -->
+    <div id="lodgingInfoCard" class="hidden bg-white/95 border border-rose-200 rounded-xl px-3 py-2 mb-3 shadow-xs text-xs no-print">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
         <!-- 知達會館 -->
-        <div class="flex items-center justify-between p-2.5 bg-sky-50/70 border border-sky-100 rounded-lg">
-          <div>
-            <div class="font-bold text-slate-900 text-sm flex items-center">
-              <i class="fa-solid fa-hotel text-sky-600 mr-1.5"></i>知達工藝會館
-            </div>
-            <div class="text-slate-600 mt-1">
-              TEL：<a href="tel:0492306969" class="font-semibold text-sky-800 hover:underline">049-2306969</a>
+        <div class="flex items-center justify-between px-3 py-1.5 bg-rose-50/80 border border-rose-200/90 rounded-lg">
+          <div class="flex items-center space-x-2.5">
+            <span class="icon-circle w-5 h-5 bg-rose-200 text-rose-700 text-[10px]">
+              <i class="fa-solid fa-hotel"></i>
+            </span>
+            <div class="flex items-baseline space-x-2">
+              <span class="font-bold text-rose-950 text-xs">知達工藝會館</span>
+              <a href="tel:0492306969" class="text-[11px] font-semibold text-rose-800 hover:underline font-mono">049-2306969</a>
             </div>
           </div>
-          <div class="flex items-center space-x-2">
-            <a href="https://www.zhidacaotun.com.tw/Home/Aboutzida" target="_blank" class="px-2.5 py-1 bg-white text-sky-700 border border-sky-200 rounded hover:bg-sky-100 transition-colors flex items-center space-x-1 shadow-xs">
-              <i class="fa-solid fa-globe"></i><span>官網</span>
+          <div class="flex items-center space-x-1.5">
+            <a href="https://www.zhidacaotun.com.tw/Home/Aboutzida" target="_blank" class="px-2 py-0.5 bg-white text-rose-700 border border-rose-300 rounded-full hover:bg-rose-100 transition-colors text-[10px] font-semibold shadow-2xs">
+              <i class="fa-solid fa-globe mr-1 text-[9px]"></i>官網
             </a>
-            <a href="https://maps.app.goo.gl/2a2QDY48EoQpQ9Sc6" target="_blank" class="px-2.5 py-1 bg-sky-600 text-white rounded hover:bg-sky-700 transition-colors flex items-center space-x-1 shadow-xs">
-              <i class="fa-solid fa-location-dot"></i><span>地圖導航</span>
+            <a href="https://maps.app.goo.gl/2a2QDY48EoQpQ9Sc6" target="_blank" class="px-2 py-0.5 bg-rose-500 text-white rounded-full hover:bg-rose-600 transition-colors text-[10px] font-semibold shadow-2xs">
+              <i class="fa-solid fa-location-dot mr-1 text-[9px]"></i>導航
             </a>
           </div>
         </div>
 
         <!-- 正巧文旅 -->
-        <div class="flex items-center justify-between p-2.5 bg-emerald-50/70 border border-emerald-100 rounded-lg">
-          <div>
-            <div class="font-bold text-slate-900 text-sm flex items-center">
-              <i class="fa-solid fa-tree-city text-emerald-600 mr-1.5"></i>正巧文旅
-            </div>
-            <div class="text-slate-600 mt-1">
-              TEL：<a href="tel:0492357166" class="font-semibold text-emerald-800 hover:underline">049-2357166</a>
+        <div class="flex items-center justify-between px-3 py-1.5 bg-orange-50/80 border border-orange-200/90 rounded-lg">
+          <div class="flex items-center space-x-2.5">
+            <span class="icon-circle w-5 h-5 bg-orange-200 text-orange-700 text-[10px]">
+              <i class="fa-solid fa-tree-city"></i>
+            </span>
+            <div class="flex items-baseline space-x-2">
+              <span class="font-bold text-orange-950 text-xs">正巧文旅</span>
+              <a href="tel:0492357166" class="text-[11px] font-semibold text-orange-800 hover:underline font-mono">049-2357166</a>
             </div>
           </div>
-          <div class="flex items-center space-x-2">
-            <a href="https://www.booking-owlnest.com/dohohotel?lang=zh_TW&adult=1&child=0&infant=0" target="_blank" class="px-2.5 py-1 bg-white text-emerald-700 border border-emerald-200 rounded hover:bg-emerald-100 transition-colors flex items-center space-x-1 shadow-xs">
-              <i class="fa-solid fa-globe"></i><span>官網</span>
+          <div class="flex items-center space-x-1.5">
+            <a href="https://www.booking-owlnest.com/dohohotel?lang=zh_TW&adult=1&child=0&infant=0" target="_blank" class="px-2 py-0.5 bg-white text-orange-800 border border-orange-300 rounded-full hover:bg-orange-100 transition-colors text-[10px] font-semibold shadow-2xs">
+              <i class="fa-solid fa-globe mr-1 text-[9px]"></i>官網
             </a>
-            <a href="https://maps.app.goo.gl/8JsYvNw56jJnzLmN9" target="_blank" class="px-2.5 py-1 bg-emerald-600 text-white rounded hover:bg-emerald-700 transition-colors flex items-center space-x-1 shadow-xs">
-              <i class="fa-solid fa-location-dot"></i><span>地圖導航</span>
+            <a href="https://maps.app.goo.gl/8JsYvNw56jJnzLmN9" target="_blank" class="px-2 py-0.5 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-colors text-[10px] font-semibold shadow-2xs">
+              <i class="fa-solid fa-location-dot mr-1 text-[9px]"></i>導航
             </a>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- 主要資料表格區域 -->
-    <div id="printableContent" class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex-1 flex flex-col">
+    <!-- 主要資料表格區域 (粉橘底色風格邊框) -->
+    <div id="printableContent" class="bg-white/95 rounded-2xl shadow-sm border border-rose-200 overflow-hidden flex-1 flex flex-col">
       <div class="table-container flex-1">
         <table id="mainDataTable" class="w-full text-left border-collapse table-auto">
-          <thead id="tableHead" class="sticky-header border-b border-slate-300 select-none"></thead>
-          <tbody id="tableBody" class="divide-y divide-slate-200"></tbody>
+          <thead id="tableHead" class="sticky-header border-b border-rose-200 select-none"></thead>
+          <tbody id="tableBody" class="divide-y divide-rose-100 text-rose-950"></tbody>
         </table>
       </div>
     </div>
   </main>
 
-  <!-- 表頭篩選彈窗與遮罩 -->
-  <div id="filterModalOverlay" onclick="closeFilterModal()" class="fixed inset-0 bg-slate-900/30 z-40 hidden backdrop-blur-[1px]"></div>
-  <div id="filterDropdownModal" class="fixed z-50 hidden bg-white rounded-xl border border-slate-300 p-4 w-72 max-w-[92vw] shadow-2xl flex flex-col">
-    <div id="filterModalHeader" class="flex items-center justify-between pb-2 border-b border-slate-200 cursor-move select-none">
-      <div class="text-xs font-bold text-slate-800 flex items-center space-x-1.5">
-        <i class="fa-solid fa-filter text-emerald-600"></i>
+  <!-- 表頭篩選彈窗與遮罩 (粉紅/粉橘風格) -->
+  <div id="filterModalOverlay" onclick="closeFilterModal()" class="fixed inset-0 bg-rose-950/20 z-40 hidden backdrop-blur-[2px]"></div>
+  <div id="filterDropdownModal" class="fixed z-50 hidden bg-white rounded-2xl border border-rose-300 p-4.5 w-80 max-w-[92vw] shadow-2xl flex flex-col text-rose-950">
+    <div id="filterModalHeader" class="flex items-center justify-between pb-2.5 border-b border-rose-100 cursor-move select-none">
+      <div class="text-sm font-bold text-rose-950 flex items-center space-x-2">
+        <span class="icon-circle w-6 h-6 bg-rose-100 text-rose-600">
+          <i class="fa-solid fa-filter text-xs"></i>
+        </span>
         <span id="modalColumnTitle">欄位篩選</span>
       </div>
-      <button onclick="closeFilterModal()" class="text-slate-400 hover:text-slate-600 text-sm p-1">
+      <button onclick="closeFilterModal()" class="text-rose-400 hover:text-rose-700 text-base p-1 rounded-full hover:bg-rose-50">
         <i class="fa-solid fa-xmark"></i>
       </button>
     </div>
 
-    <div class="py-2.5 space-y-1.5 border-b border-slate-100 text-xs">
-      <button onclick="applySort('asc')" class="w-full text-left px-2.5 py-1.5 rounded hover:bg-slate-100 text-slate-700 flex items-center space-x-2">
-        <i class="fa-solid fa-arrow-down-a-z text-slate-500"></i>
+    <div class="py-3 space-y-1.5 border-b border-rose-100 text-sm">
+      <button onclick="applySort('asc')" class="w-full text-left px-3 py-2 rounded-lg hover:bg-rose-50 text-rose-900 flex items-center space-x-2.5 font-medium transition-colors">
+        <span class="icon-circle w-6 h-6 bg-rose-100 text-rose-600">
+          <i class="fa-solid fa-arrow-down-a-z text-xs"></i>
+        </span>
         <span>依筆畫 / 順序由少到多 (升冪)</span>
       </button>
-      <button onclick="applySort('desc')" class="w-full text-left px-2.5 py-1.5 rounded hover:bg-slate-100 text-slate-700 flex items-center space-x-2">
-        <i class="fa-solid fa-arrow-up-z-a text-slate-500"></i>
+      <button onclick="applySort('desc')" class="w-full text-left px-3 py-2 rounded-lg hover:bg-rose-50 text-rose-900 flex items-center space-x-2.5 font-medium transition-colors">
+        <span class="icon-circle w-6 h-6 bg-rose-100 text-rose-600">
+          <i class="fa-solid fa-arrow-up-z-a text-xs"></i>
+        </span>
         <span>依筆畫 / 順序由多到少 (降冪)</span>
       </button>
     </div>
 
-    <div class="pt-2 flex-1 flex flex-col">
-      <div class="text-[11px] font-semibold text-slate-500 mb-1.5 flex justify-between items-center">
+    <div class="pt-3 flex-1 flex flex-col">
+      <div class="text-xs font-semibold text-rose-600 mb-2 flex justify-between items-center">
         <span>選取資料項目</span>
-        <button onclick="toggleSelectAllFilter()" id="selectAllToggleBtn" class="text-emerald-600 hover:underline">全選 / 全消</button>
+        <button onclick="toggleSelectAllFilter()" id="selectAllToggleBtn" class="text-rose-600 font-bold hover:underline text-xs">全選 / 全消</button>
       </div>
-      <input type="text" id="filterValueSearch" oninput="renderFilterCheckboxes(this.value)" placeholder="搜尋此欄項目..." class="w-full px-2 py-1 text-xs border border-slate-200 rounded mb-2 bg-slate-50 focus:bg-white outline-none">
-      <div id="filterCheckboxList" class="max-h-36 overflow-y-auto space-y-1 text-xs pr-1 divide-y divide-slate-50"></div>
+      <input type="text" id="filterValueSearch" oninput="renderFilterCheckboxes(this.value)" placeholder="搜尋此欄項目..." class="w-full px-3 py-1.5 text-sm border border-rose-200 rounded-lg mb-2.5 bg-rose-50/50 text-rose-950 placeholder-rose-300 focus:outline-none focus:border-rose-400 focus:bg-white">
+      <div id="filterCheckboxList" class="max-h-40 overflow-y-auto space-y-1 text-sm pr-1 divide-y divide-rose-50"></div>
     </div>
 
-    <div class="pt-3 border-t border-slate-100 flex items-center justify-end space-x-2 mt-2">
-      <button onclick="closeFilterModal()" class="px-2.5 py-1 text-xs text-slate-600 hover:bg-slate-100 rounded border border-slate-200">取消</button>
-      <button onclick="confirmColumnFilter()" class="px-3 py-1 text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded shadow-sm">確定</button>
-    </div>
-  </div>
-
-  <!-- 密碼輸入通用彈窗 -->
-  <div id="passwordModal" class="fixed inset-0 bg-slate-900/40 z-50 hidden backdrop-blur-[2px] flex items-center justify-center p-4">
-    <div class="bg-white rounded-xl shadow-2xl max-w-sm w-full p-5 border border-slate-200">
-      <div class="flex items-center space-x-2 text-slate-900 font-bold text-base mb-2">
-        <i class="fa-solid fa-lock text-emerald-600"></i>
-        <span id="passwordModalTitle">工作人員身分驗證</span>
-      </div>
-      <p id="passwordModalDesc" class="text-xs text-slate-500 mb-3">請輸入管理密碼以執行此操作：</p>
-      <input type="password" id="passwordInput" placeholder="請輸入密碼" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none mb-4 tracking-widest font-mono">
-      <div class="flex items-center justify-end space-x-2">
-        <button onclick="closePasswordModal()" class="px-3 py-1.5 text-xs text-slate-600 hover:bg-slate-100 rounded-lg border border-slate-200">取消</button>
-        <button id="passwordConfirmBtn" class="px-3.5 py-1.5 text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg shadow-sm">確認</button>
-      </div>
+    <div class="pt-3.5 border-t border-rose-100 flex items-center justify-end space-x-2.5 mt-2.5">
+      <button onclick="closeFilterModal()" class="px-3.5 py-1.5 text-sm text-rose-700 hover:bg-rose-100 rounded-full border border-rose-200 font-medium">取消</button>
+      <button onclick="confirmColumnFilter()" class="px-4 py-1.5 text-sm font-semibold text-white bg-gradient-to-r from-rose-500 to-orange-400 hover:from-rose-600 hover:to-orange-500 rounded-full shadow-2xs">確定</button>
     </div>
   </div>
 
   <script>
     /* =========================================================
-       1. 資料庫來源（100% 嚴格對照工作表「10/31-11/01_流程_v2b-接班人」與「成員資料」）
+       1. 資料庫來源配置
+       重啟：活動流程 指向使用者指定之 gid=1928975316
+       成員資料 指向成員總表
        ========================================================= */
     const GOOGLE_SHEET_DIR_URL = 'https://docs.google.com/spreadsheets/d/1rtaD9Y4-1iv4rD68QNT64dv1x-o02rUc2kyosc26LVM/export?format=csv';
-    const GOOGLE_SHEET_SCHEDULE_URL = 'https://docs.google.com/spreadsheets/d/1rtaD9Y4-1iv4rD68QNT64dv1x-o02rUc2kyosc26LVM/export?format=csv&gid=491680836';
+    const GOOGLE_SHEET_SCHEDULE_URL = 'https://docs.google.com/spreadsheets/d/1rtaD9Y4-1iv4rD68QNT64dv1x-o02rUc2kyosc26LVM/export?format=csv&gid=1928975316';
 
     let currentTab = 'schedule';
     let searchQuery = '';
-    let isScheduleEditing = false;
-    let pendingPasswordCallback = null;
 
     let activeFilterColumn = null;
     let activeSortColumn = null;
     let activeSortDirection = null;
     let columnFilters = {};
 
-    // 嚴格對照工作表「10/31-11/01_流程_v2b-接班人」實體資料庫[cite: 1]
+    // 預設活動流程資料庫 (作為離線或備援基準)
     let scheduleData = [
       { id: 1, date: "10/30 (五)", startTime: "", endTime: "", duration: "", location: "", activity: "場佈\n事前綵排", note: "" },
       { id: 2, date: "10/31 (六)", startTime: "09:00", endTime: "10:00", duration: "60", location: "", activity: "接駁車：高鐵台中站－督賀蔬食", note: "- 事前公告+報名；公告住宿費用、提醒重啟夥伴帶「集點卡」\n- 車資：1,200/人（重啟、接班人相同）\n- 遊覽車預定 9:20發車-6號出口（車掌/長：廖培芯）\n- 確認人數，回報出車→需行政支援：勿帶葷食" },
@@ -419,7 +440,6 @@
       { id: 19, date: "備註說明", startTime: "", endTime: "", duration: "", location: "", activity: "遊覽車接駁安排（培芯車長）", note: "遊覽車36人（培芯車長）\n10/31\n- 集合地點：台中高鐵，6號出口\n- 09:20 台中高鐵出發正巧\n- 11:15 正巧出發送到四個餐廳\n- 14:30 從四個餐廳接送回來正巧\n- 22:00 正巧送到知達\n\n11/01\n- 09:30 知達送到正巧\n- 13:30 正巧出發到台中高鐵" }
     ];
 
-    // 實體「成員資料」最新 62 位真實人員數據（吳佩容之用餐餐廳為 NO，不計入餐飲安排）[cite: 1]
     let rawDirectoryData = [
       { team: "白", name: "林政緯", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "不吃：豬", hotel: "正巧", roomType: "2人房", roomGroup: "正巧-2人房_5", roommates: "林政緯-妻, 林政緯-看護" },
       { team: "白", name: "林政緯-妻", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "不吃：豬", hotel: "正巧", roomType: "2人房", roomGroup: "正巧-2人房_5", roommates: "林政緯, 林政緯-看護" },
@@ -489,7 +509,7 @@
     ];
 
     /* =========================================================
-       2. 初始化
+       2. 初始化與雲端資料非同步加載
        ========================================================= */
     window.addEventListener('DOMContentLoaded', () => {
       updateTimestampDisplay();
@@ -514,16 +534,51 @@
       
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 2500);
+        const timeoutId = setTimeout(() => controller.abort(), 3500);
 
-        const res = await fetch(`${GOOGLE_SHEET_DIR_URL}&_t=${Date.now()}`, {
-          signal: controller.signal,
-          cache: 'no-store'
-        });
+        // 同時非同步抓取「成員名單」與指定路徑之「活動流程 (gid=1928975316)」
+        const [dirRes, scheduleRes] = await Promise.allSettled([
+          fetch(`${GOOGLE_SHEET_DIR_URL}&_t=${Date.now()}`, { signal: controller.signal, cache: 'no-store' }),
+          fetch(`${GOOGLE_SHEET_SCHEDULE_URL}&_t=${Date.now()}`, { signal: controller.signal, cache: 'no-store' })
+        ]);
+
         clearTimeout(timeoutId);
 
-        if (res.ok) {
-          const csvText = await res.text();
+        // 1. 解析指定來源的重啟活動流程 (gid=1928975316)
+        if (scheduleRes.status === 'fulfilled' && scheduleRes.value.ok) {
+          const scheduleCsv = await scheduleRes.value.text();
+          Papa.parse(scheduleCsv, {
+            header: true,
+            skipEmptyLines: true,
+            complete: (results) => {
+              if (results.data && results.data.length > 0) {
+                const parsedSchedule = results.data.map((r, idx) => {
+                  const dateVal = r['日期'] || r['Date'] || '';
+                  const actVal = r['活動'] || r['活動內容'] || r['流程項目'] || r['Activity'] || '';
+                  const noteVal = r['說明'] || r['備註'] || r['注意事項'] || r['Note'] || '';
+                  return {
+                    id: idx + 1,
+                    date: dateVal,
+                    startTime: r['起時'] || r['開始時間'] || r['Start'] || '',
+                    endTime: r['迄時'] || r['結束時間'] || r['End'] || '',
+                    duration: r['時長'] || r['時間(分)'] || r['Duration'] || '',
+                    location: r['地點'] || r['場地'] || r['Location'] || '',
+                    activity: actVal,
+                    note: noteVal
+                  };
+                }).filter(item => item.date || item.activity);
+
+                if (parsedSchedule.length > 0) {
+                  scheduleData = parsedSchedule;
+                }
+              }
+            }
+          });
+        }
+
+        // 2. 解析成員總表
+        if (dirRes.status === 'fulfilled' && dirRes.value.ok) {
+          const csvText = await dirRes.value.text();
           Papa.parse(csvText, {
             header: true,
             skipEmptyLines: true,
@@ -559,7 +614,7 @@
           });
         }
       } catch (err) {
-        console.warn('雲端直接連線略過，維持原始數據集');
+        console.warn('雲端更新連線略過，維持原始數據集');
       } finally {
         refreshIcon.classList.remove('fa-spin');
         renderCurrentTab();
@@ -602,27 +657,27 @@
        ========================================================= */
     function switchTab(tabKey) {
       currentTab = tabKey;
-      isScheduleEditing = false;
-      document.getElementById('editBtnText').textContent = '編輯流程';
-      document.getElementById('addScheduleRowBtn').classList.add('hidden');
 
       const tabs = ['schedule', 'overview', 'traffic', 'dining', 'lodging'];
       tabs.forEach(t => {
         const btn = document.getElementById(`tab-${t}`);
+        const iconContainer = btn.querySelector('.icon-circle');
         if (t === tabKey) {
-          btn.className = "tab-btn px-4 py-2.5 font-medium text-sm rounded-t-lg transition-all flex items-center space-x-2 text-white bg-emerald-600 shadow-sm border-t-2 border-emerald-600";
+          btn.className = "tab-btn px-5 py-3 font-semibold text-base rounded-t-xl transition-all flex items-center space-x-2.5 text-white bg-gradient-to-r from-rose-500 to-orange-400 shadow-sm border-t-2 border-rose-400";
+          if (iconContainer) iconContainer.className = "icon-circle w-7 h-7 bg-white/20 text-white";
         } else {
-          btn.className = "tab-btn px-4 py-2.5 font-medium text-sm rounded-t-lg transition-all flex items-center space-x-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100";
+          btn.className = "tab-btn px-5 py-3 font-medium text-base rounded-t-xl transition-all flex items-center space-x-2.5 text-rose-800 hover:text-rose-950 hover:bg-rose-100/60";
+          if (iconContainer) iconContainer.className = "icon-circle w-7 h-7 bg-rose-100 text-rose-700";
         }
       });
 
       const searchInput = document.getElementById('globalSearchInput');
       const placeholderMap = {
-        schedule: '即時全文檢索（活動流程）...',
-        overview: '即時全文檢索（總表）...',
-        traffic: '即時全文檢索（交通安排）...',
-        dining: '即時全文檢索（餐飲安排）...',
-        lodging: '即時全文檢索（住宿安排）...'
+        schedule: '即時全文檢索（重啟-活動流程）...',
+        overview: '即時全文檢索（重啟-總表）...',
+        traffic: '即時全文檢索（重啟-交通服務）...',
+        dining: '即時全文檢索（重啟-餐飲服務）...',
+        lodging: '即時全文檢索（重啟-住宿服務）...'
       };
       searchInput.placeholder = placeholderMap[tabKey] || '即時全文檢索...';
 
@@ -642,13 +697,6 @@
         lodgingInfoCard.classList.add('hidden');
       }
 
-      const editControls = document.getElementById('scheduleEditControls');
-      if (tabKey === 'schedule') {
-        editControls.classList.remove('hidden');
-      } else {
-        editControls.classList.add('hidden');
-      }
-
       renderCurrentTab();
     }
 
@@ -658,7 +706,7 @@
     }
 
     /* =========================================================
-       5. 渲染各分頁內容
+       5. 渲染各分頁內容（字級均放大一級，全面粉紅/粉橘調配）
        ========================================================= */
     function renderCurrentTab() {
       const thead = document.getElementById('tableHead');
@@ -678,19 +726,17 @@
       }
     }
 
-    /* --- [分頁1] 活動流程 --- */
+    /* --- [分頁1] 重啟-活動流程 (粉紅/粉橘底色風格) --- */
     function renderScheduleTab(thead, tbody, countBadge) {
       thead.innerHTML = `
-        <tr class="text-xs">
-          <th class="py-2.5 px-2 text-center w-8 text-slate-400">#</th>
-          <th class="py-2.5 px-1.5 w-24 text-center">日期</th>
-          <th class="py-2.5 px-1.5 w-14 text-center">起時</th>
-          <th class="py-2.5 px-1.5 w-14 text-center">迄時</th>
-          <th class="py-2.5 px-1.5 w-14 text-center">時長</th>
-          <th class="py-2.5 px-3 w-36">地點</th>
-          <th class="py-2.5 px-3 min-w-[12rem]">活動</th>
-          <th class="py-2.5 px-3 min-w-[18rem] flex-1">說明</th>
-          ${isScheduleEditing ? '<th class="py-2.5 px-2 w-12 text-center text-rose-500">刪除</th>' : ''}
+        <tr class="text-sm font-semibold">
+          <th class="py-3 px-2 text-center w-10 text-rose-700">#</th>
+          <th class="py-3 px-2 w-28 text-center">日期</th>
+          <th class="py-3 px-2 w-20 text-center">起時</th>
+          <th class="py-3 px-2 w-20 text-center">迄時</th>
+          <th class="py-3 px-3.5 w-40">地點</th>
+          <th class="py-3 px-3.5 min-w-[13rem]">活動</th>
+          <th class="py-3 px-3.5 min-w-[20rem] flex-1">說明</th>
         </tr>
       `;
 
@@ -703,48 +749,29 @@
       countBadge.textContent = `共 ${list.length} 項流程`;
 
       if (list.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="${isScheduleEditing ? 9 : 8}" class="py-12 text-center text-slate-400 text-sm">無符合的活動流程資料</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" class="py-12 text-center text-rose-400 text-base">無符合的活動流程資料</td></tr>`;
         return;
       }
 
       tbody.innerHTML = list.map((item, idx) => {
         const bgClass = getScheduleRowBg(item.date, item.startTime);
-        
-        if (isScheduleEditing) {
-          return `
-            <tr class="text-xs border-b border-slate-200 ${bgClass}">
-              <td class="py-2 px-2 text-center text-slate-400">${idx + 1}</td>
-              <td class="p-1"><input class="w-full text-center bg-white border border-slate-300 rounded p-1 text-xs" value="${escapeHtml(item.date)}" onchange="updateScheduleCell(${item.id}, 'date', this.value)"></td>
-              <td class="p-1"><input class="w-full text-center bg-white border border-slate-300 rounded p-1 text-xs" value="${escapeHtml(item.startTime)}" onchange="updateScheduleCell(${item.id}, 'startTime', this.value)"></td>
-              <td class="p-1"><input class="w-full text-center bg-white border border-slate-300 rounded p-1 text-xs" value="${escapeHtml(item.endTime)}" onchange="updateScheduleCell(${item.id}, 'endTime', this.value)"></td>
-              <td class="p-1"><input class="w-full text-center bg-white border border-slate-300 rounded p-1 text-xs" value="${escapeHtml(item.duration)}" onchange="updateScheduleCell(${item.id}, 'duration', this.value)"></td>
-              <td class="p-1"><input class="w-full bg-white border border-slate-300 rounded p-1 text-xs" value="${escapeHtml(item.location)}" onchange="updateScheduleCell(${item.id}, 'location', this.value)"></td>
-              <td class="p-1"><textarea rows="2" class="w-full font-semibold bg-white border border-slate-300 rounded p-1 text-xs" onchange="updateScheduleCell(${item.id}, 'activity', this.value)">${escapeHtml(item.activity)}</textarea></td>
-              <td class="p-1"><textarea rows="3" class="w-full bg-white border border-slate-300 rounded p-1 text-xs" onchange="updateScheduleCell(${item.id}, 'note', this.value)">${escapeHtml(item.note)}</textarea></td>
-              <td class="p-1 text-center">
-                <button onclick="deleteScheduleRow(${item.id})" class="text-rose-500 hover:text-rose-700 p-1.5"><i class="fa-solid fa-trash"></i></button>
-              </td>
-            </tr>
-          `;
-        }
 
         return `
-          <tr class="text-xs border-b border-slate-200 transition-colors ${bgClass}">
-            <td class="py-2.5 px-2 text-center text-slate-400">${idx + 1}</td>
-            <td class="py-2.5 px-1.5 text-center font-medium text-slate-700 whitespace-nowrap">${escapeHtml(item.date)}</td>
-            <td class="py-2.5 px-1.5 text-center font-mono text-slate-600 whitespace-nowrap">${escapeHtml(item.startTime || '-')}</td>
-            <td class="py-2.5 px-1.5 text-center font-mono text-slate-600 whitespace-nowrap">${escapeHtml(item.endTime || '-')}</td>
-            <td class="py-2.5 px-1.5 text-center text-slate-400 italic whitespace-nowrap">${item.duration ? escapeHtml(item.duration + '分') : '-'}</td>
-            <td class="py-2.5 px-3 font-medium text-slate-700 break-words">${escapeHtml(item.location || '-')}</td>
-            <td class="py-2.5 px-3 font-bold text-slate-900 break-words whitespace-pre-line">${escapeHtml(item.activity)}</td>
-            <td class="py-2.5 px-3 text-slate-700 break-words leading-relaxed">${formatScheduleNote(item.note)}</td>
+          <tr class="text-sm border-b border-rose-100 transition-colors ${bgClass}">
+            <td class="py-3 px-2 text-center text-rose-400 font-medium">${idx + 1}</td>
+            <td class="py-3 px-2 text-center font-bold text-rose-900 whitespace-nowrap">${escapeHtml(item.date)}</td>
+            <td class="py-3 px-2 text-center font-mono font-bold text-rose-600 whitespace-nowrap">${escapeHtml(item.startTime || '-')}</td>
+            <td class="py-3 px-2 text-center font-mono font-bold text-rose-600 whitespace-nowrap">${escapeHtml(item.endTime || '-')}</td>
+            <td class="py-3 px-3.5 font-bold text-rose-900 break-words">${escapeHtml(item.location || '-')}</td>
+            <td class="py-3 px-3.5 font-bold text-rose-950 break-words whitespace-pre-line text-base leading-snug">${escapeHtml(item.activity)}</td>
+            <td class="py-3 px-3.5 text-rose-900 break-words leading-relaxed text-sm">${formatScheduleNote(item.note)}</td>
           </tr>
         `;
       }).join('');
     }
 
     function getScheduleRowBg(date, startTime) {
-      if (String(date).includes('30')) return 'bg-slate-50 hover:bg-slate-100';
+      if (String(date).includes('30')) return 'bg-rose-50/50 hover:bg-rose-100/50';
       const is1031 = String(date).includes('31');
       let hour = 0;
       if (startTime) {
@@ -753,15 +780,16 @@
       }
       const isBeforeNoon = hour < 12;
 
+      // 暖粉紅、暖珊瑚、粉橘交織
       if (is1031) {
-        return isBeforeNoon ? 'bg-blue-50/70 hover:bg-blue-50' : 'bg-purple-50/70 hover:bg-purple-50';
+        return isBeforeNoon ? 'bg-pink-50/80 hover:bg-pink-100/70' : 'bg-rose-100/60 hover:bg-rose-100/90';
       } else {
-        return isBeforeNoon ? 'bg-emerald-50/70 hover:bg-emerald-50' : 'bg-amber-50/70 hover:bg-amber-50';
+        return isBeforeNoon ? 'bg-orange-50/80 hover:bg-orange-100/70' : 'bg-amber-50/80 hover:bg-amber-100/70';
       }
     }
 
     function formatScheduleNote(text) {
-      if (!text) return '<span class="text-slate-300">-</span>';
+      if (!text) return '<span class="text-rose-300">-</span>';
       const lines = text.split('\n');
       
       return lines.map(line => {
@@ -784,23 +812,23 @@
         }
 
         if (hasAdminSupport) {
-          return `<div class="${levelClass} admin-support-item"><i class="fa-solid fa-bell mr-1 text-purple-600"></i>${renderedText}</div>`;
+          return `<div class="${levelClass} admin-support-item flex items-center space-x-1.5"><span class="icon-circle w-5 h-5 bg-rose-200 text-rose-700 mr-1"><i class="fa-solid fa-bell text-[10px]"></i></span><span>${renderedText}</span></div>`;
         }
 
         return `<div class="${levelClass}">${renderedText}</div>`;
       }).join('');
     }
 
-    /* --- [分頁2] 總表 --- */
+    /* --- [分頁2] 重啟-總表 --- */
     function renderOverviewTab(thead, tbody, countBadge) {
       thead.innerHTML = `
-        <tr class="text-sm">
-          <th class="py-3 px-3 text-center w-10 text-slate-400">#</th>
-          ${renderHeaderTh('姓名', 'name', 'w-28')}
-          ${renderHeaderTh('隊別', 'team', 'w-24')}
-          ${renderHeaderTh('交通-去/回', 'trafficCombo', 'w-36')}
-          ${renderHeaderTh('用餐餐廳', 'restaurant', 'w-32')}
-          ${renderHeaderTh('住宿飯店-房型', 'lodgingCombo', 'w-36')}
+        <tr class="text-base font-semibold">
+          <th class="py-3.5 px-3 text-center w-12 text-rose-700">#</th>
+          ${renderHeaderTh('姓名', 'name', 'w-32')}
+          ${renderHeaderTh('隊別', 'team', 'w-28')}
+          ${renderHeaderTh('交通-去/回', 'trafficCombo', 'w-40')}
+          ${renderHeaderTh('用餐餐廳', 'restaurant', 'w-36')}
+          ${renderHeaderTh('住宿飯店-房型', 'lodgingCombo', 'w-40')}
           ${renderHeaderTh('室友', 'roommates', '')}
         </tr>
       `;
@@ -809,7 +837,7 @@
       countBadge.textContent = `共 ${list.length} 位人員`;
 
       if (list.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" class="py-12 text-center text-slate-400 text-sm">無符合的人員資料</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" class="py-12 text-center text-rose-400 text-base">無符合的人員資料</td></tr>`;
         return;
       }
 
@@ -819,52 +847,56 @@
         const lodgingCombo = `${item.hotel}-${item.roomType}`;
 
         return `
-          <tr class="text-sm border-b border-slate-200 transition-colors ${teamBg}">
-            <td class="py-3 px-3 text-center text-slate-400">${idx + 1}</td>
-            <td class="py-3 px-3 font-bold text-slate-900">${escapeHtml(item.name)}</td>
-            <td class="py-3 px-3 font-semibold text-slate-700">${escapeHtml(item.team)}</td>
-            <td class="py-3 px-3 text-slate-700">${escapeHtml(trafficCombo)}</td>
-            <td class="py-3 px-3 font-medium text-slate-800">${escapeHtml(item.restaurant)}</td>
-            <td class="py-3 px-3 text-slate-700">${escapeHtml(lodgingCombo)}</td>
-            <td class="py-3 px-3">${renderRoommateChips(item.roommates)}</td>
+          <tr class="text-base border-b border-rose-100 transition-colors ${teamBg}">
+            <td class="py-3.5 px-3 text-center text-rose-400 font-medium">${idx + 1}</td>
+            <td class="py-3.5 px-3 font-bold text-rose-950">${escapeHtml(item.name)}</td>
+            <td class="py-3.5 px-3 font-bold text-rose-800">${escapeHtml(item.team)}</td>
+            <td class="py-3.5 px-3 text-rose-900 font-medium">${escapeHtml(trafficCombo)}</td>
+            <td class="py-3.5 px-3 font-semibold text-rose-900">${escapeHtml(item.restaurant)}</td>
+            <td class="py-3.5 px-3 text-rose-900 font-medium">${escapeHtml(lodgingCombo)}</td>
+            <td class="py-3.5 px-3">${renderRoommateChips(item.roommates)}</td>
           </tr>
         `;
       }).join('');
     }
 
     function getTeamBgClass(team) {
-      if (team === '白') return 'bg-team-white hover:bg-slate-200/50';
-      if (team === '紅') return 'bg-team-red hover:bg-rose-100/60';
-      if (team === '綠') return 'bg-team-green hover:bg-emerald-100/60';
-      if (team === '接班人') return 'bg-team-successor hover:bg-amber-100/60';
-      return 'bg-white hover:bg-slate-50';
+      if (team === '白') return 'bg-team-white hover:bg-rose-50/60';
+      if (team === '紅') return 'bg-team-red hover:bg-rose-200/60';
+      if (team === '綠') return 'bg-team-green hover:bg-orange-100/70'; /* 原綠色換成暖粉橘 */
+      if (team === '接班人') return 'bg-team-successor hover:bg-amber-100/80';
+      return 'bg-white hover:bg-rose-50/40';
     }
 
-    /* --- [分頁3] 交通安排（緊縮寬度與加註表頭） --- */
+    /* --- [分頁3] 重啟-交通服務 --- */
     function renderTrafficTab(thead, tbody, countBadge) {
       thead.innerHTML = `
-        <tr class="text-sm">
-          <th class="py-2.5 px-2 text-center w-8 text-slate-400">#</th>
-          ${renderHeaderTh('姓名', 'name', 'w-28')}
-          <th class="py-2 px-2.5 font-semibold w-56">
+        <tr class="text-base font-semibold">
+          <th class="py-3 px-2 text-center w-10 text-rose-700">#</th>
+          ${renderHeaderTh('姓名', 'name', 'w-36')}
+          <th class="py-3 px-3 font-semibold w-64">
             <div class="flex items-center justify-between">
               <div>
-                <span class="text-slate-800">交通-去程</span>
-                <span class="block text-[11px] font-normal text-emerald-700 leading-tight">遊覽車 09:20 台中高鐵發車往正巧</span>
+                <span class="text-rose-950">交通-去程（10/31）</span>
+                <span class="block text-xs font-normal text-rose-700 leading-tight">遊覽車 09:20 台中高鐵發車往正巧</span>
               </div>
-              <button onclick="openFilterModal('trafficOut', '交通-去程', event)" class="p-1 rounded hover:bg-slate-200 transition-colors">
-                <i class="fa-solid fa-filter text-slate-300 ${columnFilters['trafficOut'] && columnFilters['trafficOut'].size > 0 ? 'text-emerald-600' : ''}"></i>
+              <button onclick="openFilterModal('trafficOut', '交通-去程（10/31）', event)" class="p-1 rounded-full hover:bg-rose-200 transition-colors">
+                <span class="icon-circle w-6 h-6 bg-rose-200/80 text-rose-700 ${columnFilters['trafficOut'] && columnFilters['trafficOut'].size > 0 ? 'bg-rose-300 text-rose-900' : ''}">
+                  <i class="fa-solid fa-filter text-xs"></i>
+                </span>
               </button>
             </div>
           </th>
-          <th class="py-2 px-2.5 font-semibold w-56">
+          <th class="py-3 px-3 font-semibold w-64">
             <div class="flex items-center justify-between">
               <div>
-                <span class="text-slate-800">交通-回程</span>
-                <span class="block text-[11px] font-normal text-emerald-700 leading-tight">遊覽車 13:30 正巧發車往台中高鐵</span>
+                <span class="text-rose-950">交通-回程（11/01）</span>
+                <span class="block text-xs font-normal text-rose-700 leading-tight">遊覽車 13:30 正巧發車往台中高鐵</span>
               </div>
-              <button onclick="openFilterModal('trafficBack', '交通-回程', event)" class="p-1 rounded hover:bg-slate-200 transition-colors">
-                <i class="fa-solid fa-filter text-slate-300 ${columnFilters['trafficBack'] && columnFilters['trafficBack'].size > 0 ? 'text-emerald-600' : ''}"></i>
+              <button onclick="openFilterModal('trafficBack', '交通-回程（11/01）', event)" class="p-1 rounded-full hover:bg-rose-200 transition-colors">
+                <span class="icon-circle w-6 h-6 bg-rose-200/80 text-rose-700 ${columnFilters['trafficBack'] && columnFilters['trafficBack'].size > 0 ? 'bg-rose-300 text-rose-900' : ''}">
+                  <i class="fa-solid fa-filter text-xs"></i>
+                </span>
               </button>
             </div>
           </th>
@@ -875,7 +907,7 @@
       countBadge.textContent = `共 ${list.length} 位人員`;
 
       if (list.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4" class="py-12 text-center text-slate-400 text-sm">無符合的交通資料</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="4" class="py-12 text-center text-rose-400 text-base">無符合的交通資料</td></tr>`;
         return;
       }
 
@@ -884,43 +916,43 @@
         const leaderBadge = getTrafficLeaderBadge(item);
 
         return `
-          <tr class="text-sm border-b border-slate-200 transition-colors ${bgClass}">
-            <td class="py-2.5 px-2 text-center text-slate-400 align-middle">${idx + 1}</td>
-            <td class="py-2.5 px-2.5 align-middle">
-              <div class="font-bold text-slate-900">${escapeHtml(item.name)}</div>
+          <tr class="text-base border-b border-rose-100 transition-colors ${bgClass}">
+            <td class="py-3 px-2 text-center text-rose-400 font-medium align-middle">${idx + 1}</td>
+            <td class="py-3 px-3 align-middle">
+              <div class="font-bold text-rose-950">${escapeHtml(item.name)}</div>
               ${leaderBadge}
             </td>
-            <td class="py-2.5 px-2.5 font-semibold text-slate-800 align-middle">${escapeHtml(item.trafficOut)}</td>
-            <td class="py-2.5 px-2.5 font-semibold text-slate-800 align-middle">${escapeHtml(item.trafficBack)}</td>
+            <td class="py-3 px-3 font-bold text-rose-900 align-middle">${escapeHtml(item.trafficOut)}</td>
+            <td class="py-3 px-3 font-bold text-rose-900 align-middle">${escapeHtml(item.trafficBack)}</td>
           </tr>
         `;
       }).join('');
     }
 
     function getTrafficBackBgClass(trafficBack) {
-      if (trafficBack === '遊覽車') return 'bg-teal-50/70 hover:bg-teal-50';
-      if (trafficBack === '開車') return 'bg-amber-50/70 hover:bg-amber-50';
-      if (trafficBack === '高鐵') return 'bg-sky-50/70 hover:bg-sky-50';
-      if (trafficBack === '自處' || trafficBack === '自行') return 'bg-slate-100/60 hover:bg-slate-100';
-      return 'bg-white hover:bg-slate-50';
+      if (trafficBack === '遊覽車') return 'bg-rose-100/60 hover:bg-rose-100';
+      if (trafficBack === '開車') return 'bg-orange-100/60 hover:bg-orange-100';
+      if (trafficBack === '高鐵') return 'bg-pink-100/60 hover:bg-pink-100';
+      if (trafficBack === '自處' || trafficBack === '自行') return 'bg-amber-50/70 hover:bg-amber-100/70';
+      return 'bg-white hover:bg-rose-50/60';
     }
 
     function getTrafficLeaderBadge(item) {
       if (item.isTrafficLeader === '是') {
-        return `<div class="text-[11px] font-semibold text-rose-600 mt-0.5">（遊覽車 隊長）</div>`;
+        return `<div class="text-xs font-bold text-rose-600 mt-0.5 flex items-center"><span class="icon-circle w-4 h-4 bg-rose-200 text-rose-700 mr-1"><i class="fa-solid fa-star text-[9px]"></i></span>（遊覽車 隊長）</div>`;
       }
       return '';
     }
 
-    /* --- [分頁4] 餐飲安排（隊長置頂、餐廳人數顯示、素食/過敏色塊） --- */
+    /* --- [分頁4] 重啟-餐飲服務 --- */
     function renderDiningTab(thead, tbody, countBadge) {
       thead.innerHTML = `
-        <tr class="text-sm">
-          <th class="py-3 px-3 text-center w-10 text-slate-400">#</th>
-          ${renderHeaderTh('用餐餐廳', 'restaurant', 'w-44')}
-          ${renderHeaderTh('姓名', 'name', 'w-36')}
-          ${renderHeaderTh('飲食注意事項', 'diet', 'w-48')}
-          ${renderHeaderTh('交通方式', 'trafficOut', 'w-36')}
+        <tr class="text-base font-semibold">
+          <th class="py-3.5 px-3 text-center w-12 text-rose-700">#</th>
+          ${renderHeaderTh('用餐餐廳', 'restaurant', 'w-48')}
+          ${renderHeaderTh('姓名', 'name', 'w-40')}
+          ${renderHeaderTh('飲食注意事項', 'diet', 'w-56')}
+          ${renderHeaderTh('交通方式', 'trafficOut', 'w-40')}
         </tr>
       `;
 
@@ -928,11 +960,10 @@
       countBadge.textContent = `共 ${list.length} 位用餐人員`;
 
       if (list.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="py-12 text-center text-slate-400 text-sm">無符合的餐飲資料</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5" class="py-12 text-center text-rose-400 text-base">無符合的餐飲資料</td></tr>`;
         return;
       }
 
-      // 計算各餐廳用餐人數
       const restCounts = {};
       list.forEach(i => {
         restCounts[i.restaurant] = (restCounts[i.restaurant] || 0) + 1;
@@ -953,18 +984,18 @@
           const count = restCounts[item.restaurant] || 0;
           restCellHtml = `
             <div>
-              <div class="font-bold text-slate-800 flex items-center space-x-1.5">
+              <div class="font-bold text-rose-950 flex items-center space-x-2 text-base">
                 ${icon}
                 <span>${escapeHtml(item.restaurant)}</span>
               </div>
-              <div class="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200 mt-1 inline-block">
+              <div class="text-xs font-bold text-rose-800 bg-rose-100 px-2.5 py-0.5 rounded-full border border-rose-300 mt-1 inline-block">
                 （共 ${count} 位）
               </div>
             </div>
           `;
         } else {
           restCellHtml = `
-            <div class="font-medium text-slate-700 flex items-center space-x-1.5 opacity-90">
+            <div class="font-medium text-rose-900 flex items-center space-x-2 opacity-90 text-base">
               ${icon}
               <span>${escapeHtml(item.restaurant)}</span>
             </div>
@@ -973,19 +1004,19 @@
 
         const dietDisplay = formatDietDisplay(item.diet);
         const leaderBadge = item.isDiningLeader === '是'
-          ? `<div class="text-[11px] font-semibold text-rose-600 mt-0.5">（遊覽車 隊長）</div>`
+          ? `<div class="text-xs font-bold text-rose-600 mt-0.5 flex items-center"><span class="icon-circle w-4 h-4 bg-rose-200 text-rose-700 mr-1"><i class="fa-solid fa-star text-[9px]"></i></span>（遊覽車 隊長）</div>`
           : '';
 
         return `
-          <tr class="text-sm border-b border-slate-200 transition-colors ${bgClass}">
-            <td class="py-3 px-3 text-center text-slate-400 align-middle">${idx + 1}</td>
-            <td class="py-3 px-3 align-middle">${restCellHtml}</td>
-            <td class="py-3 px-3 align-middle">
-              <div class="font-bold text-slate-900">${escapeHtml(item.name)}</div>
+          <tr class="text-base border-b border-rose-100 transition-colors ${bgClass}">
+            <td class="py-3.5 px-3 text-center text-rose-400 font-medium align-middle">${idx + 1}</td>
+            <td class="py-3.5 px-3 align-middle">${restCellHtml}</td>
+            <td class="py-3.5 px-3 align-middle">
+              <div class="font-bold text-rose-950">${escapeHtml(item.name)}</div>
               ${leaderBadge}
             </td>
-            <td class="py-3 px-3 align-middle">${dietDisplay}</td>
-            <td class="py-3 px-3 font-medium text-slate-700 align-middle">${escapeHtml(trafficMethod)}</td>
+            <td class="py-3.5 px-3 align-middle">${dietDisplay}</td>
+            <td class="py-3.5 px-3 font-semibold text-rose-900 align-middle">${escapeHtml(trafficMethod)}</td>
           </tr>
         `;
       }).join('');
@@ -993,41 +1024,41 @@
 
     function formatDietDisplay(diet) {
       if (!diet || diet === '無') {
-        return `<span class="text-slate-400">無</span>`;
+        return `<span class="text-rose-300 text-sm">無</span>`;
       }
       if (diet.includes('素')) {
-        return `<span class="inline-block px-2.5 py-1 text-xs font-semibold rounded bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-sm">${escapeHtml(diet)}</span>`;
+        return `<span class="inline-block px-3 py-1 text-sm font-bold rounded-full bg-orange-100 text-orange-900 border border-orange-300 shadow-2xs">${escapeHtml(diet)}</span>`;
       }
       if (diet.includes('過敏')) {
-        return `<span class="inline-block px-2.5 py-1 text-xs font-semibold rounded bg-purple-100 text-purple-800 border border-purple-300 shadow-sm">${escapeHtml(diet)}</span>`;
+        return `<span class="inline-block px-3 py-1 text-sm font-bold rounded-full bg-pink-100 text-pink-900 border border-pink-300 shadow-2xs">${escapeHtml(diet)}</span>`;
       }
-      return `<span class="inline-block px-2 py-0.5 text-xs font-medium rounded bg-rose-50 text-rose-700 border border-rose-200">${escapeHtml(diet)}</span>`;
+      return `<span class="inline-block px-3 py-0.5 text-sm font-semibold rounded-full bg-rose-100 text-rose-800 border border-rose-300">${escapeHtml(diet)}</span>`;
     }
 
     function getRestaurantBgClass(rest) {
-      if (rest.includes('麵五三')) return 'bg-amber-50/60 hover:bg-amber-50';
-      if (rest.includes('植田')) return 'bg-emerald-50/60 hover:bg-emerald-50';
-      if (rest.includes('弎食')) return 'bg-rose-50/60 hover:bg-rose-50';
-      if (rest.includes('湫禾')) return 'bg-indigo-50/60 hover:bg-indigo-50';
-      return 'bg-white hover:bg-slate-50';
+      if (rest.includes('麵五三')) return 'bg-amber-50/70 hover:bg-amber-100/60';
+      if (rest.includes('植田')) return 'bg-orange-50/70 hover:bg-orange-100/60';
+      if (rest.includes('弎食')) return 'bg-rose-50/70 hover:bg-rose-100/60';
+      if (rest.includes('湫禾')) return 'bg-pink-50/70 hover:bg-pink-100/60';
+      return 'bg-white hover:bg-rose-50/40';
     }
 
     function getRestaurantIcon(rest) {
-      if (rest.includes('麵五三')) return '<i class="fa-solid fa-bowl-food text-amber-600"></i>';
-      if (rest.includes('植田')) return '<i class="fa-solid fa-fish text-emerald-600"></i>';
-      if (rest.includes('弎食')) return '<i class="fa-solid fa-fire-burner text-rose-600"></i>';
-      if (rest.includes('湫禾')) return '<i class="fa-solid fa-plate-wheat text-indigo-600"></i>';
-      return '<i class="fa-solid fa-utensils text-slate-500"></i>';
+      if (rest.includes('麵五三')) return '<span class="icon-circle w-6 h-6 bg-amber-200/80 text-amber-800"><i class="fa-solid fa-bowl-food text-xs"></i></span>';
+      if (rest.includes('植田')) return '<span class="icon-circle w-6 h-6 bg-orange-200/80 text-orange-800"><i class="fa-solid fa-fish text-xs"></i></span>';
+      if (rest.includes('弎食')) return '<span class="icon-circle w-6 h-6 bg-rose-200/80 text-rose-800"><i class="fa-solid fa-fire-burner text-xs"></i></span>';
+      if (rest.includes('湫禾')) return '<span class="icon-circle w-6 h-6 bg-pink-200/80 text-pink-800"><i class="fa-solid fa-plate-wheat text-xs"></i></span>';
+      return '<span class="icon-circle w-6 h-6 bg-rose-100 text-rose-700"><i class="fa-solid fa-utensils text-xs"></i></span>';
     }
 
-    /* --- [分頁5] 住宿安排（紅字聯絡人、排序：知達 ➔ 正巧4人 ➔ 正巧2人） --- */
+    /* --- [分頁5] 重啟-住宿服務 --- */
     function renderLodgingTab(thead, tbody, countBadge) {
       thead.innerHTML = `
-        <tr class="text-sm">
-          <th class="py-3 px-3 text-center w-10 text-slate-400">#</th>
-          ${renderHeaderTh('住宿飯店', 'hotel', 'w-32')}
-          ${renderHeaderTh('房型', 'roomType', 'w-28')}
-          ${renderHeaderTh('姓名', 'name', 'w-36')}
+        <tr class="text-base font-semibold">
+          <th class="py-3.5 px-3 text-center w-12 text-rose-700">#</th>
+          ${renderHeaderTh('住宿飯店', 'hotel', 'w-40')}
+          ${renderHeaderTh('房型', 'roomType', 'w-32')}
+          ${renderHeaderTh('姓名', 'name', 'w-40')}
           ${renderHeaderTh('同房室友', 'roommates', '')}
         </tr>
       `;
@@ -1036,39 +1067,39 @@
       countBadge.textContent = `共 ${list.length} 位住宿人員`;
 
       if (list.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="py-12 text-center text-slate-400 text-sm">無符合的住宿資料</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5" class="py-12 text-center text-rose-400 text-base">無符合的住宿資料</td></tr>`;
         return;
       }
 
       tbody.innerHTML = list.map((item, idx) => {
         const bgClass = getLodgingComboBgClass(item.hotel, item.roomType);
         const hotelIcon = item.hotel.includes('正巧')
-          ? '<i class="fa-solid fa-tree-city text-emerald-600 mr-1.5"></i>'
-          : '<i class="fa-solid fa-landmark text-sky-600 mr-1.5"></i>';
+          ? '<span class="icon-circle w-6 h-6 bg-orange-100 text-orange-700 mr-2"><i class="fa-solid fa-tree-city text-xs"></i></span>'
+          : '<span class="icon-circle w-6 h-6 bg-rose-100 text-rose-700 mr-2"><i class="fa-solid fa-hotel text-xs"></i></span>';
 
-        let nameCellHtml = `<div class="font-bold text-slate-900">${escapeHtml(item.name)}</div>`;
+        let nameCellHtml = `<div class="font-bold text-rose-950">${escapeHtml(item.name)}</div>`;
         if (item.name === '杜志峰') {
           nameCellHtml = `
-            <div class="font-bold text-slate-900">${escapeHtml(item.name)}</div>
-            <div class="text-[11px] font-semibold text-rose-600 leading-tight mt-0.5">（知達 聯絡人）</div>
+            <div class="font-bold text-rose-950">${escapeHtml(item.name)}</div>
+            <div class="text-xs font-bold text-rose-600 leading-tight mt-0.5 flex items-center"><span class="icon-circle w-4 h-4 bg-rose-200 text-rose-700 mr-1"><i class="fa-solid fa-key text-[9px]"></i></span>（知達 聯絡人）</div>
           `;
         } else if (item.name === '吳緁苓') {
           nameCellHtml = `
-            <div class="font-bold text-slate-900">${escapeHtml(item.name)}</div>
-            <div class="text-[11px] font-semibold text-rose-600 leading-tight mt-0.5">（正巧 聯絡人）</div>
+            <div class="font-bold text-rose-950">${escapeHtml(item.name)}</div>
+            <div class="text-xs font-bold text-rose-600 leading-tight mt-0.5 flex items-center"><span class="icon-circle w-4 h-4 bg-rose-200 text-rose-700 mr-1"><i class="fa-solid fa-key text-[9px]"></i></span>（正巧 聯絡人）</div>
           `;
         }
 
         return `
-          <tr class="text-sm border-b border-slate-200 transition-colors ${bgClass}">
-            <td class="py-3 px-3 text-center text-slate-400 align-middle">${idx + 1}</td>
-            <td class="py-3 px-3 font-bold text-slate-800 align-middle flex items-center">
+          <tr class="text-base border-b border-rose-100 transition-colors ${bgClass}">
+            <td class="py-3.5 px-3 text-center text-rose-400 font-medium align-middle">${idx + 1}</td>
+            <td class="py-3.5 px-3 font-bold text-rose-900 align-middle flex items-center">
               ${hotelIcon}
               <span>${escapeHtml(item.hotel)}</span>
             </td>
-            <td class="py-3 px-3 font-semibold text-slate-700 align-middle">${escapeHtml(item.roomType)}</td>
-            <td class="py-3 px-3 align-middle">${nameCellHtml}</td>
-            <td class="py-3 px-3 align-middle">${renderRoommateChips(item.roommates)}</td>
+            <td class="py-3.5 px-3 font-semibold text-rose-800 align-middle">${escapeHtml(item.roomType)}</td>
+            <td class="py-3.5 px-3 align-middle">${nameCellHtml}</td>
+            <td class="py-3.5 px-3 align-middle">${renderRoommateChips(item.roommates)}</td>
           </tr>
         `;
       }).join('');
@@ -1076,26 +1107,27 @@
 
     function getLodgingComboBgClass(hotel, roomType) {
       const combo = `${hotel}-${roomType}`;
-      if (combo.includes('正巧-4人')) return 'bg-emerald-50/60 hover:bg-emerald-50';
-      if (combo.includes('正巧-2人')) return 'bg-teal-50/60 hover:bg-teal-50';
-      if (combo.includes('知達-2人')) return 'bg-sky-50/60 hover:bg-sky-50';
-      return 'bg-white hover:bg-slate-50';
+      if (combo.includes('正巧-4人')) return 'bg-orange-50/70 hover:bg-orange-100/60';
+      if (combo.includes('正巧-2人')) return 'bg-rose-50/70 hover:bg-rose-100/60';
+      if (combo.includes('知達-2人')) return 'bg-pink-50/70 hover:bg-pink-100/60';
+      return 'bg-white hover:bg-rose-50/40';
     }
 
+    /* 將原本的綠色方塊人名改為精緻暖橘粉色人名徽章 */
     function renderRoommateChips(roommatesStr) {
       if (!roommatesStr || roommatesStr === '無') {
-        return `<span class="text-slate-400 text-xs">無</span>`;
+        return `<span class="text-rose-300 text-sm">無</span>`;
       }
       if (roommatesStr === '家人') {
-        return `<span class="inline-block bg-purple-100 text-purple-800 text-xs px-2.5 py-0.5 rounded-full font-semibold border border-purple-200">家人</span>`;
+        return `<span class="inline-flex items-center bg-orange-100 text-orange-900 text-sm px-3 py-1 rounded-full font-bold border border-orange-300"><span class="icon-circle w-4 h-4 bg-orange-200 text-orange-700 mr-1.5"><i class="fa-solid fa-house-chimney-user text-[10px]"></i></span>家人</span>`;
       }
 
       const names = roommatesStr.split(/[,、]/).map(n => n.trim()).filter(Boolean);
       return `
-        <div class="flex flex-wrap gap-1.5">
+        <div class="flex flex-wrap gap-2">
           ${names.map(name => `
-            <span class="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
-              <i class="fa-solid fa-user mr-1 text-[10px] text-emerald-600"></i>
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-rose-100 text-rose-900 border border-rose-300">
+              <span class="icon-circle w-4 h-4 bg-rose-200 text-rose-700 mr-1.5"><i class="fa-solid fa-user text-[10px]"></i></span>
               ${escapeHtml(name)}
             </span>
           `).join('')}
@@ -1109,19 +1141,21 @@
     function renderHeaderTh(colTitle, colKey, widthClass) {
       const hasFilter = columnFilters[colKey] && columnFilters[colKey].size > 0;
       const isSorted = activeSortColumn === colKey;
-      let sortIcon = 'fa-solid fa-arrow-down-up-across-line text-slate-300';
+      let sortIcon = 'fa-solid fa-arrow-down-up-across-line text-rose-300';
       if (isSorted) {
         sortIcon = activeSortDirection === 'asc' 
-          ? 'fa-solid fa-arrow-up-short-wide text-emerald-600' 
-          : 'fa-solid fa-arrow-down-wide-short text-emerald-600';
+          ? 'fa-solid fa-arrow-up-short-wide text-rose-600' 
+          : 'fa-solid fa-arrow-down-wide-short text-rose-600';
       }
 
       return `
-        <th class="py-3 px-3 font-semibold ${widthClass}">
+        <th class="py-3.5 px-3 font-semibold ${widthClass}">
           <div class="flex items-center justify-between group">
-            <span>${colTitle}</span>
-            <button onclick="openFilterModal('${colKey}', '${colTitle}', event)" class="p-1 rounded hover:bg-slate-200 transition-colors">
-              <i class="${sortIcon} ${hasFilter ? 'text-emerald-600' : ''}"></i>
+            <span class="text-rose-950">${colTitle}</span>
+            <button onclick="openFilterModal('${colKey}', '${colTitle}', event)" class="p-1 rounded-full hover:bg-rose-200/80 transition-colors">
+              <span class="icon-circle w-6 h-6 bg-rose-200/70 text-rose-700 ${hasFilter ? 'bg-rose-300 text-rose-900' : ''}">
+                <i class="${sortIcon} text-xs"></i>
+              </span>
             </button>
           </div>
         </th>
@@ -1184,7 +1218,6 @@
             return strokeSort(a.name, b.name);
           });
         } else if (currentTab === 'dining') {
-          // 嚴格排序：1. 用餐餐廳 ➔ 2. 隊長置頂 ➔ 3. 交通方式 (遊覽車 > 開車/自駕) ➔ 4. 姓名筆畫
           list.sort((a, b) => {
             if (a.restaurant !== b.restaurant) return strokeSort(a.restaurant, b.restaurant);
             if (a.isDiningLeader === '是' && b.isDiningLeader !== '是') return -1;
@@ -1202,7 +1235,6 @@
             return strokeSort(a.name, b.name);
           });
         } else if (currentTab === 'lodging') {
-          // 嚴格排序：1. 知達 ➔ 2. 正巧-4人房 ➔ 3. 正巧-2人房 ➔ 其餘
           const getLodgingRank = (item) => {
             if (item.hotel.includes('知達')) return 1;
             if (item.hotel.includes('正巧') && item.roomType.includes('4人')) return 2;
@@ -1229,7 +1261,7 @@
       return item[colKey] || '';
     }
 
-    /* --- 篩選彈窗 --- */
+    /* --- 篩選彈窗控制 --- */
     function openFilterModal(colKey, colTitle, event) {
       event.stopPropagation();
       activeFilterColumn = colKey;
@@ -1239,12 +1271,12 @@
       const overlay = document.getElementById('filterModalOverlay');
 
       const rect = event.currentTarget.getBoundingClientRect();
-      const modalW = 288;
-      let leftPos = rect.left - 100;
+      const modalW = 320;
+      let leftPos = rect.left - 120;
       if (leftPos + modalW > window.innerWidth - 10) leftPos = window.innerWidth - modalW - 10;
       if (leftPos < 10) leftPos = 10;
       
-      modal.style.top = `${Math.min(rect.bottom + 8, window.innerHeight - 360)}px`;
+      modal.style.top = `${Math.min(rect.bottom + 8, window.innerHeight - 380)}px`;
       modal.style.left = `${leftPos}px`;
 
       renderFilterCheckboxes('');
@@ -1271,9 +1303,9 @@
       listContainer.innerHTML = filteredVals.map(val => {
         const isChecked = currentSelected.has(val);
         return `
-          <label class="flex items-center space-x-2 py-1 px-1 rounded hover:bg-slate-100 cursor-pointer">
-            <input type="checkbox" value="${escapeHtml(val)}" class="filter-chk accent-emerald-600 rounded" ${isChecked ? 'checked' : ''}>
-            <span class="truncate">${escapeHtml(val)}</span>
+          <label class="flex items-center space-x-2.5 py-1.5 px-1.5 rounded-lg hover:bg-rose-50 cursor-pointer">
+            <input type="checkbox" value="${escapeHtml(val)}" class="filter-chk accent-rose-500 rounded w-4 h-4" ${isChecked ? 'checked' : ''}>
+            <span class="truncate text-rose-950 text-sm font-medium">${escapeHtml(val)}</span>
           </label>
         `;
       }).join('');
@@ -1303,98 +1335,6 @@
       activeSortDirection = direction;
       closeFilterModal();
       renderCurrentTab();
-    }
-
-    /* --- 活動流程編輯 (密碼：1223) --- */
-    function handleScheduleEditToggle() {
-      if (!isScheduleEditing) {
-        requestPasswordAuth(() => {
-          isScheduleEditing = true;
-          document.getElementById('editBtnText').textContent = '完成並鎖定';
-          document.getElementById('addScheduleRowBtn').classList.remove('hidden');
-          renderCurrentTab();
-        });
-      } else {
-        isScheduleEditing = false;
-        document.getElementById('editBtnText').textContent = '編輯流程';
-        document.getElementById('addScheduleRowBtn').classList.add('hidden');
-        renderCurrentTab();
-      }
-    }
-
-    function updateScheduleCell(id, field, value) {
-      const target = scheduleData.find(item => item.id === id);
-      if (target) {
-        target[field] = value;
-      }
-    }
-
-    function addScheduleRow() {
-      const nextId = scheduleData.length > 0 ? Math.max(...scheduleData.map(i => i.id)) + 1 : 1;
-      scheduleData.push({
-        id: nextId,
-        date: "10/31 (六)",
-        startTime: "12:00",
-        endTime: "13:00",
-        duration: "60",
-        location: "新地點",
-        activity: "新活動項目",
-        note: "- 項目說明\n-- 備註事項"
-      });
-      renderCurrentTab();
-    }
-
-    function deleteScheduleRow(id) {
-      if (confirm('確定要刪除此筆流程項目嗎？')) {
-        scheduleData = scheduleData.filter(i => i.id !== id);
-        renderCurrentTab();
-      }
-    }
-
-    /* --- 密碼驗證與 PDF 匯出 (密碼：1223) --- */
-    function requestPasswordAuth(onSuccess) {
-      pendingPasswordCallback = onSuccess;
-      const modal = document.getElementById('passwordModal');
-      const input = document.getElementById('passwordInput');
-      input.value = '';
-      modal.classList.remove('hidden');
-      input.focus();
-
-      document.getElementById('passwordConfirmBtn').onclick = () => {
-        if (input.value === '1223') {
-          closePasswordModal();
-          if (pendingPasswordCallback) pendingPasswordCallback();
-        } else {
-          alert('密碼錯誤！請重新輸入。');
-          input.value = '';
-          input.focus();
-        }
-      };
-    }
-
-    function closePasswordModal() {
-      document.getElementById('passwordModal').classList.add('hidden');
-      pendingPasswordCallback = null;
-    }
-
-    function promptExportPDF() {
-      requestPasswordAuth(() => {
-        executePDFExport();
-      });
-    }
-
-    function executePDFExport() {
-      const element = document.getElementById('printableContent');
-      const opt = {
-        margin: [8, 8, 8, 8],
-        filename: `重啟人生-翻轉實驗室_${currentTab}_${document.getElementById('updateTimestamp').textContent}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, letterRendering: true },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' },
-        pagebreak: { mode: ['css', 'legacy'], avoid: 'tr' }
-      };
-
-      html2pdf().set(opt).from(element).save();
     }
 
     function escapeHtml(str) {
