@@ -419,7 +419,7 @@
 
     // 預設活動流程資料庫 (作為離線或備援基準)
     let scheduleData = [
-      { id: 1, date: "10/30 (五)", startTime: "", endTime: "", duration: "", location: "", activity: "場佈\n事前綵排", note: "" },
+      { id: 1, date: "10/30 (五)", startTime: "15:00", endTime: "18:00", duration: "180", location: "正巧 / 督賀", activity: "場佈\n事前綵排", note: "YoKaKy 於 10/30 進駐正巧\n照片布展、藏寶箱分類安置" },
       { id: 2, date: "10/31 (六)", startTime: "09:00", endTime: "10:00", duration: "60", location: "", activity: "接駁車：高鐵台中站－督賀蔬食", note: "- 事前公告+報名；公告住宿費用、提醒重啟夥伴帶「集點卡」\n- 車資：1,200/人（重啟、接班人相同）\n- 遊覽車預定 9:20發車-6號出口（車掌/長：廖培芯）\n- 確認人數，回報出車→需行政支援：勿帶葷食" },
       { id: 3, date: "10/31 (六)", startTime: "10:00", endTime: "10:15", duration: "15", location: "督賀-4樓佛堂", activity: "全體集合並移動至4樓佛堂", note: "行李放旁邊會館\n翰茗辦公室：正巧\n隔壁建設公司：知達" },
       { id: 4, date: "10/31 (六)", startTime: "10:15", endTime: "11:15", duration: "60", location: "督賀-4樓佛堂", activity: "本次活動說明及介紹", note: "說明：\n- 當日午餐分組、去回時間、注意事項（費用、交通）\n-- 怎麼來正巧（遊覽車、自行開車），就怎麼去餐廳\n- 下午流程、晚餐、餐後活動\n- 場地使用注意事項－嚴禁葷食、注意音量、垃圾處理\n- 報到流程（報到單）及相關文件→需行政支援" },
@@ -437,7 +437,7 @@
       { id: 16, date: "11/01 (日)", startTime: "11:30", endTime: "11:45", duration: "15", location: "督賀-4樓佛堂", activity: "憲哥獻給大家的祝福", note: "12/20 頒發全勤" },
       { id: 17, date: "11/01 (日)", startTime: "11:45", endTime: "13:00", duration: "75", location: "督賀-1樓餐廳", activity: "用餐", note: "督賀可支援便當（預算 100-200元之間）" },
       { id: 18, date: "11/01 (日)", startTime: "13:00", endTime: "13:30", duration: "30", location: "督賀-外部草地空間", activity: "接班人送客\n- 用餐完畢者，先取出自己行李\n- 接駁車：督賀蔬食－高鐵台中站－最遲 13:30 發車", note: "接班人一樓列隊歡送上車，莫文蔚的隊歌（這世界那麼多人）。\nYKK 三個前面，翻歌詞（一句一句印出，12/20再相見）。" },
-      { id: 19, date: "備註說明", startTime: "", endTime: "", duration: "", location: "", activity: "遊覽車接駁安排（培芯車長）", note: "遊覽車36人（培芯車長）\n10/31\n- 集合地點：台中高鐵，6號出口\n- 09:20 台中高鐵出發正巧\n- 11:15 正巧出發送到四個餐廳\n- 14:30 從四個餐廳接送回來正巧\n- 22:00 正巧送到知達\n\n11/01\n- 09:30 知達送到正巧\n- 13:30 正巧出發到台中高鐵" }
+      { id: 19, date: "備註說明", startTime: "全天", endTime: "-", duration: "", location: "", activity: "遊覽車接駁安排（培芯車長）", note: "遊覽車36人（培芯車長）\n10/31\n- 集合地點：台中高鐵，6號出口\n- 09:20 台中高鐵出發正巧\n- 11:15 正巧出發送到四個餐廳\n- 14:30 從四個餐廳接送回來正巧\n- 22:00 正巧送到知達\n\n11/01\n- 09:30 知達送到正巧\n- 13:30 正巧出發到台中高鐵" }
     ];
 
     let rawDirectoryData = [
@@ -556,11 +556,28 @@
                   const dateVal = r['日期'] || r['Date'] || '';
                   const actVal = r['活動'] || r['活動內容'] || r['流程項目'] || r['Activity'] || '';
                   const noteVal = r['說明'] || r['備註'] || r['注意事項'] || r['Note'] || '';
+
+                  // 起時智慧辨識：支援「起時」、「開始時間」、「起時(時間)」、「Start」、「時間」或複合時間欄位擷取
+                  let startVal = r['起時'] || r['開始時間'] || r['Start'] || r['起'] || '';
+                  let endVal = r['迄時'] || r['結束時間'] || r['End'] || r['迄'] || '';
+
+                  // 若單一「時間」欄包含區間（如 09:00-10:00 或 09:00~10:00）
+                  const fullTime = r['時間'] || r['時段'] || r['Time'] || '';
+                  if (!startVal && fullTime) {
+                    const match = fullTime.match(/(\d{1,2}:\d{2})/g);
+                    if (match && match.length > 0) {
+                      startVal = match[0];
+                      if (!endVal && match.length > 1) endVal = match[1];
+                    } else {
+                      startVal = fullTime;
+                    }
+                  }
+
                   return {
                     id: idx + 1,
                     date: dateVal,
-                    startTime: r['起時'] || r['開始時間'] || r['Start'] || '',
-                    endTime: r['迄時'] || r['結束時間'] || r['End'] || '',
+                    startTime: startVal || '',
+                    endTime: endVal || '',
                     duration: r['時長'] || r['時間(分)'] || r['Duration'] || '',
                     location: r['地點'] || r['場地'] || r['Location'] || '',
                     activity: actVal,
@@ -732,8 +749,8 @@
         <tr class="text-sm font-semibold">
           <th class="py-3 px-2 text-center w-10 text-rose-700">#</th>
           <th class="py-3 px-2 w-28 text-center">日期</th>
-          <th class="py-3 px-2 w-20 text-center">起時</th>
-          <th class="py-3 px-2 w-20 text-center">迄時</th>
+          <th class="py-3 px-2 w-24 text-center">起時</th>
+          <th class="py-3 px-2 w-24 text-center">迄時</th>
           <th class="py-3 px-3.5 w-40">地點</th>
           <th class="py-3 px-3.5 min-w-[13rem]">活動</th>
           <th class="py-3 px-3.5 min-w-[20rem] flex-1">說明</th>
@@ -755,13 +772,19 @@
 
       tbody.innerHTML = list.map((item, idx) => {
         const bgClass = getScheduleRowBg(item.date, item.startTime);
+        const startTimeHtml = item.startTime 
+          ? `<span class="inline-flex items-center px-2 py-0.5 rounded-md font-mono font-bold text-rose-700 bg-rose-100/80 border border-rose-200/90">${escapeHtml(item.startTime)}</span>`
+          : '<span class="text-rose-300">-</span>';
+        const endTimeHtml = item.endTime && item.endTime !== '-'
+          ? `<span class="inline-flex items-center px-2 py-0.5 rounded-md font-mono font-semibold text-rose-600 bg-white/70 border border-rose-200/60">${escapeHtml(item.endTime)}</span>`
+          : '<span class="text-rose-300">-</span>';
 
         return `
           <tr class="text-sm border-b border-rose-100 transition-colors ${bgClass}">
             <td class="py-3 px-2 text-center text-rose-400 font-medium">${idx + 1}</td>
             <td class="py-3 px-2 text-center font-bold text-rose-900 whitespace-nowrap">${escapeHtml(item.date)}</td>
-            <td class="py-3 px-2 text-center font-mono font-bold text-rose-600 whitespace-nowrap">${escapeHtml(item.startTime || '-')}</td>
-            <td class="py-3 px-2 text-center font-mono font-bold text-rose-600 whitespace-nowrap">${escapeHtml(item.endTime || '-')}</td>
+            <td class="py-3 px-2 text-center whitespace-nowrap">${startTimeHtml}</td>
+            <td class="py-3 px-2 text-center whitespace-nowrap">${endTimeHtml}</td>
             <td class="py-3 px-3.5 font-bold text-rose-900 break-words">${escapeHtml(item.location || '-')}</td>
             <td class="py-3 px-3.5 font-bold text-rose-950 break-words whitespace-pre-line text-base leading-snug">${escapeHtml(item.activity)}</td>
             <td class="py-3 px-3.5 text-rose-900 break-words leading-relaxed text-sm">${formatScheduleNote(item.note)}</td>
