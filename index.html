@@ -171,6 +171,32 @@
     @media(max-width:540px){.room-view{padding:15px}.rooms-grid{grid-template-columns:1fr}.room-facade{min-height:210px}.hotel-title{font-size:18px}}
     @media(prefers-reduced-motion:reduce){.room-card,.room-person{transition:none}.room-hand{animation:none!important}}
     @media print {.room-view{padding:0;background:white}.room-toolbar,.room-help{display:none}.rooms-grid{grid-template-columns:repeat(2,1fr)}.room-card{break-inside:avoid;box-shadow:none}.room-people{display:none}.room-card{transform:none!important}}
+
+    .room-card .room-facade {background:linear-gradient(135deg,var(--wall),var(--light));border-color:var(--trim);border-bottom-color:var(--accent);padding-top:40px;}
+    .room-card .room-sign {color:var(--ink)}
+    .room-card .room-sign span {background:var(--light);color:var(--ink)}
+    .room-card .room-door {background:var(--door);border-color:var(--trim)}
+    .room-card .room-door-window {border-color:var(--trim)}
+    .room-roof {position:absolute;left:-7px;right:-7px;top:-2px;height:24px;background:var(--accent);border-radius:8px 8px 2px 2px;box-shadow:0 3px 0 #00000012;}
+    .room-roof:after {content:'';position:absolute;inset:6px 9px;border-top:2px solid #ffffff80;border-bottom:2px solid #ffffff30;}
+    .room-ornament {position:absolute;right:12px;top:29px;color:var(--ink);font-size:19px;}
+    .room-style-0 .room-roof {clip-path:polygon(50% 0,100% 85%,100% 100%,0 100%,0 85%);height:37px;top:-14px}
+    .room-style-1 .room-roof {border-radius:50% 50% 0 0;height:30px;top:-7px}
+    .room-style-1 .room-door {border-radius:6px 6px 0 0}.room-style-1 .room-door-window{border-radius:50%}
+    .room-style-2 .room-roof {background:repeating-linear-gradient(90deg,var(--accent) 0 22px,var(--light) 22px 44px);border-radius:4px 4px 14px 14px;height:30px}
+    .room-style-2 .room-door {border-radius:3px}.room-style-2 .room-door-window{border-radius:2px;width:44px}
+    .room-style-3 .room-roof {clip-path:polygon(0 35%,20% 35%,20% 0,80% 0,80% 35%,100% 35%,100% 100%,0 100%);height:32px;top:-8px}
+    .room-style-3 .room-facade {border-radius:3px}.room-style-3 .room-door{border-radius:14px 14px 0 0}
+    .room-style-4 .room-roof {clip-path:polygon(0 55%,100% 0,100% 100%,0 100%);height:34px;top:-10px}
+    .room-style-4 .room-door-window{border-radius:0;width:30px;height:42px}.room-style-4 .room-facade{border-radius:22px 3px 0 0}
+    .room-style-5 .room-roof {clip-path:polygon(0 30%,30% 30%,30% 0,70% 0,70% 30%,100% 30%,100% 100%,0 100%);height:35px;top:-11px}
+    .room-style-5 .room-door{border-radius:0;box-shadow:inset 3px 0 #ffffff50}.room-style-5 .room-door-window{border-radius:50%;width:32px;height:32px}
+    .room-style-6 .room-roof {border-radius:0 0 16px 16px;background:repeating-linear-gradient(0deg,var(--accent) 0 6px,var(--trim) 6px 8px);height:29px;transform:skewX(-8deg)}
+    .room-style-6 .room-door-window{width:46px;height:22px;border-radius:3px}.room-style-6 .room-door{border-radius:20px 20px 0 0}
+    .room-style-7 .room-roof {clip-path:polygon(0 0,14% 0,14% 30%,29% 30%,29% 0,43% 0,43% 30%,57% 30%,57% 0,71% 0,71% 30%,86% 30%,86% 0,100% 0,100% 100%,0 100%);height:30px}
+    .room-style-7 .room-door{border-radius:38px 38px 0 0}.room-style-7 .room-door-window{border-radius:50%}
+    .room-style-8 .room-roof {clip-path:polygon(0 100%,15% 0,85% 0,100% 100%);height:32px;top:-8px}
+    .room-style-8 .room-facade{border-radius:25px 25px 0 0}.room-style-8 .room-door-window{border-radius:3px;transform:rotate(45deg);width:25px;height:25px;margin-top:20px}
   </style>
 </head>
 <body class="bg-gradient-to-br from-rose-50 via-orange-50 to-pink-50 text-rose-950 min-h-screen flex flex-col font-sans antialiased selection:bg-rose-500 selection:text-white">
@@ -1161,6 +1187,8 @@
         if (!allRooms.has(key)) allRooms.set(key, []);
         allRooms.get(key).push(item);
       });
+      const roomDesigns = new Map(Array.from(allRooms.keys(), (key, index) => [key, index]));
+      const personDesigns = new Map(rawDirectoryData.map((person, index) => [person, index]));
       const visibleRooms = new Map();
       const matchedPeople = new Set(matched);
       matched.forEach(item => {
@@ -1185,13 +1213,15 @@
           const hotelName = hotel === '知達' ? '知達工藝會館' : hotel === '正巧' ? '正巧文旅' : hotel;
           return `<section class="hotel-section"><h2 class="hotel-title">${escapeHtml(hotelName)} <small>${rooms.length} 間房</small></h2><div class="rooms-grid">${rooms.map(room => {
             const first = room[0];
+            const designIndex = roomDesigns.get(roomKey(first));
+            const design = getRoomDesign(designIndex);
             const groupMatch = (first.roomGroup || '').match(/_(.+)$/);
             const groupLabel = groupMatch ? `住宿分組 ${groupMatch[1]}` : '住宿分組待確認';
             const names = room.map(person => `<li class="${searchQuery && matchedPeople.has(person) ? 'matched' : ''}">${escapeHtml(person.name)}${person.name === '杜志峰' ? '<span class="contact">知達聯絡人</span>' : person.name === '吳緁苓' ? '<span class="contact">正巧聯絡人</span>' : ''}</li>`).join('');
-            return `<article class="room-card ${hotel.includes('正巧') ? 'hotel-orange' : ''}" tabindex="0" role="button" aria-pressed="false" aria-label="${escapeHtml(hotelName)}，${escapeHtml(first.roomType)}，${escapeHtml(groupLabel)}，${room.length} 位：${escapeHtml(room.map(p => p.name).join('、'))}" onclick="toggleRoomGreeting(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleRoomGreeting(this)}">
+            return `<article class="room-card room-style-${designIndex % 9}" style="${design.style}" tabindex="0" role="button" aria-pressed="false" aria-label="${escapeHtml(hotelName)}，${escapeHtml(first.roomType)}，${escapeHtml(groupLabel)}，${room.length} 位：${escapeHtml(room.map(p => p.name).join('、'))}" onclick="toggleRoomGreeting(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleRoomGreeting(this)}">
               <div class="room-sign">${escapeHtml(hotelName)}<span>${escapeHtml(first.roomType || '房型待確認')}</span></div>
-              <div class="room-facade"><div class="room-group-label">${escapeHtml(groupLabel)}</div><div class="room-door-area"><div class="room-door" aria-hidden="true"><div class="room-door-window"></div></div><div class="room-roster"><div class="room-roster-title">住宿人員 · ${room.length} 位</div><ul>${names}</ul></div></div></div>
-              <div class="room-people" aria-hidden="true">${room.map((person, idx) => renderWavingPerson(idx)).join('')}</div><div class="room-foot">${room.length} 位入住 · 歡迎回房休息</div>
+              <div class="room-facade"><div class="room-roof" aria-hidden="true"></div><span class="room-ornament" aria-hidden="true">${design.symbol}</span><div class="room-group-label">${escapeHtml(groupLabel)}</div><div class="room-door-area"><div class="room-door" aria-hidden="true"><div class="room-door-window"></div></div><div class="room-roster"><div class="room-roster-title">住宿人員 · ${room.length} 位</div><ul>${names}</ul></div></div></div>
+              <div class="room-people" aria-hidden="true">${room.map((person, idx) => renderWavingPerson(idx, personDesigns.get(person))).join('')}</div><div class="room-foot">${room.length} 位入住 · 歡迎回房休息</div>
             </article>`;
           }).join('')}</div></section>`;
         }).join('') : '<div class="room-empty">無符合的住宿資料</div>');
@@ -1202,16 +1232,59 @@
       card.setAttribute('aria-pressed', String(open));
     }
 
-    function renderWavingPerson(index) {
-      const colors = ['#f43f5e', '#f97316', '#8b5cf6', '#14b8a6', '#3b82f6'];
+    function getRoomDesign(index) {
+      const palettes = [
+        ['#fecdd3','#fff1f2','#be123c','#fb7185','#e8999e','#881337'],
+        ['#bfdbfe','#eff6ff','#1d4ed8','#60a5fa','#779ed6','#1e3a8a'],
+        ['#bbf7d0','#f0fdf4','#15803d','#4ade80','#75b887','#14532d'],
+        ['#fde68a','#fffbeb','#b45309','#fbbf24','#d0a25b','#78350f'],
+        ['#ddd6fe','#f5f3ff','#6d28d9','#a78bfa','#a18bc8','#4c1d95'],
+        ['#fed7aa','#fff7ed','#c2410c','#fb923c','#d79061','#7c2d12'],
+        ['#a5f3fc','#ecfeff','#0e7490','#22d3ee','#66aebe','#164e63'],
+        ['#fbcfe8','#fdf2f8','#be185d','#f472b6','#d082a9','#831843'],
+        ['#d9f99d','#f7fee7','#4d7c0f','#a3e635','#98ad68','#365314'],
+        ['#c7d2fe','#eef2ff','#4338ca','#818cf8','#838bc6','#312e81'],
+        ['#e7d6c4','#fcf6ef','#795548','#ad8b73','#c3a186','#4e342e'],
+        ['#99f6e4','#f0fdfa','#0f766e','#2dd4bf','#68aaa0','#134e4a']
+      ];
+      const palette = palettes[index % palettes.length];
+      return { style: ['wall','light','trim','accent','door','ink'].map((key, i) => `--${key}:${palette[i]}`).join(';'), symbol: ['✿','★','☀','☘','♥','◆','☾','♬','❋'][index % 9] };
+    }
+
+    // 外觀為插畫角色，不推定實際住客的性別或長相。
+    function renderWavingPerson(index, identity = index) {
+      const colors = ['#e11d48','#2563eb','#16a34a','#d97706','#7c3aed','#ea580c','#0891b2','#db2777','#65a30d','#4f46e5','#92400e','#0d9488'];
+      const shirt = colors[identity % colors.length];
+      const hair = ['#382c2a','#8a4f2d','#c28a39','#53515d'][Math.floor(identity / 3) % 4];
+      const skin = ['#f4bb92','#d99a72','#b77956','#f8d1b3'][identity % 4];
+      const hairStyles = [
+        `<path d="M20 19 Q19 5 32 6 Q45 5 44 19 L39 12 Q31 16 24 12 Z" fill="${hair}"/>`,
+        `<path d="M19 29 L19 16 Q19 3 32 5 Q45 3 45 16 L45 29 L40 27 L40 13 Q31 19 24 13 L24 29Z" fill="${hair}"/>`,
+        `<path d="M20 16 L21 7 L27 10 L32 3 L36 9 L43 6 L45 18 L39 13 L25 13Z" fill="${hair}"/>`,
+        `<g fill="${hair}"><circle cx="22" cy="12" r="6"/><circle cx="30" cy="8" r="6"/><circle cx="39" cy="10" r="6"/><circle cx="44" cy="16" r="5"/></g>`,
+        `<path d="M20 18 Q20 4 32 5 Q44 4 44 18 L41 15 L23 15Z" fill="${hair}"/><circle cx="45" cy="10" r="7" fill="${hair}"/>`,
+        `<path d="M20 17 Q20 5 32 6 Q44 5 44 17 L37 12 L29 15 L24 12Z" fill="${hair}"/><path d="M23 26 Q32 37 41 26 Q32 32 23 26" fill="${hair}"/>`,
+        `<path d="M19 18 Q19 4 32 5 Q46 5 45 18 L40 13 L33 17 L28 12 L23 17Z" fill="${hair}"/>`,
+        `<path d="M20 20 Q18 4 32 5 Q46 4 44 20 L40 12 L24 12Z" fill="${hair}"/><path d="M20 15 L16 35 M44 15 L48 35" stroke="${hair}" stroke-width="6"/>`
+      ];
+      const outfit = Math.floor(identity / 4) % 5;
+      const detail = outfit === 0 ? '<path d="M24 43H40 M23 50H41" stroke="white" stroke-width="3" opacity=".8"/>'
+        : outfit === 1 ? '<path d="M26 35L32 42L38 35 M32 42V58" fill="none" stroke="white" stroke-width="2"/>'
+        : outfit === 2 ? '<path d="M26 34V51H38V34 M25 51V59 M39 51V59" fill="none" stroke="#334155" stroke-width="4"/>'
+        : outfit === 3 ? '<path d="M24 36L32 44L40 36" fill="none" stroke="#fde68a" stroke-width="4"/><circle cx="32" cy="49" r="3" fill="#fde68a"/>'
+        : '<path d="M29 34L35 34L33 40L36 51L32 55L28 51L31 40Z" fill="#fff"/>';
+      const accessory = Math.floor(identity / 8) % 4;
+      const extra = accessory === 0 ? '<g fill="none" stroke="#334155" stroke-width="1.5"><circle cx="27" cy="20" r="4"/><circle cx="37" cy="20" r="4"/><path d="M31 20H33"/></g>'
+        : accessory === 1 ? `<path d="M19 13Q21 1 35 4L43 13Z" fill="${shirt}"/><path d="M18 13H47" stroke="${shirt}" stroke-width="4" stroke-linecap="round"/>`
+        : accessory === 2 ? '<path d="M22 11Q32 0 42 11" fill="none" stroke="#fbbf24" stroke-width="4"/><circle cx="22" cy="12" r="3" fill="#fbbf24"/>' : '';
       return `<svg class="room-person" style="--person-index:${index}" viewBox="0 0 64 80" xmlns="http://www.w3.org/2000/svg">
         <ellipse cx="32" cy="76" rx="15" ry="3" fill="#88133712"/>
-        <path d="M26 57 L24 73 M38 57 L40 73" stroke="#713f3f" stroke-width="7" stroke-linecap="round"/>
-        <path d="M23 35 Q32 29 41 35 L42 59 L22 59 Z" fill="${colors[index % colors.length]}"/>
-        <path d="M24 38 L15 53" stroke="#f4bb92" stroke-width="6" stroke-linecap="round"/>
-        <g class="room-hand"><path d="M40 38 L50 29 L52 13" fill="none" stroke="#f4bb92" stroke-width="6" stroke-linecap="round"/><path d="M52 15 L47 9 M52 15 L52 6 M53 15 L58 9" stroke="#f4bb92" stroke-width="3" stroke-linecap="round"/></g>
-        <circle cx="32" cy="20" r="12" fill="#f4bb92"/><path d="M20 19 Q19 5 32 6 Q45 5 44 19 L39 12 Q31 16 24 12 Z" fill="#713f3f"/>
-        <circle cx="28" cy="20" r="1.3" fill="#713f3f"/><circle cx="36" cy="20" r="1.3" fill="#713f3f"/><path d="M28 25 Q32 29 36 25" fill="none" stroke="#a34a46" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M26 57 L24 73 M38 57 L40 73" stroke="${colors[(identity + 5) % colors.length]}" stroke-width="7" stroke-linecap="round"/>
+        <path d="M23 35 Q32 29 41 35 L${outfit === 3 ? '46' : '42'} 59 L${outfit === 3 ? '18' : '22'} 59 Z" fill="${shirt}"/>${detail}
+        <path d="M24 38 L15 53" stroke="${skin}" stroke-width="6" stroke-linecap="round"/>
+        <g class="room-hand"><path d="M40 38 L50 29 L52 13" fill="none" stroke="${skin}" stroke-width="6" stroke-linecap="round"/><path d="M52 15 L47 9 M52 15 L52 6 M53 15 L58 9" stroke="${skin}" stroke-width="3" stroke-linecap="round"/></g>
+        <circle cx="32" cy="20" r="12" fill="${skin}"/>${hairStyles[identity % hairStyles.length]}
+        <circle cx="28" cy="20" r="1.3" fill="#382c2a"/><circle cx="36" cy="20" r="1.3" fill="#382c2a"/><path d="M28 25 Q32 29 36 25" fill="none" stroke="#a34a46" stroke-width="1.5" stroke-linecap="round"/>${extra}
       </svg>`;
     }
 
