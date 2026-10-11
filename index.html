@@ -57,7 +57,7 @@
     /* 總表隊別底色 - 溫暖粉橘粉紅家族適配 */
     .bg-team-white { background-color: #ffffff; }
     .bg-team-red { background-color: #ffe4e6; }
-    .bg-team-green { background-color: #ffedd5; }
+    .bg-team-green { background-color: #ecfdf5; }
     .bg-team-successor { background-color: #fef3c7; }
 
     /* 活動流程階層項目符號樣式 (粉橘粉紅版) */
@@ -365,7 +365,7 @@
               <a href="tel:0933581872" class="hover:underline font-semibold font-mono">0933-581872</a>
             </div>
             <div class="text-[10px] text-amber-800 font-medium mt-0.5 truncate">
-              車長：<span class="font-bold text-rose-900">杜志峰</span> ｜ 領談：<span class="font-bold text-orange-800">杜志峰</span>
+              車長：<span class="font-bold text-rose-900">吳全峰</span> ｜ 領談：<span class="font-bold text-orange-800">杜志峰</span>
             </div>
           </div>
           <a href="https://maps.app.goo.gl/1quzSasgPxd1onwAA" target="_blank" class="shrink-0 inline-flex items-center px-2 py-0.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-full text-[10px] hover:from-amber-600 hover:to-orange-600 transition-colors shadow-2xs">
@@ -497,7 +497,7 @@
     const GOOGLE_SHEET_SCHEDULE_URL = 'https://docs.google.com/spreadsheets/d/1RFAeooSPtmmVMPGeyO9o-SbNtvLr38_DoDHFoCFxQ9c/export?format=csv&gid=1928975316';
 
     // 餐飲服務各餐廳指定：遊覽車車長（原遊覽車隊長）
-    const DINING_BUS_CAPTAINS = new Set(['李筱瑋', '胡靖韋', '莫惠萍', '杜志峰']);
+    const DINING_BUS_CAPTAINS = new Set(['李筱瑋', '胡靖韋', '莫惠萍', '吳全峰']);
     // 餐飲服務各餐廳指定：領談人
     const DINING_INTERVIEWERS = new Set(['林珊汝', '范永銀', '梁懷貞', '洪淑姮', '杜志峰']);
     // 住宿聯絡人
@@ -717,7 +717,7 @@
       { team: "白", name: "陳若雲", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_8", roommates: "謝宜倩" },
       { team: "白", name: "魏志毓", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "弎食鉄板", isDiningLeader: "否", diet: "素食：蛋奶素", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_11", roommates: "吳建逢" },
       { team: "白", name: "劉又壬", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "麵五三屋", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_13", roommates: "鍾淳仁" },
-      { team: "白", name: "吳全峰", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_14", roommates: "田富元（田爸）" },
+      { team: "白", name: "吳全峰", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", isDiningLeader: "是", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_14", roommates: "田富元（田爸）" },
       { team: "白", name: "陶逸婕", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_17", roommates: "吳淋禎" },
       
       { team: "紅", name: "李筱瑋", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "弎食鉄板", isDiningLeader: "是", diet: "無", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_1", roommates: "陳群玉, 傅國虹, 劉毓菁" },
@@ -750,7 +750,7 @@
       { team: "接班人", name: "林珊汝-夫", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "弎食鉄板", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_16", roommates: "林珊汝, 林珊汝-子（6歲）" },
       { team: "接班人", name: "林珊汝-子（6歲）", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "弎食鉄板", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_16", roommates: "林珊汝, 林珊汝-夫" },
       { team: "接班人", name: "吳淋禎", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "NO", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_17", roommates: "陶逸婕" },
-      { team: "接班人", name: "杜志峰", trafficOut: "自行", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", isDiningLeader: "是", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_18", roommates: "無" },
+      { team: "接班人", name: "杜志峰", trafficOut: "自行", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_18", roommates: "無" },
 
       { team: "綠", name: "李紘逸", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "弎食鉄板", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "2人房", roomGroup: "正巧-2人房_3", roommates: "梁懷貞" },
       { team: "綠", name: "張婷婷", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "植田割烹", isDiningLeader: "否", diet: "不吃：牛羊", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_2", roommates: "郭淑貞, 潘麗婧, 陳尹恩" },
@@ -1167,7 +1167,7 @@
     function getTeamBgClass(team) {
       if (team === '白') return 'bg-team-white hover:bg-rose-50/60';
       if (team === '紅') return 'bg-team-red hover:bg-rose-200/60';
-      if (team === '綠') return 'bg-team-green hover:bg-orange-100/70';
+      if (team === '綠') return 'bg-team-green hover:bg-emerald-100/70';
       if (team === '接班人') return 'bg-team-successor hover:bg-amber-100/80';
       return 'bg-white hover:bg-rose-50/40';
     }
@@ -1413,6 +1413,22 @@
         hotels.get(hotel).push(room);
       });
 
+      hotels.forEach((rooms, hotel) => {
+        rooms.sort((roomA, roomB) => {
+          const hasContactA = roomA.some(p => 
+            (hotel.includes('知達') && LODGING_CONTACTS_ZHIDA.has(p.name)) ||
+            (hotel.includes('正巧') && LODGING_CONTACTS_ZHENGQIAO.has(p.name))
+          );
+          const hasContactB = roomB.some(p => 
+            (hotel.includes('知達') && LODGING_CONTACTS_ZHIDA.has(p.name)) ||
+            (hotel.includes('正巧') && LODGING_CONTACTS_ZHENGQIAO.has(p.name))
+          );
+          if (hasContactA && !hasContactB) return -1;
+          if (!hasContactA && hasContactB) return 1;
+          return 0;
+        });
+      });
+
       view.innerHTML = `<div class="room-toolbar no-print">${controls}</div>
         <p class="room-help">移入房間看大家揮手，手機可點一下卡片。搜尋會顯示整間房的名單。分組編號為資料中的住宿分組，並非飯店實際房號。</p>` +
         (hotels.size ? Array.from(hotels, ([hotel, rooms]) => {
@@ -1581,8 +1597,9 @@
         if (currentTab === 'overview') {
           // 嚴格排序規則：
           // 1. 交通去/回：遊覽車/遊覽車 → 自行/遊覽車（含自處/遊覽車） → 開車/開車 → 其他
-          // 2. 隊別：白 → 紅 → 綠 → 接班人
-          // 3. 姓名：筆畫由少至多
+          // 2. 住宿：知達 → 正巧4人房 → 正巧2人房 → 其他
+          // 3. 隊別：白 → 紅 → 綠 → 接班人
+          // 4. 姓名：筆畫由少至多
           const getTrafficOrder = item => {
             const outT = (item.trafficOut || '').trim();
             const backT = (item.trafficBack || '').trim();
@@ -1592,12 +1609,25 @@
             return 4;
           };
 
+          const getLodgingOrder = item => {
+            const h = (item.hotel || '');
+            const r = (item.roomType || '');
+            if (h.includes('知達')) return 1;
+            if (h.includes('正巧') && r.includes('4人')) return 2;
+            if (h.includes('正巧') && r.includes('2人')) return 3;
+            return 4;
+          };
+
           const teamOrder = { '白': 1, '紅': 2, '綠': 3, '接班人': 4 };
 
           list.sort((a, b) => {
             const trA = getTrafficOrder(a);
             const trB = getTrafficOrder(b);
             if (trA !== trB) return trA - trB;
+
+            const lodA = getLodgingOrder(a);
+            const lodB = getLodgingOrder(b);
+            if (lodA !== lodB) return lodA - lodB;
 
             const tA = teamOrder[a.team] || 99;
             const tB = teamOrder[b.team] || 99;
