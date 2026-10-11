@@ -159,9 +159,10 @@
     .room-roster:before {content:'';position:absolute;width:35px;height:12px;background:#fcd8ada0;left:calc(50% - 17px);top:-6px;transform:rotate(-5deg);}
     .room-roster-title {font-size:11px;color:#9f6674;border-bottom:1px dashed #e7c5b8;padding-bottom:5px;margin-bottom:5px;}
     .room-roster ul {list-style:none;padding:0;margin:0;}
-    .room-roster li {font-size:13px;line-height:1.7;color:#713f3f;overflow-wrap:anywhere;}
-    .room-roster li.matched {font-weight:800;color:#be123c;}
-    .room-roster .contact {font-size:10px;color:#be123c;display:block;line-height:1.3;font-weight:bold;}
+    /* 住宿人員姓名加大 1 級並改為粗體 */
+    .room-roster li {font-size:15px;line-height:1.75;font-weight:700;color:#572626;overflow-wrap:anywhere;}
+    .room-roster li.matched {font-weight:900;color:#be123c;}
+    .room-roster .contact {font-size:11px;color:#be123c;display:block;line-height:1.3;font-weight:800;}
     .room-people {display:flex;justify-content:center;flex-wrap:wrap;gap:0;min-height:68px;padding-top:2px;position:relative;}
     .room-person {width:48px;height:64px;opacity:0;transform:translateY(15px) scale(.7);transition:opacity .2s,transform .3s;transition-delay:calc(var(--person-index) * 45ms);}
     .room-card:hover .room-person,.room-card:focus .room-person,.room-card.is-open .room-person {opacity:1;transform:translateY(0) scale(1);}
