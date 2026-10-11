@@ -494,7 +494,14 @@
        1. 資料庫來源配置與指定幹部名冊
        ========================================================= */
     const GOOGLE_SHEET_DIR_URL = 'https://docs.google.com/spreadsheets/d/1rtaD9Y4-1iv4rD68QNT64dv1x-o02rUc2kyosc26LVM/export?format=csv';
-    const GOOGLE_SHEET_SCHEDULE_URL = 'https://docs.google.com/spreadsheets/d/1RFAeooSPtmmVMPGeyO9o-SbNtvLr38_DoDHFoCFxQ9c/export?format=csv&gid=1928975316';
+    // 參照最新試算表 (1RFAeooSPtmmVMPGeyO9o-SbNtvLr38_DoDHFoCFxQ9c)，預設抓取 Drive Link 主要工作表，並支援多端點智慧備援
+    const GOOGLE_SHEET_SCHEDULE_BASE = 'https://docs.google.com/spreadsheets/d/1RFAeooSPtmmVMPGeyO9o-SbNtvLr38_DoDHFoCFxQ9c';
+    const GOOGLE_SHEET_SCHEDULE_URLS = [
+      `${GOOGLE_SHEET_SCHEDULE_BASE}/export?format=csv`,
+      `${GOOGLE_SHEET_SCHEDULE_BASE}/export?format=csv&gid=1928975316`,
+      `${GOOGLE_SHEET_SCHEDULE_BASE}/gviz/tq?tqx=out:csv`,
+      `${GOOGLE_SHEET_SCHEDULE_BASE}/gviz/tq?tqx=out:csv&gid=1928975316`
+    ];
 
     // 餐飲服務各餐廳指定：遊覽車車長（原遊覽車隊長）
     const DINING_BUS_CAPTAINS = new Set(['李筱瑋', '胡靖韋', '莫惠萍', '吳全峰']);
@@ -506,6 +513,7 @@
 
     let currentTab = 'schedule';
     let searchQuery = '';
+    let isScheduleCloudSynced = false;
 
     let activeFilterColumn = null;
     let activeSortColumn = null;
@@ -795,18 +803,37 @@
       
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 8000);
+        const timeoutId = setTimeout(() => controller.abort(), 9000);
 
-        const [dirRes, scheduleRes] = await Promise.allSettled([
-          fetch(`${GOOGLE_SHEET_DIR_URL}&_t=${Date.now()}`, { signal: controller.signal, cache: 'no-store' }),
-          fetch(`${GOOGLE_SHEET_SCHEDULE_URL}&_t=${Date.now()}`, { signal: controller.signal, cache: 'no-store' })
-        ]);
+        // 1. 同步成員名冊
+        const dirPromise = fetch(`${GOOGLE_SHEET_DIR_URL}&_t=${Date.now()}`, { signal: controller.signal, cache: 'no-store' })
+          .then(async res => res.ok ? res.text() : null)
+          .catch(() => null);
 
+        // 2. 依序或平行嘗試抓取活動流程試算表（相容 drive_link 主頁籤與 gid 備援）
+        async function fetchScheduleCsv() {
+          for (const url of GOOGLE_SHEET_SCHEDULE_URLS) {
+            try {
+              const res = await fetch(`${url}&_t=${Date.now()}`, { signal: controller.signal, cache: 'no-store' });
+              if (res.ok) {
+                const text = await res.text();
+                if (text && text.length > 50 && !text.includes('<!DOCTYPE html>')) {
+                  return text;
+                }
+              }
+            } catch (e) {
+              // 繼續嘗試下一個備援端點
+            }
+          }
+          return null;
+        }
+
+        const [csvDirText, scheduleCsvText] = await Promise.all([dirPromise, fetchScheduleCsv()]);
         clearTimeout(timeoutId);
 
-        if (scheduleRes.status === 'fulfilled' && scheduleRes.value.ok) {
-          const scheduleCsv = await scheduleRes.value.text();
-          Papa.parse(scheduleCsv, {
+        // 解析最新「重啟-活動流程」
+        if (scheduleCsvText) {
+          Papa.parse(scheduleCsvText, {
             header: true,
             skipEmptyLines: true,
             transformHeader: header => header.replace(/^\uFEFF/, '').trim(),
@@ -814,11 +841,11 @@
               if (results.data && results.data.length > 0) {
                 let lastDate = '';
                 const parsedSchedule = results.data.map((r, idx) => {
-                  const explicitDate = (r['日期'] || r['Date'] || '').trim();
+                  const explicitDate = (r['日期'] || r['Date'] || r['天數'] || '').trim();
                   if (explicitDate) lastDate = explicitDate;
                   const dateVal = lastDate;
-                  const actVal = r['活動'] || r['活動內容'] || r['流程項目'] || r['Activity'] || '';
-                  const noteVal = r['說明'] || r['備註'] || r['注意事項'] || r['Note'] || '';
+                  const actVal = r['活動'] || r['活動內容'] || r['流程項目'] || r['流程'] || r['行程'] || r['內容'] || r['項目'] || r['主題'] || r['Activity'] || '';
+                  const noteVal = r['說明'] || r['備註'] || r['注意事項'] || r['Note'] || r['細節'] || '';
 
                   let startVal = r['起時'] || r['起時(時間)'] || r['開始時間'] || r['Start'] || r['起'] || '';
                   let endVal = r['迄時'] || r['訖時'] || r['結束時間'] || r['End'] || r['迄'] || '';
@@ -840,23 +867,25 @@
                     startTime: startVal || '',
                     endTime: endVal || '',
                     duration: r['時長'] || r['時間(分)'] || r['Duration'] || '',
-                    location: r['地點'] || r['場地'] || r['Location'] || '',
+                    location: r['地點'] || r['場地'] || r['Location'] || r['地點/場地'] || '',
                     activity: actVal,
                     note: noteVal
                   };
                 }).filter(item => item.activity || item.startTime || item.endTime || item.location || item.note);
 
-                if (parsedSchedule.length > 0 && results.meta && results.meta.fields && results.meta.fields.some(field => ['活動', '活動內容', '流程項目', 'Activity'].includes(field))) {
+                if (parsedSchedule.length > 0) {
                   scheduleData = parsedSchedule;
+                  isScheduleCloudSynced = true;
+                  searchTextCache = new WeakMap();
                 }
               }
             }
           });
         }
 
-        if (dirRes.status === 'fulfilled' && dirRes.value.ok) {
-          const csvText = await dirRes.value.text();
-          Papa.parse(csvText, {
+        // 解析最新成員名單
+        if (csvDirText) {
+          Papa.parse(csvDirText, {
             header: true,
             skipEmptyLines: true,
             complete: (results) => {
@@ -891,7 +920,7 @@
           });
         }
       } catch (err) {
-        console.warn('雲端更新連線略過，維持原始數據集');
+        console.warn('雲端更新連線略過，維持目前數據集');
       } finally {
         refreshIcon.classList.remove('fa-spin');
         renderCurrentTab();
@@ -1045,7 +1074,7 @@
         return text.includes(searchQuery);
       });
 
-      countBadge.textContent = `共 ${list.length} 項流程`;
+      countBadge.textContent = isScheduleCloudSynced ? `共 ${list.length} 項流程 (雲端同步)` : `共 ${list.length} 項流程`;
 
       if (list.length === 0) {
         tbody.innerHTML = `<tr><td colspan="7" class="py-12 text-center text-rose-400 text-base">無符合的活動流程資料</td></tr>`;
