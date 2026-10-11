@@ -493,8 +493,13 @@
     /* =========================================================
        1. 資料庫來源配置與指定幹部名冊
        ========================================================= */
-    const GOOGLE_SHEET_DIR_URL = 'https://docs.google.com/spreadsheets/d/1rtaD9Y4-1iv4rD68QNT64dv1x-o02rUc2kyosc26LVM/export?format=csv';
-    // 參照最新試算表 (1RFAeooSPtmmVMPGeyO9o-SbNtvLr38_DoDHFoCFxQ9c)，預設抓取 Drive Link 主要工作表，並支援多端點智慧備援
+    const GOOGLE_SHEET_DIR_BASE = 'https://docs.google.com/spreadsheets/d/1IG9gdIuvad5sj0RWC8hzvIvdBYSQo4j0ERf910AV24U';
+    const GOOGLE_SHEET_DIR_URLS = [
+      `${GOOGLE_SHEET_DIR_BASE}/export?format=csv`,
+      `${GOOGLE_SHEET_DIR_BASE}/gviz/tq?tqx=out:csv`,
+      'https://docs.google.com/spreadsheets/d/1rtaD9Y4-1iv4rD68QNT64dv1x-o02rUc2kyosc26LVM/export?format=csv'
+    ];
+
     const GOOGLE_SHEET_SCHEDULE_BASE = 'https://docs.google.com/spreadsheets/d/1RFAeooSPtmmVMPGeyO9o-SbNtvLr38_DoDHFoCFxQ9c';
     const GOOGLE_SHEET_SCHEDULE_URLS = [
       `${GOOGLE_SHEET_SCHEDULE_BASE}/export?format=csv`,
@@ -503,7 +508,7 @@
       `${GOOGLE_SHEET_SCHEDULE_BASE}/gviz/tq?tqx=out:csv&gid=1928975316`
     ];
 
-    // 餐飲服務各餐廳指定：遊覽車車長（原遊覽車隊長）
+    // 餐飲服務各餐廳指定：遊覽車車長
     const DINING_BUS_CAPTAINS = new Set(['李筱瑋', '胡靖韋', '莫惠萍', '吳全峰']);
     // 餐飲服務各餐廳指定：領談人
     const DINING_INTERVIEWERS = new Set(['林珊汝', '范永銀', '梁懷貞', '洪淑姮', '杜志峰']);
@@ -514,6 +519,7 @@
     let currentTab = 'schedule';
     let searchQuery = '';
     let isScheduleCloudSynced = false;
+    let isDirectoryCloudSynced = false;
 
     let activeFilterColumn = null;
     let activeSortColumn = null;
@@ -521,21 +527,37 @@
     let columnFilters = {};
 
     const strokeCollator = new Intl.Collator('zh-Hant-TW', { collation: 'stroke' });
-    let searchTextCache = new WeakMap();
+    let searchTextCache = new Map();
     let searchTimer = null;
 
-    function getSearchText(item, kind) {
-      let text = searchTextCache.get(item);
+    // 依據當前分頁維度，提取精準的搜尋文字（避免把室友等跨人員資訊混入非住宿檢索）
+    function getSearchText(item, tab) {
+      const cacheKey = `${tab}_${item.id || item.name || ''}`;
+      let text = searchTextCache.get(cacheKey);
       if (text === undefined) {
-        text = kind === 'schedule'
-          ? `${item.date} ${item.startTime} ${item.endTime} ${item.duration} ${item.location} ${item.activity} ${String(item.note || '').split('\n').filter(line => !line.includes('需行政支援')).join('\n')}`.toLowerCase()
-          : `${item.team} ${item.name} ${item.trafficOut} ${item.trafficBack} ${item.restaurant} ${item.diet} ${item.hotel} ${item.roomType} ${item.roommates}`.toLowerCase();
-        searchTextCache.set(item, text);
+        if (tab === 'schedule') {
+          text = `${item.date || ''} ${item.startTime || ''} ${item.endTime || ''} ${item.location || ''} ${item.activity || ''} ${String(item.note || '').split('\n').filter(line => !line.includes('需行政支援')).join('\n')}`.toLowerCase();
+        } else if (tab === 'overview') {
+          // 總表：僅檢索本人的隊別、姓名、交通、餐廳、住宿飯店與房型（排除 roommates，避免抓出室友）
+          text = `${item.team || ''} ${item.name || ''} ${item.trafficOut || ''} ${item.trafficBack || ''} ${item.restaurant || ''} ${item.hotel || ''} ${item.roomType || ''}`.toLowerCase();
+        } else if (tab === 'traffic') {
+          // 交通：僅檢索姓名與該員交通方式
+          text = `${item.name || ''} ${item.trafficOut || ''} ${item.trafficBack || ''}`.toLowerCase();
+        } else if (tab === 'dining') {
+          // 餐飲：僅檢索姓名、餐廳、飲食注意事項與交通方式
+          text = `${item.name || ''} ${item.restaurant || ''} ${item.diet || ''} ${item.trafficOut || ''}`.toLowerCase();
+        } else if (tab === 'lodging') {
+          // 住宿：僅檢索姓名、飯店、房型與分組代號
+          text = `${item.name || ''} ${item.hotel || ''} ${item.roomType || ''} ${item.roomGroup || ''}`.toLowerCase();
+        } else {
+          text = `${item.team || ''} ${item.name || ''}`.toLowerCase();
+        }
+        searchTextCache.set(cacheKey, text);
       }
       return text;
     }
 
-    // 嚴格對照指定資料庫 (gid=1928975316) 實體流程，絕無自行生成或推導項目
+    // 嚴格對照指定資料庫 (gid=1928975316) 實體流程
     let scheduleData = [
       {
         id: 1,
@@ -709,6 +731,7 @@
       }
     ];
 
+    // 成員總表基準資料
     let rawDirectoryData = [
       { team: "白", name: "林政緯", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "不吃：豬", hotel: "正巧", roomType: "2人房", roomGroup: "正巧-2人房_5", roommates: "林政緯-妻, 林政緯-看護" },
       { team: "白", name: "林政緯-妻", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "不吃：豬", hotel: "正巧", roomType: "2人房", roomGroup: "正巧-2人房_5", roommates: "林政緯, 林政緯-看護" },
@@ -749,10 +772,10 @@
       { team: "接班人", name: "吳緁苓", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "NO", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "2人房", roomGroup: "正巧-2人房_4", roommates: "洪淑姮" },
       { team: "接班人", name: "洪淑姮", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "2人房", roomGroup: "正巧-2人房_4", roommates: "吳緁苓" },
       { team: "接班人", name: "廖培芯", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "是", restaurant: "NO", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_3", roommates: "汪方巧, 胡智容, 許家倫" },
-      { team: "接班人", name: "吳佩容", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "NO", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_4", roommates: "吳惠君, 魏鈴芳, 周宗弘" },
+      { team: "接班人", name: "吳佩容", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_4", roommates: "吳惠君, 魏鈴芳, 周宗弘" },
       { team: "接班人", name: "周宗弘", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_4", roommates: "吳惠君, 魏鈴芳, 吳佩容" },
       { team: "接班人", name: "田富元（田爸）", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "NO", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_14", roommates: "吳全峰" },
-      { team: "接班人", name: "吳曉宣", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_15", roommates: "陳翊榛" },
+      { team: "接班人", name: "吳曉宣", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "麵五三屋", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_15", roommates: "陳翊榛" },
       { team: "接班人", name: "陳翊榛", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "麵五三屋", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_15", roommates: "吳曉宣" },
       { team: "接班人", name: "林珊汝", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "弎食鉄板", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_16", roommates: "林珊汝-夫, 林珊汝-子（6歲）" },
       { team: "接班人", name: "林珊汝-夫", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "弎食鉄板", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_16", roommates: "林珊汝, 林珊汝-子（6歲）" },
@@ -805,12 +828,25 @@
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 9000);
 
-        // 1. 同步成員名冊
-        const dirPromise = fetch(`${GOOGLE_SHEET_DIR_URL}&_t=${Date.now()}`, { signal: controller.signal, cache: 'no-store' })
-          .then(async res => res.ok ? res.text() : null)
-          .catch(() => null);
+        // 1. 同步成員名冊（多端點備援支援）
+        async function fetchDirectoryCsv() {
+          for (const url of GOOGLE_SHEET_DIR_URLS) {
+            try {
+              const res = await fetch(`${url}&_t=${Date.now()}`, { signal: controller.signal, cache: 'no-store' });
+              if (res.ok) {
+                const text = await res.text();
+                if (text && text.length > 50 && !text.includes('<!DOCTYPE html>')) {
+                  return text;
+                }
+              }
+            } catch (e) {
+              // 嘗試下一個備援端點
+            }
+          }
+          return null;
+        }
 
-        // 2. 依序或平行嘗試抓取活動流程試算表（相容 drive_link 主頁籤與 gid 備援）
+        // 2. 平行嘗試抓取活動流程試算表
         async function fetchScheduleCsv() {
           for (const url of GOOGLE_SHEET_SCHEDULE_URLS) {
             try {
@@ -822,13 +858,13 @@
                 }
               }
             } catch (e) {
-              // 繼續嘗試下一個備援端點
+              // 嘗試下一個備援端點
             }
           }
           return null;
         }
 
-        const [csvDirText, scheduleCsvText] = await Promise.all([dirPromise, fetchScheduleCsv()]);
+        const [csvDirText, scheduleCsvText] = await Promise.all([fetchDirectoryCsv(), fetchScheduleCsv()]);
         clearTimeout(timeoutId);
 
         // 解析最新「重啟-活動流程」
@@ -876,44 +912,46 @@
                 if (parsedSchedule.length > 0) {
                   scheduleData = parsedSchedule;
                   isScheduleCloudSynced = true;
-                  searchTextCache = new WeakMap();
+                  searchTextCache.clear();
                 }
               }
             }
           });
         }
 
-        // 解析最新成員名單
+        // 解析最新成員名單（完整反映試算表中吳佩容與吳曉宣之更新，移除硬編碼覆寫）
         if (csvDirText) {
           Papa.parse(csvDirText, {
             header: true,
             skipEmptyLines: true,
+            transformHeader: header => header.replace(/^\uFEFF/, '').trim(),
             complete: (results) => {
               if (results.data && results.data.length > 0) {
                 const parsed = results.data.map(r => {
-                  const name = r['姓名'] || '';
-                  let rest = r['餐廳'] || '';
-                  if (name === '吳佩容') rest = 'NO';
+                  const name = (r['姓名'] || '').trim();
+                  const rest = (r['餐廳'] || '').trim();
 
                   return {
-                    team: r['隊別'] || '',
+                    team: (r['隊別'] || '').trim(),
                     name: name,
-                    trafficOut: r['交通-去程'] || '',
-                    trafficBack: r['交通-回程'] || '',
+                    trafficOut: (r['交通-去程'] || '').trim(),
+                    trafficBack: (r['交通-回程'] || '').trim(),
                     isTrafficLeader: (r['交通-去程_隊長'] === '交通-去程_隊長' || r['交通-去程_隊長'] === '隊長') ? '是' : '否',
                     restaurant: rest,
                     isDiningLeader: DINING_BUS_CAPTAINS.has(name) ? '是' : '否',
-                    diet: r['飲食注意事項'] || '無',
-                    hotel: r['住宿'] || '',
-                    roomType: r['房型'] || '',
-                    roomGroup: r['住宿-房型-分組'] || r['房間分組'] || '',
-                    roommates: r['室友'] || ''
+                    diet: (r['飲食注意事項'] || '無').trim(),
+                    hotel: (r['住宿'] || '').trim(),
+                    roomType: (r['房型'] || '').trim(),
+                    roomGroup: (r['住宿-房型-分組'] || r['房間分組'] || '').trim(),
+                    roommates: (r['室友'] || '').trim()
                   };
                 }).filter(i => i.name);
 
                 if (parsed.length > 0) {
                   rawDirectoryData = parsed;
                   calculateDirectoryRoommates();
+                  isDirectoryCloudSynced = true;
+                  searchTextCache.clear();
                 }
               }
             }
@@ -944,7 +982,7 @@
        3. 室友關聯演算
        ========================================================= */
     function calculateDirectoryRoommates() {
-      searchTextCache = new WeakMap();
+      searchTextCache.clear();
       const roomMap = {};
       rawDirectoryData.forEach(item => {
         if (!item.roomGroup || item.roomGroup === '無-無_無' || item.roomGroup === 'NONE') return;
@@ -1157,8 +1195,8 @@
       thead.innerHTML = `
         <tr class="text-base font-semibold">
           <th class="py-3.5 px-3 text-center w-12 text-rose-700">#</th>
-          ${renderHeaderTh('姓名', 'name', 'w-32')}
           ${renderHeaderTh('隊別', 'team', 'w-28')}
+          ${renderHeaderTh('姓名', 'name', 'w-32')}
           ${renderHeaderTh('交通-去/回', 'trafficCombo', 'w-40')}
           ${renderHeaderTh('用餐餐廳', 'restaurant', 'w-36')}
           ${renderHeaderTh('住宿飯店-房型', 'lodgingCombo', 'w-40')}
@@ -1166,8 +1204,8 @@
         </tr>
       `;
 
-      let list = getProcessedDirectoryList();
-      countBadge.textContent = `共 ${list.length} 位人員`;
+      let list = getProcessedDirectoryList('overview');
+      countBadge.textContent = isDirectoryCloudSynced ? `共 ${list.length} 位人員 (雲端同步)` : `共 ${list.length} 位人員`;
 
       if (list.length === 0) {
         tbody.innerHTML = `<tr><td colspan="7" class="py-12 text-center text-rose-400 text-base">無符合的人員資料</td></tr>`;
@@ -1182,8 +1220,8 @@
         return `
           <tr class="text-base border-b border-rose-100 transition-colors ${teamBg}">
             <td class="py-3.5 px-3 text-center text-rose-400 font-medium">${idx + 1}</td>
-            <td class="py-3.5 px-3 font-bold text-rose-950">${escapeHtml(item.name)}</td>
             <td class="py-3.5 px-3 font-bold text-rose-800">${escapeHtml(item.team)}</td>
+            <td class="py-3.5 px-3 font-bold text-rose-950">${escapeHtml(item.name)}</td>
             <td class="py-3.5 px-3 text-rose-900 font-medium">${escapeHtml(trafficCombo)}</td>
             <td class="py-3.5 px-3 font-semibold text-rose-900">${escapeHtml(item.restaurant)}</td>
             <td class="py-3.5 px-3 text-rose-900 font-medium">${escapeHtml(lodgingCombo)}</td>
@@ -1236,8 +1274,8 @@
         </tr>
       `;
 
-      let list = getProcessedDirectoryList();
-      countBadge.textContent = `共 ${list.length} 位人員`;
+      let list = getProcessedDirectoryList('traffic');
+      countBadge.textContent = isDirectoryCloudSynced ? `共 ${list.length} 位人員 (雲端同步)` : `共 ${list.length} 位人員`;
 
       if (list.length === 0) {
         tbody.innerHTML = `<tr><td colspan="4" class="py-12 text-center text-rose-400 text-base">無符合的交通資料</td></tr>`;
@@ -1277,7 +1315,7 @@
       return '';
     }
 
-    /* --- [分頁4] 重啟-餐飲服務 (支援：遊覽車 車長 & 領談人) --- */
+    /* --- [分頁4] 重啟-餐飲服務 (包含車長、領談人與所有用餐人員) --- */
     function renderDiningTab(thead, tbody, countBadge) {
       thead.innerHTML = `
         <tr class="text-base font-semibold">
@@ -1289,8 +1327,8 @@
         </tr>
       `;
 
-      let list = getProcessedDirectoryList().filter(i => i.restaurant !== 'NO' && i.restaurant !== '無' && i.name !== '吳佩容');
-      countBadge.textContent = `共 ${list.length} 位用餐人員`;
+      let list = getProcessedDirectoryList('dining').filter(i => i.restaurant && i.restaurant !== 'NO' && i.restaurant !== '無');
+      countBadge.textContent = isDirectoryCloudSynced ? `共 ${list.length} 位用餐人員 (雲端同步)` : `共 ${list.length} 位用餐人員`;
 
       if (list.length === 0) {
         tbody.innerHTML = `<tr><td colspan="5" class="py-12 text-center text-rose-400 text-base">無符合的餐飲資料</td></tr>`;
@@ -1403,10 +1441,10 @@
       return '<span class="icon-circle w-6 h-6 bg-rose-100 text-rose-700"><i class="fa-solid fa-utensils text-xs"></i></span>';
     }
 
-    /* --- [分頁5] 重啟-住宿服務（房屋圖卡模式：移入/點擊揮手小人） --- */
+    /* --- [分頁5] 重啟-住宿服務（房屋圖卡模式） --- */
     function renderLodgingRoomCards(countBadge) {
       const view = document.getElementById('lodgingRoomView');
-      const matched = getProcessedDirectoryList().filter(i => i.name !== '彭偉峰');
+      const matched = getProcessedDirectoryList('lodging').filter(i => i.name !== '彭偉峰');
       const roomKey = item => item.roomGroup && !['無-無_無', 'NONE'].includes(item.roomGroup)
         ? JSON.stringify([item.hotel, item.roomGroup]) : JSON.stringify([item.hotel, item.roomType, item.name]);
       
@@ -1422,15 +1460,16 @@
       const visibleRooms = new Map();
       const matchedPeople = new Set(matched);
 
+      // 當有搜尋條件時，僅顯示「該成員本身符合搜尋」所在的房間
       matched.forEach(item => {
         const key = roomKey(item);
         if (!visibleRooms.has(key)) visibleRooms.set(key, allRooms.get(key));
       });
 
       const residents = Array.from(visibleRooms.values()).reduce((sum, room) => sum + room.length, 0);
-      countBadge.textContent = `共 ${visibleRooms.size} 間房・${residents} 位住宿人員`;
+      countBadge.textContent = isDirectoryCloudSynced ? `共 ${visibleRooms.size} 間房・${residents} 位住宿人員 (雲端同步)` : `共 ${visibleRooms.size} 間房・${residents} 位住宿人員`;
 
-      const controls = [['住宿飯店', 'hotel'], ['房型', 'roomType'], ['姓名', 'name'], ['同房室友', 'roommates']].map(([title, key]) => {
+      const controls = [['住宿飯店', 'hotel'], ['房型', 'roomType'], ['姓名', 'name']].map(([title, key]) => {
         const selected = columnFilters[key] && columnFilters[key].size > 0;
         return `<button type="button" onclick="openFilterModal('${key}', '${title}', event)">${title}${selected ? ' · 已篩選' : ''}${activeSortColumn === key ? (activeSortDirection === 'asc' ? ' ↑' : ' ↓') : ' ▾'}</button>`;
       }).join('');
@@ -1459,7 +1498,7 @@
       });
 
       view.innerHTML = `<div class="room-toolbar no-print">${controls}</div>
-        <p class="room-help">移入房間看大家揮手，手機可點一下卡片。搜尋會顯示整間房的名單。分組編號為資料中的住宿分組，並非飯店實際房號。</p>` +
+        <p class="room-help">移入房間看大家揮手，手機可點一下卡片。分組編號為資料中的住宿分組，並非飯店實際房號。</p>` +
         (hotels.size ? Array.from(hotels, ([hotel, rooms]) => {
           const hotelName = hotel === '知達' ? '知達工藝會館' : hotel === '正巧' ? '正巧文旅' : hotel;
           return `<section class="hotel-section"><h2 class="hotel-title" style="color:${hotel.includes('正巧') ? '#c2410c' : '#881337'}">${escapeHtml(hotelName)} <small>${rooms.length} 間房</small></h2><div class="rooms-grid">${rooms.map(room => {
@@ -1593,12 +1632,12 @@
       `;
     }
 
-    function getProcessedDirectoryList() {
+    function getProcessedDirectoryList(tab = currentTab) {
       let list = [...rawDirectoryData];
 
       if (searchQuery) {
         list = list.filter(item => {
-          const rowText = getSearchText(item, 'directory');
+          const rowText = getSearchText(item, tab);
           return rowText.includes(searchQuery);
         });
       }
@@ -1623,12 +1662,14 @@
           return activeSortDirection === 'asc' ? res : -res;
         });
       } else {
-        if (currentTab === 'overview') {
+        if (tab === 'overview') {
           // 嚴格排序規則：
-          // 1. 交通去/回：遊覽車/遊覽車 → 自行/遊覽車（含自處/遊覽車） → 開車/開車 → 其他
-          // 2. 住宿：知達 → 正巧4人房 → 正巧2人房 → 其他
-          // 3. 隊別：白 → 紅 → 綠 → 接班人
-          // 4. 姓名：筆畫由少至多
+          // 1. 隊別：白 (1) ➔ 紅 (2) ➔ 綠 (3) ➔ 接班人 (4)
+          // 2. 姓名：繁體中文筆畫由少至多
+          // 3. 交通去/回：遊覽車/遊覽車 (1) ➔ 自行/遊覽車 (2) ➔ 開車/開車 (3) ➔ 其他 (4)
+          // 4. 住宿安排：知達 (1) ➔ 正巧4人房 (2) ➔ 正巧2人房 (3) ➔ 其他 (4)
+          const teamOrder = { '白': 1, '紅': 2, '綠': 3, '接班人': 4 };
+
           const getTrafficOrder = item => {
             const outT = (item.trafficOut || '').trim();
             const backT = (item.trafficBack || '').trim();
@@ -1647,9 +1688,14 @@
             return 4;
           };
 
-          const teamOrder = { '白': 1, '紅': 2, '綠': 3, '接班人': 4 };
-
           list.sort((a, b) => {
+            const tA = teamOrder[a.team] || 99;
+            const tB = teamOrder[b.team] || 99;
+            if (tA !== tB) return tA - tB;
+
+            const strokeDiff = strokeSort(a.name, b.name);
+            if (strokeDiff !== 0) return strokeDiff;
+
             const trA = getTrafficOrder(a);
             const trB = getTrafficOrder(b);
             if (trA !== trB) return trA - trB;
@@ -1658,13 +1704,9 @@
             const lodB = getLodgingOrder(b);
             if (lodA !== lodB) return lodA - lodB;
 
-            const tA = teamOrder[a.team] || 99;
-            const tB = teamOrder[b.team] || 99;
-            if (tA !== tB) return tA - tB;
-
-            return strokeSort(a.name, b.name);
+            return 0;
           });
-        } else if (currentTab === 'traffic') {
+        } else if (tab === 'traffic') {
           list.sort((a, b) => {
             const groupRank = item => item.trafficOut === '遊覽車' ? 0 : item.trafficBack === '遊覽車' ? 1 : 2;
             const groupDiff = groupRank(a) - groupRank(b);
@@ -1675,11 +1717,10 @@
             if (a.isTrafficLeader !== '是' && b.isTrafficLeader === '是') return 1;
             return strokeSort(a.name, b.name);
           });
-        } else if (currentTab === 'dining') {
+        } else if (tab === 'dining') {
           list.sort((a, b) => {
             if (a.restaurant !== b.restaurant) return strokeSort(a.restaurant, b.restaurant);
 
-            // 幹部置頂優先：車長 (1) -> 領談人 (2) -> 一般成員 (3)
             const getDiningRoleRank = name => {
               if (DINING_BUS_CAPTAINS.has(name)) return 1;
               if (DINING_INTERVIEWERS.has(name)) return 2;
@@ -1700,7 +1741,7 @@
 
             return strokeSort(a.name, b.name);
           });
-        } else if (currentTab === 'lodging') {
+        } else if (tab === 'lodging') {
           const getLodgingRank = (item) => {
             if (item.hotel.includes('知達')) return 1;
             if (item.hotel.includes('正巧') && item.roomType.includes('4人')) return 2;
