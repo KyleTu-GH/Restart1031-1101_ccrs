@@ -781,7 +781,7 @@
       { team: "接班人", name: "林珊汝-夫", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "弎食鉄板", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_16", roommates: "林珊汝, 林珊汝-子（6歲）" },
       { team: "接班人", name: "林珊汝-子（6歲）", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "弎食鉄板", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_16", roommates: "林珊汝, 林珊汝-夫" },
       { team: "接班人", name: "吳淋禎", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "NO", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_17", roommates: "陶逸婕" },
-      { team: "接班人", name: "杜志峰", trafficOut: "自行", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_18", roommates: "無" },
+      { team: "接班人", name: "杜志峰", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_18", roommates: "無" },
 
       { team: "綠", name: "李紘逸", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "弎食鉄板", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "2人房", roomGroup: "正巧-2人房_3", roommates: "梁懷貞" },
       { team: "綠", name: "張婷婷", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "植田割烹", isDiningLeader: "否", diet: "不吃：牛羊", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_2", roommates: "郭淑貞, 潘麗婧, 陳尹恩" },
@@ -1347,7 +1347,11 @@
         const icon = getRestaurantIcon(item.restaurant);
         
         let trafficMethod = item.trafficOut;
-        if (trafficMethod === '自處' || trafficMethod === '自行') trafficMethod = '遊覽車';
+        if (item.name === '杜志峰') {
+          trafficMethod = '遊覽車';
+        } else if (trafficMethod === '自處' || trafficMethod === '自行') {
+          trafficMethod = '遊覽車';
+        }
 
         let restCellHtml = '';
         if (!displayedFirstInGroup.has(item.restaurant)) {
