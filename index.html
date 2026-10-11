@@ -146,6 +146,8 @@
     .room-card:focus-visible {outline:3px solid #fb7185;outline-offset:3px;}
     .room-sign {display:flex;justify-content:space-between;align-items:center;gap:8px;color:#881337;font-weight:800;font-size:14px;margin-bottom:12px;}
     .room-sign span {font-size:12px;background:#fff1f2;padding:4px 9px;border-radius:10px;white-space:nowrap;}
+    .room-number-badge {font-size:12px;background:#fff7ed;color:#c2410c;border:1px dashed #fdba74;padding:2px 8px;border-radius:8px;font-family:monospace;font-weight:700;}
+    .room-number-empty {font-size:11px;color:#cbd5e1;border:1px dashed #e2e8f0;padding:2px 8px;border-radius:8px;font-weight:500;}
     .room-facade {position:relative;background:linear-gradient(135deg,#ffe4e6,#fff1e6);border:2px solid #fecdd3;border-bottom:6px solid #fda4af;border-radius:14px 14px 0 0;min-height:230px;padding:18px 12px 12px;}
     .room-card.hotel-orange .room-facade {background:linear-gradient(135deg,#ffedd5,#fff7ed);border-color:#fed7aa;border-bottom-color:#fdba74;}
     .room-group-label {font-size:11px;text-align:center;color:#9f6674;letter-spacing:1px;margin-bottom:15px;}
@@ -943,6 +945,7 @@
                     hotel: (r['住宿'] || '').trim(),
                     roomType: (r['房型'] || '').trim(),
                     roomGroup: (r['住宿-房型-分組'] || r['房間分組'] || '').trim(),
+                    roomNumber: (r['房號'] || r['房間號碼'] || r['Room'] || r['RoomNo'] || '').trim(),
                     roommates: (r['室友'] || '').trim()
                   };
                 }).filter(i => i.name);
@@ -1502,7 +1505,7 @@
       });
 
       view.innerHTML = `<div class="room-toolbar no-print">${controls}</div>
-        <p class="room-help">移入房間看大家揮手，手機可點一下卡片。分組編號為資料中的住宿分組，並非飯店實際房號。</p>` +
+        <p class="room-help">移入房間看大家揮手，手機可點一下卡片。分組編號為資料中的住宿分組，房號目前保留待分配，後續填入後將自動呈現。</p>` +
         (hotels.size ? Array.from(hotels, ([hotel, rooms]) => {
           const hotelName = hotel === '知達' ? '知達工藝會館' : hotel === '正巧' ? '正巧文旅' : hotel;
           return `<section class="hotel-section"><h2 class="hotel-title" style="color:${hotel.includes('正巧') ? '#c2410c' : '#881337'}">${escapeHtml(hotelName)} <small>${rooms.length} 間房</small></h2><div class="rooms-grid">${rooms.map(room => {
@@ -1511,6 +1514,11 @@
             const design = getRoomDesign(designIndex, hotel);
             const groupMatch = (first.roomGroup || '').match(/_(.+)$/);
             const groupLabel = groupMatch ? `住宿分組 ${groupMatch[1]}` : '住宿分組待確認';
+            const roomNo = (room.find(p => p.roomNumber && p.roomNumber.trim()) || {}).roomNumber || '';
+            const roomNoBadge = roomNo 
+              ? `<span class="room-number-badge"><i class="fa-solid fa-key mr-1 text-[10px]"></i>房號 ${escapeHtml(roomNo)}</span>`
+              : `<span class="room-number-empty" title="房號待分配"><i class="fa-solid fa-door-closed mr-1 text-[10px]"></i>房號：待分配</span>`;
+
             const names = room.map(person => {
               const isMatched = searchQuery && matchedPeople.has(person);
               let contactTag = '';
@@ -1522,8 +1530,14 @@
               return `<li class="${isMatched ? 'matched' : ''}">${escapeHtml(person.name)}${contactTag}</li>`;
             }).join('');
 
-            return `<article class="room-card room-style-${designIndex % 9}" style="${design.style}" tabindex="0" role="button" aria-pressed="false" aria-label="${escapeHtml(hotelName)}，${escapeHtml(first.roomType)}，${escapeHtml(groupLabel)}，${room.length} 位：${escapeHtml(room.map(p => p.name).join('、'))}" onclick="toggleRoomGreeting(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleRoomGreeting(this)}">
-              <div class="room-sign">${escapeHtml(hotelName)}<span>${escapeHtml(first.roomType || '房型待確認')}</span></div>
+            return `<article class="room-card room-style-${designIndex % 9}" style="${design.style}" tabindex="0" role="button" aria-pressed="false" aria-label="${escapeHtml(hotelName)}，${escapeHtml(first.roomType)}，${escapeHtml(groupLabel)}，${roomNo ? '房號 ' + escapeHtml(roomNo) + '，' : ''}${room.length} 位：${escapeHtml(room.map(p => p.name).join('、'))}" onclick="toggleRoomGreeting(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleRoomGreeting(this)}">
+              <div class="room-sign">
+                <div class="flex items-center space-x-1.5 min-w-0 truncate">
+                  <span class="truncate">${escapeHtml(hotelName)}</span>
+                  <span>${escapeHtml(first.roomType || '房型待確認')}</span>
+                </div>
+                ${roomNoBadge}
+              </div>
               <div class="room-facade"><div class="room-roof" aria-hidden="true"></div><span class="room-ornament" aria-hidden="true">${design.symbol}</span><div class="room-group-label">${escapeHtml(groupLabel)}</div><div class="room-door-area"><div class="room-door" aria-hidden="true"><div class="room-door-window"></div></div><div class="room-roster"><div class="room-roster-title">住宿人員 · ${room.length} 位</div><ul>${names}</ul></div></div></div>
               <div class="room-people" aria-hidden="true">${room.map((person, idx) => renderWavingPerson(idx, personDesigns.get(person))).join('')}</div><div class="room-foot">${room.length} 位入住 · 歡迎回房休息</div>
             </article>`;
