@@ -936,7 +936,7 @@
                     name: name,
                     trafficOut: (r['交通-去程'] || '').trim(),
                     trafficBack: (r['交通-回程'] || '').trim(),
-                    isTrafficLeader: (r['交通-去程_隊長'] === '交通-去程_隊長' || r['交通-去程_隊長'] === '隊長') ? '是' : '否',
+                    isTrafficLeader: (name === '廖培芯' || r['交通-去程_隊長'] === '交通-去程_隊長' || r['交通-去程_隊長'] === '隊長') ? '是' : '否',
                     restaurant: rest,
                     isDiningLeader: DINING_BUS_CAPTAINS.has(name) ? '是' : '否',
                     diet: (r['飲食注意事項'] || '無').trim(),
@@ -1309,8 +1309,8 @@
     }
 
     function getTrafficLeaderBadge(item) {
-      if (item.isTrafficLeader === '是') {
-        return `<div class="text-xs font-bold text-rose-600 mt-0.5 flex items-center"><span class="icon-circle w-4 h-4 bg-rose-200 text-rose-700 mr-1"><i class="fa-solid fa-star text-[9px]"></i></span>（遊覽車 車長）</div>`;
+      if (item.name === '廖培芯' || item.isTrafficLeader === '是') {
+        return `<div class="text-xs font-bold text-rose-600 mt-0.5 flex items-center"><span class="icon-circle w-4 h-4 bg-rose-200 text-rose-700 mr-1"><i class="fa-solid fa-star text-[9px]"></i></span>（車長）</div>`;
       }
       return '';
     }
@@ -1653,9 +1653,17 @@
       });
 
       const strokeSort = (a, b) => strokeCollator.compare(a || '', b || '');
+      const isTrafficLeader = item => item.name === '廖培芯' || item.isTrafficLeader === '是';
 
       if (activeSortColumn && activeSortDirection) {
         list.sort((a, b) => {
+          // 交通服務分頁中，車長永遠置頂於第一行
+          if (tab === 'traffic') {
+            const leaderA = isTrafficLeader(a);
+            const leaderB = isTrafficLeader(b);
+            if (leaderA && !leaderB) return -1;
+            if (!leaderA && leaderB) return 1;
+          }
           const valA = getColumnValue(a, activeSortColumn);
           const valB = getColumnValue(b, activeSortColumn);
           const res = strokeSort(valA, valB);
@@ -1708,13 +1716,17 @@
           });
         } else if (tab === 'traffic') {
           list.sort((a, b) => {
+            // 車長永遠置頂於第 1 行
+            const leaderA = isTrafficLeader(a);
+            const leaderB = isTrafficLeader(b);
+            if (leaderA && !leaderB) return -1;
+            if (!leaderA && leaderB) return 1;
+
             const groupRank = item => item.trafficOut === '遊覽車' ? 0 : item.trafficBack === '遊覽車' ? 1 : 2;
             const groupDiff = groupRank(a) - groupRank(b);
             if (groupDiff) return groupDiff;
             if (a.trafficBack === '遊覽車' && b.trafficBack !== '遊覽車') return -1;
             if (a.trafficBack !== '遊覽車' && b.trafficBack === '遊覽車') return 1;
-            if (a.isTrafficLeader === '是' && b.isTrafficLeader !== '是') return -1;
-            if (a.isTrafficLeader !== '是' && b.isTrafficLeader === '是') return 1;
             return strokeSort(a.name, b.name);
           });
         } else if (tab === 'dining') {
