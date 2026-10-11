@@ -57,7 +57,7 @@
     /* 總表隊別底色 - 溫暖粉橘粉紅家族適配 */
     .bg-team-white { background-color: #ffffff; }
     .bg-team-red { background-color: #ffe4e6; }
-    .bg-team-green { background-color: #ffedd5; } /* 原綠改為溫潤粉橙 */
+    .bg-team-green { background-color: #ffedd5; }
     .bg-team-successor { background-color: #fef3c7; }
 
     /* 活動流程階層項目符號樣式 (粉橘粉紅版) */
@@ -132,7 +132,7 @@
       box-shadow: 0 20px 25px -5px rgba(244, 63, 94, 0.15), 0 8px 10px -6px rgba(244, 63, 94, 0.1);
     }
 
-    /* 住宿房間圖卡：純 CSS / SVG，無新增外部套件。 */
+    /* 住宿房間圖卡：純 CSS / SVG */
     .room-view {padding:24px;background:#fff8f5;}
     .room-toolbar {display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;align-items:center;}
     .room-toolbar button {background:white;border:1px solid #fecdd3;border-radius:20px;padding:7px 14px;color:#9f1239;font-size:13px;cursor:pointer;}
@@ -159,7 +159,7 @@
     .room-roster ul {list-style:none;padding:0;margin:0;}
     .room-roster li {font-size:13px;line-height:1.7;color:#713f3f;overflow-wrap:anywhere;}
     .room-roster li.matched {font-weight:800;color:#be123c;}
-    .room-roster .contact {font-size:10px;color:#be123c;display:block;line-height:1.3;}
+    .room-roster .contact {font-size:10px;color:#be123c;display:block;line-height:1.3;font-weight:bold;}
     .room-people {display:flex;justify-content:center;flex-wrap:wrap;gap:0;min-height:68px;padding-top:2px;position:relative;}
     .room-person {width:48px;height:64px;opacity:0;transform:translateY(15px) scale(.7);transition:opacity .2s,transform .3s;transition-delay:calc(var(--person-index) * 45ms);}
     .room-card:hover .room-person,.room-card:focus .room-person,.room-card.is-open .room-person {opacity:1;transform:translateY(0) scale(1);}
@@ -197,15 +197,6 @@
     .room-style-7 .room-door{border-radius:38px 38px 0 0}.room-style-7 .room-door-window{border-radius:50%}
     .room-style-8 .room-roof {clip-path:polygon(0 100%,15% 0,85% 0,100% 100%);height:32px;top:-8px}
     .room-style-8 .room-facade{border-radius:25px 25px 0 0}.room-style-8 .room-door-window{border-radius:3px;transform:rotate(45deg);width:25px;height:25px;margin-top:20px}
-    #mainDataTable.schedule-layout {table-layout:fixed;min-width:850px;}
-    .schedule-layout th:nth-child(1) {width:4%;}
-    .schedule-layout th:nth-child(2) {width:10%;}
-    .schedule-layout th:nth-child(3),.schedule-layout th:nth-child(4) {width:8%;}
-    .schedule-layout th.schedule-location {width:10%;}
-    .schedule-layout th.schedule-activity {width:18%;}
-    .schedule-layout th.schedule-note {width:42%;}
-    .schedule-layout td.schedule-location,.schedule-layout td.schedule-activity {font-weight:400;white-space:pre-line;overflow-wrap:anywhere;}
-    .schedule-layout td.schedule-note {overflow-wrap:anywhere;}
   </style>
 </head>
 <body class="bg-gradient-to-br from-rose-50 via-orange-50 to-pink-50 text-rose-950 min-h-screen flex flex-col font-sans antialiased selection:bg-rose-500 selection:text-white">
@@ -237,7 +228,7 @@
   <!-- 主要操作區 -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex-1 w-full flex flex-col">
     
-    <!-- 分頁導航列 (「安排」全面更新為「服務」，風格切換為粉紅／粉橘) -->
+    <!-- 分頁導航列 -->
     <div class="flex border-b border-rose-200 overflow-x-auto space-x-2.5 pb-px no-print select-none">
       <button onclick="switchTab('schedule')" id="tab-schedule" class="tab-btn px-5 py-3 font-semibold text-base rounded-t-xl transition-all flex items-center space-x-2.5 text-white bg-gradient-to-r from-rose-500 to-orange-400 shadow-sm border-t-2 border-rose-400">
         <span class="icon-circle w-7 h-7 bg-white/20 text-white">
@@ -294,14 +285,14 @@
       </div>
     </div>
 
-    <!-- 餐飲服務四家餐廳資訊導覽卡片（極簡緊湊版，大幅降低垂直高度） -->
+    <!-- 餐飲服務四家餐廳資訊導覽卡片（極簡緊湊版，標註車長與領談人） -->
     <div id="diningInfoCard" class="hidden bg-white/95 border border-rose-200 rounded-xl px-3 py-2 mb-3 shadow-xs text-xs no-print">
       <div class="flex items-center justify-between pb-1.5 mb-1.5 border-b border-rose-100">
         <div class="text-xs font-bold text-rose-800 flex items-center">
           <span class="icon-circle w-5 h-5 bg-rose-100 text-rose-700 mr-1.5">
             <i class="fa-solid fa-utensils text-[10px]"></i>
           </span>
-          午間餐訪餐廳聯絡資訊
+          午間餐訪餐廳聯絡資訊（含各店車長與領談人）
         </div>
         <span class="text-[11px] text-rose-600 font-medium">點擊按鈕可快速導航</span>
       </div>
@@ -315,6 +306,9 @@
             </div>
             <div class="text-[11px] text-rose-800 mt-0.5">
               <a href="tel:0981930305" class="hover:underline font-semibold font-mono">0981-930305</a>
+            </div>
+            <div class="text-[10px] text-rose-700 font-medium mt-0.5 truncate">
+              車長：<span class="font-bold text-rose-900">李筱瑋</span> ｜ 領談：<span class="font-bold text-orange-800">林珊汝</span>
             </div>
           </div>
           <a href="https://maps.app.goo.gl/c1w7ijdQV4kwLfw86" target="_blank" class="shrink-0 inline-flex items-center px-2 py-0.5 bg-gradient-to-r from-rose-500 to-pink-500 text-white rounded-full text-[10px] hover:from-rose-600 hover:to-pink-600 transition-colors shadow-2xs">
@@ -332,6 +326,9 @@
             <div class="text-[11px] text-orange-800 mt-0.5">
               <a href="tel:0928385269" class="hover:underline font-semibold font-mono">0928-385269</a>
             </div>
+            <div class="text-[10px] text-orange-800 font-medium mt-0.5 truncate">
+              車長：<span class="font-bold text-rose-900">胡靖韋</span> ｜ 領談：<span class="font-bold text-orange-800">范永銀</span>
+            </div>
           </div>
           <a href="https://maps.app.goo.gl/iaRERmMCGPQs8jzFA" target="_blank" class="shrink-0 inline-flex items-center px-2 py-0.5 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-full text-[10px] hover:from-orange-600 hover:to-amber-600 transition-colors shadow-2xs">
             <i class="fa-solid fa-location-dot mr-1 text-[9px]"></i>導航
@@ -347,6 +344,9 @@
             </div>
             <div class="text-[11px] text-pink-800 mt-0.5">
               <a href="tel:0972822535" class="hover:underline font-semibold font-mono">0972-822535</a>
+            </div>
+            <div class="text-[10px] text-pink-800 font-medium mt-0.5 truncate">
+              車長：<span class="font-bold text-rose-900">莫惠萍</span> ｜ 領談：<span class="font-bold text-orange-800">梁懷貞、洪淑姮</span>
             </div>
           </div>
           <a href="https://maps.app.goo.gl/9uTNFLocg2wbAAMn8" target="_blank" class="shrink-0 inline-flex items-center px-2 py-0.5 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-full text-[10px] hover:from-pink-600 hover:to-rose-600 transition-colors shadow-2xs">
@@ -364,6 +364,9 @@
             <div class="text-[11px] text-amber-800 mt-0.5">
               <a href="tel:0933581872" class="hover:underline font-semibold font-mono">0933-581872</a>
             </div>
+            <div class="text-[10px] text-amber-800 font-medium mt-0.5 truncate">
+              車長：<span class="font-bold text-rose-900">杜志峰</span> ｜ 領談：<span class="font-bold text-orange-800">杜志峰</span>
+            </div>
           </div>
           <a href="https://maps.app.goo.gl/1quzSasgPxd1onwAA" target="_blank" class="shrink-0 inline-flex items-center px-2 py-0.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-full text-[10px] hover:from-amber-600 hover:to-orange-600 transition-colors shadow-2xs">
             <i class="fa-solid fa-location-dot mr-1 text-[9px]"></i>導航
@@ -372,7 +375,7 @@
       </div>
     </div>
 
-    <!-- 住宿服務資訊導覽卡片（極簡緊湊版，大幅降低垂直高度） -->
+    <!-- 住宿服務資訊導覽卡片（標註知達與正巧聯絡人） -->
     <div id="lodgingInfoCard" class="hidden bg-white/95 border border-rose-200 rounded-xl px-3 py-2 mb-3 shadow-xs text-xs no-print">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
         <!-- 知達會館 -->
@@ -381,9 +384,14 @@
             <span class="icon-circle w-5 h-5 bg-rose-200 text-rose-700 text-[10px]">
               <i class="fa-solid fa-hotel"></i>
             </span>
-            <div class="flex items-baseline space-x-2">
-              <span class="font-bold text-rose-950 text-xs">知達工藝會館</span>
-              <a href="tel:0492306969" class="text-xs font-semibold text-rose-800 hover:underline font-mono">049-2306969（進館時通知開柵門）</a>
+            <div>
+              <div class="flex items-baseline space-x-2">
+                <span class="font-bold text-rose-950 text-xs">知達工藝會館</span>
+                <a href="tel:0492306969" class="text-xs font-semibold text-rose-800 hover:underline font-mono">049-2306969</a>
+              </div>
+              <div class="text-[10px] text-rose-600 font-medium mt-0.5">
+                聯絡人：<span class="font-bold text-rose-800">杜志峰、吳淋禎</span>（進館通知開柵門）
+              </div>
             </div>
           </div>
           <div class="flex items-center space-x-1.5">
@@ -402,9 +410,14 @@
             <span class="icon-circle w-5 h-5 bg-orange-200 text-orange-700 text-[10px]">
               <i class="fa-solid fa-tree-city"></i>
             </span>
-            <div class="flex items-baseline space-x-2">
-              <span class="font-bold text-orange-950 text-xs">正巧文旅</span>
-              <a href="tel:0492357166" class="text-[11px] font-semibold text-orange-800 hover:underline font-mono">049-2357166</a>
+            <div>
+              <div class="flex items-baseline space-x-2">
+                <span class="font-bold text-orange-950 text-xs">正巧文旅</span>
+                <a href="tel:0492357166" class="text-[11px] font-semibold text-orange-800 hover:underline font-mono">049-2357166</a>
+              </div>
+              <div class="text-[10px] text-orange-800 font-medium mt-0.5">
+                聯絡人：<span class="font-bold text-orange-900">吳緁苓</span>
+              </div>
             </div>
           </div>
           <div class="flex items-center space-x-1.5">
@@ -419,7 +432,7 @@
       </div>
     </div>
 
-    <!-- 主要資料表格區域 (粉橘底色風格邊框) -->
+    <!-- 主要資料表格區域 -->
     <div id="printableContent" class="bg-white/95 rounded-2xl shadow-sm border border-rose-200 overflow-hidden flex-1 flex flex-col">
       <div class="table-container flex-1">
         <section id="lodgingRoomView" class="room-view" hidden aria-label="住宿房間圖"></section>
@@ -431,7 +444,7 @@
     </div>
   </main>
 
-  <!-- 表頭篩選彈窗與遮罩 (粉紅/粉橘風格) -->
+  <!-- 表頭篩選彈窗與遮罩 -->
   <div id="filterModalOverlay" onclick="closeFilterModal()" class="fixed inset-0 bg-rose-950/20 z-40 hidden backdrop-blur-[2px]"></div>
   <div id="filterDropdownModal" class="fixed z-50 hidden bg-white rounded-2xl border border-rose-300 p-4.5 w-80 max-w-[92vw] shadow-2xl flex flex-col text-rose-950">
     <div id="filterModalHeader" class="flex items-center justify-between pb-2.5 border-b border-rose-100 cursor-move select-none">
@@ -478,12 +491,18 @@
 
   <script>
     /* =========================================================
-       1. 資料庫來源配置
-       重啟：活動流程 指向使用者指定之 gid=1928975316
-       成員資料 指向成員總表
+       1. 資料庫來源配置與指定幹部名冊
        ========================================================= */
     const GOOGLE_SHEET_DIR_URL = 'https://docs.google.com/spreadsheets/d/1rtaD9Y4-1iv4rD68QNT64dv1x-o02rUc2kyosc26LVM/export?format=csv';
-    const GOOGLE_SHEET_SCHEDULE_URL = 'https://docs.google.com/spreadsheets/d/1RFAeooSPtmmVMPGeyO9o-SbNtvLr38_DoDHFoCFxQ9c/export?format=csv&gid=1928975316';
+    const GOOGLE_SHEET_SCHEDULE_URL = 'https://docs.google.com/spreadsheets/d/1rtaD9Y4-1iv4rD68QNT64dv1x-o02rUc2kyosc26LVM/export?format=csv&gid=1928975316';
+
+    // 餐飲服務各餐廳指定：遊覽車車長（原遊覽車隊長）
+    const DINING_BUS_CAPTAINS = new Set(['李筱瑋', '胡靖韋', '莫惠萍', '杜志峰']);
+    // 餐飲服務各餐廳指定：領談人
+    const DINING_INTERVIEWERS = new Set(['林珊汝', '范永銀', '梁懷貞', '洪淑姮', '杜志峰']);
+    // 住宿聯絡人
+    const LODGING_CONTACTS_ZHIDA = new Set(['杜志峰', '吳淋禎']);
+    const LODGING_CONTACTS_ZHENGQIAO = new Set(['吳緁苓']);
 
     let currentTab = 'schedule';
     let searchQuery = '';
@@ -493,12 +512,10 @@
     let activeSortDirection = null;
     let columnFilters = {};
 
-    // 重用比較器與每筆資料的搜尋索引；資料更新時清除索引。
     const strokeCollator = new Intl.Collator('zh-Hant-TW', { collation: 'stroke' });
     let searchTextCache = new WeakMap();
     let searchTimer = null;
-    let cloudRefreshInProgress = false;
-    let scheduleSourceStatus = '尚未同步，顯示備援資料';
+
     function getSearchText(item, kind) {
       let text = searchTextCache.get(item);
       if (text === undefined) {
@@ -510,180 +527,28 @@
       return text;
     }
 
-
     // 預設活動流程資料庫 (作為離線或備援基準)
     let scheduleData = [
-  {
-    "id": 1,
-    "date": "10/31 (六)",
-    "startTime": "09:20",
-    "endTime": "10:00",
-    "duration": "",
-    "activity": "接駁車：高鐵台中站 6 號出口 → 正巧文旅",
-    "location": "高鐵台中站-6號出口",
-    "note": "- 遊覽車預定 9:20發車-6號出口（車長：廖培芯）\n- 正巧文旅 禁葷食，建議夥伴上車前即將食物（尤其是葷食）處理完畢\n"
-  },
-  {
-    "id": 2,
-    "date": "10/31 (六)",
-    "startTime": "10:00",
-    "endTime": "10:15",
-    "duration": "",
-    "activity": "全體集合並移動至4樓佛堂",
-    "location": "正巧文旅-4樓佛堂",
-    "note": "行李\n- 住宿正巧文旅：放主管辦公室\n- 住宿知達：放隔壁樓 辦公室\n"
-  },
-  {
-    "id": 3,
-    "date": "10/31 (六)",
-    "startTime": "10:15",
-    "endTime": "11:15",
-    "duration": "",
-    "activity": "1. 本次活動說明及介紹\n2. 午餐分組",
-    "location": "正巧文旅-4樓佛堂",
-    "note": ""
-  },
-  {
-    "id": 4,
-    "date": "10/31 (六)",
-    "startTime": "11:15",
-    "endTime": "14:30",
-    "duration": "",
-    "activity": "重啟各組（含接班人）至不同餐廳用餐\n訪談「食五家」老闆們",
-    "location": "食五家各餐廳",
-    "note": "- 移動規則：怎麼來正巧，就怎麼去各餐廳\n- 搭乘遊覽車夥伴：遊覽車會沿路在4家餐廳處放人"
-  },
-  {
-    "id": 5,
-    "date": "10/31 (六)",
-    "startTime": "14:30",
-    "endTime": "15:00",
-    "duration": "",
-    "activity": "回 正巧文旅 集合",
-    "location": "正巧文旅-4樓佛堂",
-    "note": "- 移動規則：怎麼去各餐廳，就怎麼回正巧\n- 搭乘遊覽車夥伴：遊覽車會沿路在4家餐廳處接人（14:30左右）"
-  },
-  {
-    "id": 6,
-    "date": "10/31 (六)",
-    "startTime": "15:00",
-    "endTime": "16:00",
-    "duration": "",
-    "activity": "活動流程及規則說明",
-    "location": "正巧文旅-4樓佛堂",
-    "note": ""
-  },
-  {
-    "id": 7,
-    "date": "10/31 (六)",
-    "startTime": "16:00",
-    "endTime": "18:00",
-    "duration": "",
-    "activity": "小組討論 + 準備簡報",
-    "location": "正巧文旅-4樓佛堂",
-    "note": ""
-  },
-  {
-    "id": 8,
-    "date": "10/31 (六)",
-    "startTime": "18:00",
-    "endTime": "19:00",
-    "duration": "",
-    "activity": "用餐",
-    "location": "正巧文旅-1樓餐廳",
-    "note": "素食合菜，10人一桌；6桌"
-  },
-  {
-    "id": 9,
-    "date": "10/31 (六)",
-    "startTime": "19:00",
-    "endTime": "20:00",
-    "duration": "",
-    "activity": "午間訪談心得簡報",
-    "location": "正巧文旅-4樓佛堂",
-    "note": ""
-  },
-  {
-    "id": 10,
-    "date": "10/31 (六)",
-    "startTime": "20:00",
-    "endTime": "21:30",
-    "duration": "",
-    "activity": "活動",
-    "location": "正巧文旅-4樓佛堂",
-    "note": ""
-  },
-  {
-    "id": 11,
-    "date": "10/31 (六)",
-    "startTime": "21:30",
-    "endTime": "21:50",
-    "duration": "",
-    "activity": "活動結束\n知達住宿組 回 知達工藝中心",
-    "location": "",
-    "note": "- 住宿知達且搭乘遊覽車：20+ 人"
-  },
-  {
-    "id": 12,
-    "date": "11/01 (日)",
-    "startTime": "9:30",
-    "endTime": "10:00",
-    "duration": "",
-    "activity": "集合\n- 集合前，全體人員（正巧及知達）請均先完成退房",
-    "location": "正巧文旅-4樓佛堂",
-    "note": "-行李\n-- 住宿正巧文旅：放主管辦公室\n-- 住宿知達：放隔壁樓 辦公室\n\n- 按「戰隊」坐定\n"
-  },
-  {
-    "id": 13,
-    "date": "11/01 (日)",
-    "startTime": "10:00",
-    "endTime": "11:15",
-    "duration": "",
-    "activity": "活動",
-    "location": "正巧文旅-4樓佛堂",
-    "note": ""
-  },
-  {
-    "id": 14,
-    "date": "11/01 (日)",
-    "startTime": "11:15",
-    "endTime": "11:30",
-    "duration": "",
-    "activity": "訊息公告",
-    "location": "正巧文旅-4樓佛堂",
-    "note": ""
-  },
-  {
-    "id": 15,
-    "date": "11/01 (日)",
-    "startTime": "11:30",
-    "endTime": "11:45",
-    "duration": "",
-    "activity": "憲哥的祝福",
-    "location": "正巧文旅-4樓佛堂",
-    "note": ""
-  },
-  {
-    "id": 16,
-    "date": "11/01 (日)",
-    "startTime": "11:45",
-    "endTime": "13:00",
-    "duration": "",
-    "activity": "用餐",
-    "location": "正巧文旅-1樓餐廳",
-    "note": "素食便當"
-  },
-  {
-    "id": 17,
-    "date": "11/01 (日)",
-    "startTime": "13:00",
-    "endTime": "13:30",
-    "duration": "",
-    "activity": "Time to Say Goodbye",
-    "location": "正巧文旅-外部草地空間",
-    "note": ""
-  }
-];
+      { id: 1, date: "10/30 (五)", startTime: "15:00", endTime: "18:00", duration: "180", location: "正巧 / 督賀", activity: "場佈\n事前綵排", note: "YoKaKy 於 10/30 進駐正巧\n照片布展、藏寶箱分類安置" },
+      { id: 2, date: "10/31 (六)", startTime: "09:00", endTime: "10:00", duration: "60", location: "", activity: "接駁車：高鐵台中站－督賀蔬食", note: "- 事前公告+報名；公告住宿費用、提醒重啟夥伴帶「集點卡」\n- 車資：1,200/人（重啟、接班人相同）\n- 遊覽車預定 9:20發車-6號出口（車掌/長：廖培芯）\n- 確認人數，回報出車→需行政支援：勿帶葷食" },
+      { id: 3, date: "10/31 (六)", startTime: "10:00", endTime: "10:15", duration: "15", location: "督賀-4樓佛堂", activity: "全體集合並移動至4樓佛堂", note: "行李放旁邊會館\n翰茗辦公室：正巧\n隔壁建設公司：知達" },
+      { id: 4, date: "10/31 (六)", startTime: "10:15", endTime: "11:15", duration: "60", location: "督賀-4樓佛堂", activity: "本次活動說明及介紹", note: "說明：\n- 當日午餐分組、去回時間、注意事項（費用、交通）\n-- 怎麼來正巧（遊覽車、自行開車），就怎麼去餐廳\n- 下午流程、晚餐、餐後活動\n- 場地使用注意事項－嚴禁葷食、注意音量、垃圾處理\n- 報到流程（報到單）及相關文件→需行政支援" },
+      { id: 5, date: "10/31 (六)", startTime: "11:15", endTime: "14:30", duration: "195", location: "食五家各餐廳", activity: "重啟各組（含接班人）至不同餐廳用餐 及 訪談「食五家」老闆們", note: "- 以餐廳來組別已事先分配好（預計5組，每組8-13人不等）\n- 部分工作人員留守（Kate、Yoyo、田爸、培芯留下確認下午的場地與投影片）其餘接班人一同參加「餐訪」活動\n- 4家餐廳地址：\n-- 植田割烹：542南投縣草屯鎮敦和里信義街207號\n-- 弎食鉄板料理 草屯店：542南投縣草屯鎮敦和里碧山路652號\n-- 湫禾壽喜燒：542南投縣草屯鎮碧山路820號\n-- 麵五三屋台：542南投縣草屯鎮新庄里史館路397巷53號（田間）\n- 遊覽車\n-- 11:15 正巧出發送到四個餐廳\n-- 14:30 從四個餐廳接送回來正巧（餐廳休息時間）" },
+      { id: 6, date: "10/31 (六)", startTime: "14:30", endTime: "15:00", duration: "30", location: "督賀-4樓佛堂", activity: "回督賀 集合", note: "- 遊覽車處理" },
+      { id: 7, date: "10/31 (六)", startTime: "15:00", endTime: "16:00", duration: "60", location: "督賀-4樓佛堂", activity: "重啟：活動說明（如：12月活動）\n- 公告 目前「全勤入圍名單」...", note: "- 12月活動及相關訊息\n- 佛堂空間使用規則（禁飲食、尤其是葷食），用餐時間、活動流程告知" },
+      { id: 8, date: "10/31 (六)", startTime: "16:00", endTime: "18:00", duration: "120", location: "督賀-4樓佛堂", activity: "小組討論 + 準備晚上簡報\n規則：\n1. 主題需和食五家-重啟 相關\n2. 現場空間使用注意事項\n3. 時間流程", note: "-「簡報/表演」方式不限，各組自行發揮，主軸簡報陳述「餐訪與重啟人生相關」內容；的告知。\n- 接班人不參與討論\n- 簡報道具（海報紙、彩色筆、A4紙、膠帶、膠水等阿裡不答全來）→需行政支援\n\n建議 16:20-17:00\n接班人內部會議（40 min)\n-- 第2屆 重啟\n-- 第4屆 接班人" },
+      { id: 9, date: "10/31 (六)", startTime: "18:00", endTime: "19:00", duration: "60", location: "督賀-1樓餐廳", activity: "用餐", note: "- 素食合菜，10人一桌；6桌\n- 接班人打散和重啟夥伴一同用餐" },
+      { id: 10, date: "10/31 (六)", startTime: "19:00", endTime: "20:00", duration: "60", location: "督賀-4樓佛堂", activity: "各組午間訪談心得分享", note: "- 每組 8 分鐘；總時長 60分鐘：鐵1植1壽2拉1 共5組\n- 主持組合：Yoyo+Kate / Kyle 支援" },
+      { id: 11, date: "10/31 (六)", startTime: "20:00", endTime: "21:30", duration: "90", location: "督賀-4樓佛堂", activity: "照片故事+年度分享\n說明：選最有感的，不一定是自己或有自己的\n1. 先給時間讓大家各自選照片，每人最多 1 張（剩餘照片開放事後認領）\n2. 回到自己座位（簡報組）－之前，要先「憑照片領衛生紙」（Yoyo擔任衛生紙股長）\n3. 「重啟人生夥伴（接班人不分享）」跟大家分享（設定每人時間m分鐘）\n - 按簡報組順序，每組1人，完成一輪後再回到第1組，依此類推，目標是每人都說到話（待確認？）\n - 避免有些人說太久、或都是同群人在說\n\n※ 此時先發放「重啟人生抽取式衛生紙（就算是大便，也不能忘記我們）」？", note: "- 事前工作：\n-- 選+張貼有重啟活動的照片x 150 張\n-- 1月8張+3月30張+4月30張+6月60張+8月22張\n-- 委請 豐說團隊幫挑 100 片→需行政支援\n--- 選片條件：報名10/31的重啟夥伴都有在裡頭、或不要有任何重啟夥伴被漏掉\n--- 各照片逐張編號（001-150）後，發電子檔給 Yoyo→幫洗出實體照片（6x8）\n--- 10/12（一） 前 完成\n\n- 場地布置：重啟活動照片x150張\n-- YoKaKy 於10/30進駐正巧\n-- 紙本照片背面寫上編號\n-- 布置現場：棉繩+曬衣夾：夾起每張照片\n\n- 當天活動\n-- 重啟夥伴原地站起分享：「我要分享的是88號照片」；控制台可立即播放照片\n\n- 主持組合：Yoyo+Kate（Kyle支援）" },
+      { id: 12, date: "10/31 (六)", startTime: "21:30", endTime: "21:50", duration: "20", location: "", activity: "活動結束\n知達住宿組 回 知達工藝中心", note: "- 接班人，Yoyo和Kyle會 住宿 知達（停車？）\n- 知達組約40人 的交通安排→遊覽車接送" },
+      { id: 13, date: "11/01 (日)", startTime: "09:30", endTime: "10:00", duration: "30", location: "督賀-4樓佛堂", activity: "全體集合\n知達住宿組 完成退房並移動至 正巧", note: "- 督賀及知達都先退房\n- 行李放旁邊會館（翰茗辦公室）\n- 按「各戰隊」坐定\n- 知達組約40人 的交通安排→遊覽車 9:30 出發 往 正巧" },
+      { id: 14, date: "11/01 (日)", startTime: "10:00", endTime: "11:15", duration: "75", location: "督賀-4樓佛堂", activity: "Kate+Kyle：腦筋急轉彎＋無路之路：\n按各戰隊坐：回顧過去一年\n1. 用迎新流程－再填「瓶中信」4問題\n2. 然後抬出藏寶箱及分發瓶中信\n3. 比較年初和現在的自己後，四道：道謝、道愛、道歉、道別\n - 對象：自己；同戰隊夥伴、某項活動中的某些人事物、某人", note: "- 主持：Kyle（Yoyo+Kate支援；活動細部說明：https://reurl.cc/90ydka）\n\n1. 瓶中信（含藏寶箱，按戰隊分類好－10/30 就藏佛堂）\n2. 製作「新版 瓶中信」問題（紙+筆）→需行政支援/發放原瓶中信" },
+      { id: 15, date: "11/01 (日)", startTime: "11:15", endTime: "11:30", duration: "15", location: "督賀-4樓佛堂", activity: "頒發 都蘭冠軍隊T恤\n公布 全勤入圍名單－小禮物（抽取式衛生紙）", note: "" },
+      { id: 16, date: "11/01 (日)", startTime: "11:30", endTime: "11:45", duration: "15", location: "督賀-4樓佛堂", activity: "憲哥獻給大家的祝福", note: "12/20 頒發全勤" },
+      { id: 17, date: "11/01 (日)", startTime: "11:45", endTime: "13:00", duration: "75", location: "督賀-1樓餐廳", activity: "用餐", note: "督賀可支援便當（預算 100-200元之間）" },
+      { id: 18, date: "11/01 (日)", startTime: "13:00", endTime: "13:30", duration: "30", location: "督賀-外部草地空間", activity: "接班人送客\n- 用餐完畢者，先取出自己行李\n- 接駁車：督賀蔬食－高鐵台中站－最遲 13:30 發車", note: "接班人一樓列隊歡送上車，莫文蔚的隊歌（這世界那麼多人）。\nYKK 三個前面，翻歌詞（一句一句印出，12/20再相見）。" },
+      { id: 19, date: "備註說明", startTime: "全天", endTime: "-", duration: "", location: "", activity: "遊覽車接駁安排（培芯車長）", note: "遊覽車36人（培芯車長）\n10/31\n- 集合地點：台中高鐵，6號出口\n- 09:20 台中高鐵出發正巧\n- 11:15 正巧出發送到四個餐廳\n- 14:30 從四個餐廳接送回來正巧\n- 22:00 正巧送到知達\n\n11/01\n- 09:30 知達送到正巧\n- 13:30 正巧出發到台中高鐵" }
+    ];
 
     let rawDirectoryData = [
       { team: "白", name: "林政緯", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "不吃：豬", hotel: "正巧", roomType: "2人房", roomGroup: "正巧-2人房_5", roommates: "林政緯-妻, 林政緯-看護" },
@@ -709,7 +574,7 @@
       { team: "紅", name: "潘麗婧", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_2", roommates: "郭淑貞, 張婷婷, 陳尹恩" },
       { team: "紅", name: "汪方巧", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "弎食鉄板", isDiningLeader: "否", diet: "不吃：鴨肉", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_3", roommates: "胡智容, 許家倫, 廖培芯" },
       { team: "紅", name: "胡智容", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "不吃：辣", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_3", roommates: "汪方巧, 許家倫, 廖培芯" },
-      { team: "紅", name: "莫惠萍", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "不吃：牛羊", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_1", roommates: "黃立軒" },
+      { team: "紅", name: "莫惠萍", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "是", diet: "不吃：牛羊", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_1", roommates: "黃立軒" },
       { team: "紅", name: "殷燕伶", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "植田割烹", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_5", roommates: "薛雅文" },
       { team: "紅", name: "盧萱語", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "過敏：蛋和小麥", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_7", roommates: "陳美好" },
       { team: "紅", name: "林郁婷", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "不吃：牛", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_9", roommates: "黃義涵" },
@@ -721,7 +586,7 @@
 
       { team: "接班人", name: "謝文憲", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "2人房", roomGroup: "正巧-2人房_1", roommates: "無" },
       { team: "接班人", name: "范永銀", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "植田割烹", isDiningLeader: "否", diet: "不吃：蒜", hotel: "正巧", roomType: "2人房", roomGroup: "正巧-2人房_2", roommates: "無" },
-      { team: "接班人", name: "梁懷貞", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "是", diet: "無", hotel: "正巧", roomType: "2人房", roomGroup: "正巧-2人房_3", roommates: "李紘逸" },
+      { team: "接班人", name: "梁懷貞", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "2人房", roomGroup: "正巧-2人房_3", roommates: "李紘逸" },
       { team: "接班人", name: "吳緁苓", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "NO", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "2人房", roomGroup: "正巧-2人房_4", roommates: "洪淑姮" },
       { team: "接班人", name: "洪淑姮", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "2人房", roomGroup: "正巧-2人房_4", roommates: "吳緁苓" },
       { team: "接班人", name: "廖培芯", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "是", restaurant: "NO", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_3", roommates: "汪方巧, 胡智容, 許家倫" },
@@ -774,47 +639,35 @@
     }
 
     async function fetchCloudDataSilently() {
-      if (cloudRefreshInProgress) return;
-      cloudRefreshInProgress = true;
-      let dataChanged = false;
-      let scheduleSynced = false;
-      const previousScheduleStatus = scheduleSourceStatus;
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 12000);
       const refreshIcon = document.getElementById('refreshIcon');
       refreshIcon.classList.add('fa-spin');
       
       try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 3500);
 
-        // 同時非同步抓取「成員名單」與指定路徑之「活動流程 (gid=1928975316)」
         const [dirRes, scheduleRes] = await Promise.allSettled([
-          fetch(`${GOOGLE_SHEET_DIR_URL}&_t=${Date.now()}`, { signal: controller.signal, cache: 'no-store' }).then(async response => ({ ok: response.ok, csv: response.ok ? await response.text() : '' })),
-          fetch(`${GOOGLE_SHEET_SCHEDULE_URL}&_t=${Date.now()}`, { signal: controller.signal, cache: 'no-store' }).then(async response => ({ ok: response.ok, csv: response.ok ? await response.text() : '' }))
+          fetch(`${GOOGLE_SHEET_DIR_URL}&_t=${Date.now()}`, { signal: controller.signal, cache: 'no-store' }),
+          fetch(`${GOOGLE_SHEET_SCHEDULE_URL}&_t=${Date.now()}`, { signal: controller.signal, cache: 'no-store' })
         ]);
 
+        clearTimeout(timeoutId);
 
-        // 1. 解析指定來源的重啟活動流程 (gid=1928975316)
         if (scheduleRes.status === 'fulfilled' && scheduleRes.value.ok) {
-          const scheduleCsv = scheduleRes.value.csv;
+          const scheduleCsv = await scheduleRes.value.text();
           Papa.parse(scheduleCsv, {
             header: true,
             skipEmptyLines: true,
-            transformHeader: header => header.replace(/^\uFEFF/, '').trim(),
             complete: (results) => {
               if (results.data && results.data.length > 0) {
-                let lastDate = '';
                 const parsedSchedule = results.data.map((r, idx) => {
-                  const explicitDate = (r['日期'] || r['Date'] || '').trim();
-                  if (explicitDate) lastDate = explicitDate;
-                  const dateVal = lastDate;
+                  const dateVal = r['日期'] || r['Date'] || '';
                   const actVal = r['活動'] || r['活動內容'] || r['流程項目'] || r['Activity'] || '';
                   const noteVal = r['說明'] || r['備註'] || r['注意事項'] || r['Note'] || '';
 
-                  // 起時智慧辨識：支援「起時」、「開始時間」、「起時(時間)」、「Start」、「時間」或複合時間欄位擷取
-                  let startVal = r['起時'] || r['起時(時間)'] || r['開始時間'] || r['Start'] || r['起'] || '';
-                  let endVal = r['迄時'] || r['訖時'] || r['結束時間'] || r['End'] || r['迄'] || '';
+                  let startVal = r['起時'] || r['開始時間'] || r['Start'] || r['起'] || '';
+                  let endVal = r['迄時'] || r['結束時間'] || r['End'] || r['迄'] || '';
 
-                  // 若單一「時間」欄包含區間（如 09:00-10:00 或 09:00~10:00）
                   const fullTime = r['時間'] || r['時段'] || r['Time'] || '';
                   if (!startVal && fullTime) {
                     const match = fullTime.match(/(\d{1,2}:\d{2})/g);
@@ -836,24 +689,18 @@
                     activity: actVal,
                     note: noteVal
                   };
-                }).filter(item => item.activity || item.startTime || item.endTime || item.location || item.note);
+                }).filter(item => item.date || item.activity);
 
-                if (parsedSchedule.length > 0 && results.meta && results.meta.fields.some(field => ['活動', '活動內容', '流程項目', 'Activity'].includes(field))) {
-                  scheduleSynced = true;
-                  scheduleSourceStatus = '已同步資料庫';
-                  if (JSON.stringify(scheduleData) !== JSON.stringify(parsedSchedule)) {
-                    scheduleData = parsedSchedule;
-                    dataChanged = true;
-                  }
+                if (parsedSchedule.length > 0) {
+                  scheduleData = parsedSchedule;
                 }
               }
             }
           });
         }
 
-        // 2. 解析成員總表
         if (dirRes.status === 'fulfilled' && dirRes.value.ok) {
-          const csvText = dirRes.value.csv;
+          const csvText = await dirRes.value.text();
           Papa.parse(csvText, {
             header: true,
             skipEmptyLines: true,
@@ -871,7 +718,7 @@
                     trafficBack: r['交通-回程'] || '',
                     isTrafficLeader: (r['交通-去程_隊長'] === '交通-去程_隊長' || r['交通-去程_隊長'] === '隊長') ? '是' : '否',
                     restaurant: rest,
-                    isDiningLeader: (r['餐廳_隊長'] && r['餐廳_隊長'].includes('隊長')) ? '是' : '否',
+                    isDiningLeader: DINING_BUS_CAPTAINS.has(name) ? '是' : '否',
                     diet: r['飲食注意事項'] || '無',
                     hotel: r['住宿'] || '',
                     roomType: r['房型'] || '',
@@ -881,10 +728,8 @@
                 }).filter(i => i.name);
 
                 if (parsed.length > 0) {
-                  const previousData = JSON.stringify(rawDirectoryData);
                   rawDirectoryData = parsed;
                   calculateDirectoryRoommates();
-                  if (JSON.stringify(rawDirectoryData) !== previousData) dataChanged = true;
                 }
               }
             }
@@ -893,11 +738,8 @@
       } catch (err) {
         console.warn('雲端更新連線略過，維持原始數據集');
       } finally {
-        clearTimeout(timeoutId);
-        if (!scheduleSynced) scheduleSourceStatus = scheduleSourceStatus === '已同步資料庫' ? '更新失敗，顯示上次同步資料' : '連線或資料格式異常，顯示備援資料';
-        cloudRefreshInProgress = false;
         refreshIcon.classList.remove('fa-spin');
-        if (dataChanged || previousScheduleStatus !== scheduleSourceStatus) renderCurrentTab();
+        renderCurrentTab();
       }
     }
 
@@ -919,7 +761,7 @@
        ========================================================= */
     function calculateDirectoryRoommates() {
       searchTextCache = new WeakMap();
-      const roomMap = Object.create(null);
+      const roomMap = {};
       rawDirectoryData.forEach(item => {
         if (!item.roomGroup || item.roomGroup === '無-無_無' || item.roomGroup === 'NONE') return;
         if (!roomMap[item.roomGroup]) roomMap[item.roomGroup] = [];
@@ -971,7 +813,6 @@
       };
       searchInput.placeholder = placeholderMap[tabKey] || '即時全文檢索...';
 
-      // 餐飲資訊卡片顯示控制
       const diningInfoCard = document.getElementById('diningInfoCard');
       if (tabKey === 'dining') {
         diningInfoCard.classList.remove('hidden');
@@ -979,7 +820,6 @@
         diningInfoCard.classList.add('hidden');
       }
 
-      // 住宿資訊卡片顯示控制
       const lodgingInfoCard = document.getElementById('lodgingInfoCard');
       if (tabKey === 'lodging') {
         lodgingInfoCard.classList.remove('hidden');
@@ -999,7 +839,7 @@
     }
 
     /* =========================================================
-       5. 渲染各分頁內容（字級均放大一級，全面粉紅/粉橘調配）
+       5. 渲染各分頁內容
        ========================================================= */
     function renderCurrentTab() {
       clearTimeout(searchTimer);
@@ -1007,9 +847,19 @@
       const tbody = document.getElementById('tableBody');
       const countBadge = document.getElementById('rowCountBadge');
 
-      document.getElementById('mainDataTable').classList.toggle('schedule-layout', currentTab === 'schedule');
-      document.getElementById('mainDataTable').hidden = currentTab === 'lodging';
-      document.getElementById('lodgingRoomView').hidden = currentTab !== 'lodging';
+      const roomView = document.getElementById('lodgingRoomView');
+      const mainTable = document.getElementById('mainDataTable');
+
+      // 預設 lodging 顯示表格，如需切換 roomView 可靈活配置
+      if (currentTab === 'lodging' && !roomView.hidden && false) {
+        mainTable.hidden = true;
+        roomView.hidden = false;
+        renderLodgingRoomCards(countBadge);
+      } else {
+        mainTable.hidden = false;
+        if (roomView) roomView.hidden = true;
+      }
+
       if (currentTab === 'schedule') {
         renderScheduleTab(thead, tbody, countBadge);
       } else if (currentTab === 'overview') {
@@ -1023,7 +873,7 @@
       }
     }
 
-    /* --- [分頁1] 重啟-活動流程 (粉紅/粉橘底色風格) --- */
+    /* --- [分頁1] 重啟-活動流程 --- */
     function renderScheduleTab(thead, tbody, countBadge) {
       thead.innerHTML = `
         <tr class="text-sm font-semibold">
@@ -1031,9 +881,9 @@
           <th class="py-3 px-2 w-28 text-center">日期</th>
           <th class="py-3 px-2 w-24 text-center">起時</th>
           <th class="py-3 px-2 w-24 text-center">迄時</th>
-          <th class="py-3 px-3.5 schedule-location">地點</th>
-          <th class="py-3 px-3.5 schedule-activity">活動</th>
-          <th class="py-3 px-3.5 schedule-note">說明</th>
+          <th class="py-3 px-3.5 w-40">地點</th>
+          <th class="py-3 px-3.5 min-w-[13rem]">活動</th>
+          <th class="py-3 px-3.5 min-w-[20rem] flex-1">說明</th>
         </tr>
       `;
 
@@ -1043,7 +893,7 @@
         return text.includes(searchQuery);
       });
 
-      countBadge.textContent = `共 ${list.length} 項流程 · ${scheduleSourceStatus}`;
+      countBadge.textContent = `共 ${list.length} 項流程`;
 
       if (list.length === 0) {
         tbody.innerHTML = `<tr><td colspan="7" class="py-12 text-center text-rose-400 text-base">無符合的活動流程資料</td></tr>`;
@@ -1065,9 +915,9 @@
             <td class="py-3 px-2 text-center font-bold text-rose-900 whitespace-nowrap">${escapeHtml(item.date)}</td>
             <td class="py-3 px-2 text-center whitespace-nowrap">${startTimeHtml}</td>
             <td class="py-3 px-2 text-center whitespace-nowrap">${endTimeHtml}</td>
-            <td class="py-3 px-3.5 font-normal text-rose-900 break-words whitespace-pre-line schedule-location">${escapeHtml(item.location || '-')}</td>
-            <td class="py-3 px-3.5 font-normal text-rose-950 break-words whitespace-pre-line text-base leading-snug schedule-activity">${escapeHtml(item.activity)}</td>
-            <td class="py-3 px-3.5 text-rose-900 break-words leading-relaxed text-sm schedule-note">${formatScheduleNote(item.note)}</td>
+            <td class="py-3 px-3.5 font-bold text-rose-900 break-words">${escapeHtml(item.location || '-')}</td>
+            <td class="py-3 px-3.5 font-bold text-rose-950 break-words whitespace-pre-line text-base leading-snug">${escapeHtml(item.activity)}</td>
+            <td class="py-3 px-3.5 text-rose-900 break-words leading-relaxed text-sm">${formatScheduleNote(item.note)}</td>
           </tr>
         `;
       }).join('');
@@ -1083,7 +933,6 @@
       }
       const isBeforeNoon = hour < 12;
 
-      // 暖粉紅、暖珊瑚、粉橘交織
       if (is1031) {
         return isBeforeNoon ? 'bg-pink-50/80 hover:bg-pink-100/70' : 'bg-rose-100/60 hover:bg-rose-100/90';
       } else {
@@ -1093,7 +942,7 @@
 
     function formatScheduleNote(text) {
       if (!text) return '<span class="text-rose-300">-</span>';
-      const lines = text.split('\n').filter(line => !line.includes('需行政支援'));
+      const lines = text.split('\n');
       
       return lines.map(line => {
         const trimmed = line.trim();
@@ -1166,7 +1015,7 @@
     function getTeamBgClass(team) {
       if (team === '白') return 'bg-team-white hover:bg-rose-50/60';
       if (team === '紅') return 'bg-team-red hover:bg-rose-200/60';
-      if (team === '綠') return 'bg-team-green hover:bg-orange-100/70'; /* 原綠色換成暖粉橘 */
+      if (team === '綠') return 'bg-team-green hover:bg-orange-100/70';
       if (team === '接班人') return 'bg-team-successor hover:bg-amber-100/80';
       return 'bg-white hover:bg-rose-50/40';
     }
@@ -1242,12 +1091,12 @@
 
     function getTrafficLeaderBadge(item) {
       if (item.isTrafficLeader === '是') {
-        return `<div class="text-xs font-bold text-rose-600 mt-0.5 flex items-center"><span class="icon-circle w-4 h-4 bg-rose-200 text-rose-700 mr-1"><i class="fa-solid fa-star text-[9px]"></i></span>（遊覽車 隊長）</div>`;
+        return `<div class="text-xs font-bold text-rose-600 mt-0.5 flex items-center"><span class="icon-circle w-4 h-4 bg-rose-200 text-rose-700 mr-1"><i class="fa-solid fa-star text-[9px]"></i></span>（遊覽車 車長）</div>`;
       }
       return '';
     }
 
-    /* --- [分頁4] 重啟-餐飲服務 --- */
+    /* --- [分頁4] 重啟-餐飲服務 (支援：遊覽車 車長 & 領談人) --- */
     function renderDiningTab(thead, tbody, countBadge) {
       thead.innerHTML = `
         <tr class="text-base font-semibold">
@@ -1306,9 +1155,28 @@
         }
 
         const dietDisplay = formatDietDisplay(item.diet);
-        const leaderBadge = item.isDiningLeader === '是'
-          ? `<div class="text-xs font-bold text-rose-600 mt-0.5 flex items-center"><span class="icon-circle w-4 h-4 bg-rose-200 text-rose-700 mr-1"><i class="fa-solid fa-star text-[9px]"></i></span>（遊覽車 隊長）</div>`
-          : '';
+
+        // 判斷幹部徽章：遊覽車 車長 & 領談人
+        const isBusCaptain = DINING_BUS_CAPTAINS.has(item.name);
+        const isInterviewer = DINING_INTERVIEWERS.has(item.name);
+
+        let roleBadgesHtml = '';
+        if (isBusCaptain) {
+          roleBadgesHtml += `
+            <div class="text-xs font-bold text-rose-600 mt-0.5 flex items-center">
+              <span class="icon-circle w-4 h-4 bg-rose-200 text-rose-700 mr-1"><i class="fa-solid fa-bus text-[9px]"></i></span>
+              <span>（遊覽車 車長）</span>
+            </div>
+          `;
+        }
+        if (isInterviewer) {
+          roleBadgesHtml += `
+            <div class="text-xs font-bold text-orange-700 mt-0.5 flex items-center">
+              <span class="icon-circle w-4 h-4 bg-orange-200 text-orange-800 mr-1"><i class="fa-solid fa-comments text-[9px]"></i></span>
+              <span>（領談人）</span>
+            </div>
+          `;
+        }
 
         return `
           <tr class="text-base border-b border-rose-100 transition-colors ${bgClass}">
@@ -1316,7 +1184,7 @@
             <td class="py-3.5 px-3 align-middle">${restCellHtml}</td>
             <td class="py-3.5 px-3 align-middle">
               <div class="font-bold text-rose-950">${escapeHtml(item.name)}</div>
-              ${leaderBadge}
+              ${roleBadgesHtml}
             </td>
             <td class="py-3.5 px-3 align-middle">${dietDisplay}</td>
             <td class="py-3.5 px-3 font-semibold text-rose-900 align-middle">${escapeHtml(trafficMethod)}</td>
@@ -1354,117 +1222,64 @@
       return '<span class="icon-circle w-6 h-6 bg-rose-100 text-rose-700"><i class="fa-solid fa-utensils text-xs"></i></span>';
     }
 
-    /* --- [分頁5] 重啟-住宿服務 --- */
+    /* --- [分頁5] 重啟-住宿服務 (知達聯絡人：杜志峰、吳淋禎；正巧聯絡人：吳緁苓) --- */
     function renderLodgingTab(thead, tbody, countBadge) {
-      const view = document.getElementById('lodgingRoomView');
-      const matched = getProcessedDirectoryList().filter(i => i.name !== '彭偉峰');
-      const roomKey = item => item.roomGroup && !['無-無_無', 'NONE'].includes(item.roomGroup)
-        ? JSON.stringify([item.hotel, item.roomGroup]) : JSON.stringify([item.hotel, item.roomType, item.name]);
-      const allRooms = new Map();
-      rawDirectoryData.filter(i => i.name !== '彭偉峰').forEach(item => {
-        const key = roomKey(item);
-        if (!allRooms.has(key)) allRooms.set(key, []);
-        allRooms.get(key).push(item);
-      });
-      const roomDesigns = new Map(Array.from(allRooms.keys(), (key, index) => [key, index]));
-      const personDesigns = new Map(rawDirectoryData.map((person, index) => [person, index]));
-      const visibleRooms = new Map();
-      const matchedPeople = new Set(matched);
-      matched.forEach(item => {
-        const key = roomKey(item);
-        if (!visibleRooms.has(key)) visibleRooms.set(key, allRooms.get(key));
-      });
-      const residents = Array.from(visibleRooms.values()).reduce((sum, room) => sum + room.length, 0);
-      countBadge.textContent = `共 ${visibleRooms.size} 間房・${residents} 位住宿人員`;
-      const controls = [['住宿飯店', 'hotel'], ['房型', 'roomType'], ['姓名', 'name'], ['同房室友', 'roommates']].map(([title, key]) => {
-        const selected = columnFilters[key] && columnFilters[key].size > 0;
-        return `<button type="button" onclick="openFilterModal('${key}', '${title}', event)">${title}${selected ? ' · 已篩選' : ''}${activeSortColumn === key ? (activeSortDirection === 'asc' ? ' ↑' : ' ↓') : ' ▾'}</button>`;
+      thead.innerHTML = `
+        <tr class="text-base font-semibold">
+          <th class="py-3.5 px-3 text-center w-12 text-rose-700">#</th>
+          ${renderHeaderTh('住宿飯店', 'hotel', 'w-40')}
+          ${renderHeaderTh('房型', 'roomType', 'w-32')}
+          ${renderHeaderTh('姓名', 'name', 'w-40')}
+          ${renderHeaderTh('同房室友', 'roommates', '')}
+        </tr>
+      `;
+
+      let list = getProcessedDirectoryList().filter(i => i.name !== '彭偉峰');
+      countBadge.textContent = `共 ${list.length} 位住宿人員`;
+
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="py-12 text-center text-rose-400 text-base">無符合的住宿資料</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map((item, idx) => {
+        const bgClass = getLodgingComboBgClass(item.hotel, item.roomType);
+        const hotelIcon = item.hotel.includes('正巧')
+          ? '<span class="icon-circle w-6 h-6 bg-orange-100 text-orange-700 mr-2"><i class="fa-solid fa-tree-city text-xs"></i></span>'
+          : '<span class="icon-circle w-6 h-6 bg-rose-100 text-rose-700 mr-2"><i class="fa-solid fa-hotel text-xs"></i></span>';
+
+        let nameCellHtml = `<div class="font-bold text-rose-950">${escapeHtml(item.name)}</div>`;
+        if (LODGING_CONTACTS_ZHIDA.has(item.name)) {
+          nameCellHtml = `
+            <div class="font-bold text-rose-950">${escapeHtml(item.name)}</div>
+            <div class="text-xs font-bold text-rose-600 leading-tight mt-0.5 flex items-center">
+              <span class="icon-circle w-4 h-4 bg-rose-200 text-rose-700 mr-1"><i class="fa-solid fa-key text-[9px]"></i></span>
+              <span>（知達 聯絡人）</span>
+            </div>
+          `;
+        } else if (LODGING_CONTACTS_ZHENGQIAO.has(item.name)) {
+          nameCellHtml = `
+            <div class="font-bold text-rose-950">${escapeHtml(item.name)}</div>
+            <div class="text-xs font-bold text-orange-700 leading-tight mt-0.5 flex items-center">
+              <span class="icon-circle w-4 h-4 bg-orange-200 text-orange-800 mr-1"><i class="fa-solid fa-key text-[9px]"></i></span>
+              <span>（正巧 聯絡人）</span>
+            </div>
+          `;
+        }
+
+        return `
+          <tr class="text-base border-b border-rose-100 transition-colors ${bgClass}">
+            <td class="py-3.5 px-3 text-center text-rose-400 font-medium align-middle">${idx + 1}</td>
+            <td class="py-3.5 px-3 font-bold text-rose-900 align-middle flex items-center">
+              ${hotelIcon}
+              <span>${escapeHtml(item.hotel)}</span>
+            </td>
+            <td class="py-3.5 px-3 font-semibold text-rose-800 align-middle">${escapeHtml(item.roomType)}</td>
+            <td class="py-3.5 px-3 align-middle">${nameCellHtml}</td>
+            <td class="py-3.5 px-3 align-middle">${renderRoommateChips(item.roommates)}</td>
+          </tr>
+        `;
       }).join('');
-      const hotels = new Map();
-      visibleRooms.forEach(room => {
-        const hotel = room[0].hotel || '未指定飯店';
-        if (!hotels.has(hotel)) hotels.set(hotel, []);
-        hotels.get(hotel).push(room);
-      });
-      view.innerHTML = `<div class="room-toolbar no-print">${controls}</div>
-        <p class="room-help">移入房間看大家揮手，手機可點一下。搜尋會顯示整間房的完整名單。分組編號為資料中的住宿分組，並非飯店實際房號。</p>` +
-        (hotels.size ? Array.from(hotels, ([hotel, rooms]) => {
-          const hotelName = hotel === '知達' ? '知達工藝會館' : hotel === '正巧' ? '正巧文旅' : hotel;
-          return `<section class="hotel-section"><h2 class="hotel-title" style="color:${hotel.includes('正巧') ? '#c2410c' : '#1d4ed8'}">${escapeHtml(hotelName)} <small>${rooms.length} 間房</small></h2><div class="rooms-grid">${rooms.map(room => {
-            const first = room[0];
-            const designIndex = roomDesigns.get(roomKey(first));
-            const design = getRoomDesign(designIndex, hotel);
-            const groupMatch = (first.roomGroup || '').match(/_(.+)$/);
-            const groupLabel = groupMatch ? `住宿分組 ${groupMatch[1]}` : '住宿分組待確認';
-            const names = room.map(person => `<li class="${searchQuery && matchedPeople.has(person) ? 'matched' : ''}">${escapeHtml(person.name)}${person.name === '杜志峰' ? '<span class="contact">知達聯絡人</span>' : person.name === '吳緁苓' ? '<span class="contact">正巧聯絡人</span>' : ''}</li>`).join('');
-            return `<article class="room-card room-style-${designIndex % 9}" style="${design.style}" tabindex="0" role="button" aria-pressed="false" aria-label="${escapeHtml(hotelName)}，${escapeHtml(first.roomType)}，${escapeHtml(groupLabel)}，${room.length} 位：${escapeHtml(room.map(p => p.name).join('、'))}" onclick="toggleRoomGreeting(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleRoomGreeting(this)}">
-              <div class="room-sign">${escapeHtml(hotelName)}<span>${escapeHtml(first.roomType || '房型待確認')}</span></div>
-              <div class="room-facade"><div class="room-roof" aria-hidden="true"></div><span class="room-ornament" aria-hidden="true">${design.symbol}</span><div class="room-group-label">${escapeHtml(groupLabel)}</div><div class="room-door-area"><div class="room-door" aria-hidden="true"><div class="room-door-window"></div></div><div class="room-roster"><div class="room-roster-title">住宿人員 · ${room.length} 位</div><ul>${names}</ul></div></div></div>
-              <div class="room-people" aria-hidden="true">${room.map((person, idx) => renderWavingPerson(idx, personDesigns.get(person))).join('')}</div><div class="room-foot">${room.length} 位入住 · 歡迎回房休息</div>
-            </article>`;
-          }).join('')}</div></section>`;
-        }).join('') : '<div class="room-empty">無符合的住宿資料</div>');
-    }
-
-    function toggleRoomGreeting(card) {
-      const open = card.classList.toggle('is-open');
-      card.setAttribute('aria-pressed', String(open));
-    }
-
-    function getRoomDesign(index, hotel) {
-      const palettes = [
-        ['#fecdd3','#fff1f2','#be123c','#fb7185','#e8999e','#881337'],
-        ['#bfdbfe','#eff6ff','#1d4ed8','#60a5fa','#779ed6','#1e3a8a'],
-        ['#bbf7d0','#f0fdf4','#15803d','#4ade80','#75b887','#14532d'],
-        ['#fde68a','#fffbeb','#b45309','#fbbf24','#d0a25b','#78350f'],
-        ['#ddd6fe','#f5f3ff','#6d28d9','#a78bfa','#a18bc8','#4c1d95'],
-        ['#fed7aa','#fff7ed','#c2410c','#fb923c','#d79061','#7c2d12'],
-        ['#a5f3fc','#ecfeff','#0e7490','#22d3ee','#66aebe','#164e63'],
-        ['#fbcfe8','#fdf2f8','#be185d','#f472b6','#d082a9','#831843'],
-        ['#d9f99d','#f7fee7','#4d7c0f','#a3e635','#98ad68','#365314'],
-        ['#c7d2fe','#eef2ff','#4338ca','#818cf8','#838bc6','#312e81'],
-        ['#e7d6c4','#fcf6ef','#795548','#ad8b73','#c3a186','#4e342e'],
-        ['#99f6e4','#f0fdfa','#0f766e','#2dd4bf','#68aaa0','#134e4a']
-      ];
-      const palette = palettes[hotel && hotel.includes('正巧') ? 5 : 1];
-      return { style: ['wall','light','trim','accent','door','ink'].map((key, i) => `--${key}:${palette[i]}`).join(';'), symbol: ['✿','★','☀','☘','♥','◆','☾','♬','❋'][index % 9] };
-    }
-
-    // 外觀為插畫角色，不推定實際住客的性別或長相。
-    function renderWavingPerson(index, identity = index) {
-      const colors = ['#e11d48','#2563eb','#16a34a','#d97706','#7c3aed','#ea580c','#0891b2','#db2777','#65a30d','#4f46e5','#92400e','#0d9488'];
-      const shirt = colors[identity % colors.length];
-      const hair = ['#382c2a','#8a4f2d','#c28a39','#53515d'][Math.floor(identity / 3) % 4];
-      const skin = ['#f4bb92','#d99a72','#b77956','#f8d1b3'][identity % 4];
-      const hairStyles = [
-        `<path d="M20 19 Q19 5 32 6 Q45 5 44 19 L39 12 Q31 16 24 12 Z" fill="${hair}"/>`,
-        `<path d="M19 29 L19 16 Q19 3 32 5 Q45 3 45 16 L45 29 L40 27 L40 13 Q31 19 24 13 L24 29Z" fill="${hair}"/>`,
-        `<path d="M20 16 L21 7 L27 10 L32 3 L36 9 L43 6 L45 18 L39 13 L25 13Z" fill="${hair}"/>`,
-        `<g fill="${hair}"><circle cx="22" cy="12" r="6"/><circle cx="30" cy="8" r="6"/><circle cx="39" cy="10" r="6"/><circle cx="44" cy="16" r="5"/></g>`,
-        `<path d="M20 18 Q20 4 32 5 Q44 4 44 18 L41 15 L23 15Z" fill="${hair}"/><circle cx="45" cy="10" r="7" fill="${hair}"/>`,
-        `<path d="M20 17 Q20 5 32 6 Q44 5 44 17 L37 12 L29 15 L24 12Z" fill="${hair}"/><path d="M23 26 Q32 37 41 26 Q32 32 23 26" fill="${hair}"/>`,
-        `<path d="M19 18 Q19 4 32 5 Q46 5 45 18 L40 13 L33 17 L28 12 L23 17Z" fill="${hair}"/>`,
-        `<path d="M20 20 Q18 4 32 5 Q46 4 44 20 L40 12 L24 12Z" fill="${hair}"/><path d="M20 15 L16 35 M44 15 L48 35" stroke="${hair}" stroke-width="6"/>`
-      ];
-      const outfit = Math.floor(identity / 4) % 5;
-      const detail = outfit === 0 ? '<path d="M24 43H40 M23 50H41" stroke="white" stroke-width="3" opacity=".8"/>'
-        : outfit === 1 ? '<path d="M26 35L32 42L38 35 M32 42V58" fill="none" stroke="white" stroke-width="2"/>'
-        : outfit === 2 ? '<path d="M26 34V51H38V34 M25 51V59 M39 51V59" fill="none" stroke="#334155" stroke-width="4"/>'
-        : outfit === 3 ? '<path d="M24 36L32 44L40 36" fill="none" stroke="#fde68a" stroke-width="4"/><circle cx="32" cy="49" r="3" fill="#fde68a"/>'
-        : '<path d="M29 34L35 34L33 40L36 51L32 55L28 51L31 40Z" fill="#fff"/>';
-      const accessory = Math.floor(identity / 8) % 4;
-      const extra = accessory === 0 ? '<g fill="none" stroke="#334155" stroke-width="1.5"><circle cx="27" cy="20" r="4"/><circle cx="37" cy="20" r="4"/><path d="M31 20H33"/></g>'
-        : accessory === 1 ? `<path d="M19 13Q21 1 35 4L43 13Z" fill="${shirt}"/><path d="M18 13H47" stroke="${shirt}" stroke-width="4" stroke-linecap="round"/>`
-        : accessory === 2 ? '<path d="M22 11Q32 0 42 11" fill="none" stroke="#fbbf24" stroke-width="4"/><circle cx="22" cy="12" r="3" fill="#fbbf24"/>' : '';
-      return `<svg class="room-person" style="--person-index:${index}" viewBox="0 0 64 80" xmlns="http://www.w3.org/2000/svg">
-        <ellipse cx="32" cy="76" rx="15" ry="3" fill="#88133712"/>
-        <path d="M26 57 L24 73 M38 57 L40 73" stroke="${colors[(identity + 5) % colors.length]}" stroke-width="7" stroke-linecap="round"/>
-        <path d="M23 35 Q32 29 41 35 L${outfit === 3 ? '46' : '42'} 59 L${outfit === 3 ? '18' : '22'} 59 Z" fill="${shirt}"/>${detail}
-        <path d="M24 38 L15 53" stroke="${skin}" stroke-width="6" stroke-linecap="round"/>
-        <g class="room-hand"><path d="M40 38 L50 29 L52 13" fill="none" stroke="${skin}" stroke-width="6" stroke-linecap="round"/><path d="M52 15 L47 9 M52 15 L52 6 M53 15 L58 9" stroke="${skin}" stroke-width="3" stroke-linecap="round"/></g>
-        <circle cx="32" cy="20" r="12" fill="${skin}"/>${hairStyles[identity % hairStyles.length]}
-        <circle cx="28" cy="20" r="1.3" fill="#382c2a"/><circle cx="36" cy="20" r="1.3" fill="#382c2a"/><path d="M28 25 Q32 29 36 25" fill="none" stroke="#a34a46" stroke-width="1.5" stroke-linecap="round"/>${extra}
-      </svg>`;
     }
 
     function getLodgingComboBgClass(hotel, roomType) {
@@ -1475,7 +1290,6 @@
       return 'bg-white hover:bg-rose-50/40';
     }
 
-    /* 將原本的綠色方塊人名改為精緻暖橘粉色人名徽章 */
     function renderRoommateChips(roommatesStr) {
       if (!roommatesStr || roommatesStr === '無') {
         return `<span class="text-rose-300 text-sm">無</span>`;
@@ -1534,10 +1348,15 @@
         });
       }
 
-      const activeFilters = Object.entries(columnFilters).filter(([, set]) => set && set.size > 0);
-      if (activeFilters.length) {
-        list = list.filter(item => activeFilters.every(([key, set]) => set.has(getColumnValue(item, key))));
-      }
+      Object.keys(columnFilters).forEach(colKey => {
+        const allowedSet = columnFilters[colKey];
+        if (allowedSet && allowedSet.size > 0) {
+          list = list.filter(item => {
+            const val = getColumnValue(item, colKey);
+            return allowedSet.has(val);
+          });
+        }
+      });
 
       const strokeSort = (a, b) => strokeCollator.compare(a || '', b || '');
 
@@ -1563,7 +1382,6 @@
           });
         } else if (currentTab === 'traffic') {
           list.sort((a, b) => {
-            // 先列去程遊覽車，再列僅回程遊覽車，最後列其他交通。
             const groupRank = item => item.trafficOut === '遊覽車' ? 0 : item.trafficBack === '遊覽車' ? 1 : 2;
             const groupDiff = groupRank(a) - groupRank(b);
             if (groupDiff) return groupDiff;
@@ -1576,8 +1394,16 @@
         } else if (currentTab === 'dining') {
           list.sort((a, b) => {
             if (a.restaurant !== b.restaurant) return strokeSort(a.restaurant, b.restaurant);
-            if (a.isDiningLeader === '是' && b.isDiningLeader !== '是') return -1;
-            if (a.isDiningLeader !== '是' && b.isDiningLeader === '是') return 1;
+
+            // 幹部置頂優先：車長 (1) -> 領談人 (2) -> 一般成員 (3)
+            const getDiningRoleRank = name => {
+              if (DINING_BUS_CAPTAINS.has(name)) return 1;
+              if (DINING_INTERVIEWERS.has(name)) return 2;
+              return 3;
+            };
+            const roleRankA = getDiningRoleRank(a.name);
+            const roleRankB = getDiningRoleRank(b.name);
+            if (roleRankA !== roleRankB) return roleRankA - roleRankB;
 
             const tMethodRank = (t) => {
               if (t === '遊覽車' || t === '自處' || t === '自行') return 1;
