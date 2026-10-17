@@ -134,7 +134,7 @@
 
     /* 住宿房間圖卡：純 CSS / SVG */
     .room-view {padding:24px;background:#fff8f5;}
-    .room-toolbar {display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;align-items:center;}
+    .room-toolbar {display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;align-items:center;}
     .room-toolbar button {background:white;border:1px solid #fecdd3;border-radius:20px;padding:7px 14px;color:#9f1239;font-size:13px;cursor:pointer;font-weight:600;}
     .room-help {color:#9f6674;font-size:13px;margin:0 0 20px;}
     .hotel-section + .hotel-section {margin-top:30px;}
@@ -213,7 +213,12 @@
         </div>
         <div class="flex flex-col sm:flex-row sm:items-baseline sm:space-x-3">
           <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-rose-950">10/31-11/01 重啟人生-翻轉實驗室</h1>
-          <span id="updateTimestamp" class="text-xs text-rose-700 font-mono tracking-tight select-none bg-rose-100/70 px-2.5 py-0.5 rounded-full border border-rose-200/90 w-fit mt-1 sm:mt-0"></span>
+          <div class="flex items-center space-x-2 mt-1 sm:mt-0">
+            <!-- 網站架構版本 (代表網站架構發布更新，非內容更新) -->
+            <span id="siteArchitectureVersion" title="網站架構更新版本" class="text-xs text-rose-700 font-mono tracking-tight select-none bg-rose-100/70 px-2.5 py-0.5 rounded-full border border-rose-200/90 w-fit">架構版本 26'1017-2150</span>
+            <!-- 瀏覽計數器：使用白色文字，知道的人反白選取後才能看到數字 -->
+            <span id="pageViewCounter" title="網頁累積瀏覽次數 (反白選取可見)" class="text-xs text-white select-all font-mono tracking-tight cursor-default px-1 rounded transition-colors hover:bg-rose-100 hover:text-rose-600" aria-label="瀏覽次數">views: --</span>
+          </div>
         </div>
       </div>
       
@@ -378,22 +383,25 @@
       </div>
     </div>
 
-    <!-- 住宿服務資訊導覽卡片（標註知達與正巧聯絡人） -->
+    <!-- 住宿服務資訊導覽卡片（標註知達與正巧聯絡人，知達電話號碼與（進館通知開柵門）放大2級字 text-base） -->
     <div id="lodgingInfoCard" class="hidden bg-white/95 border border-rose-200 rounded-xl px-3 py-2 mb-3 shadow-xs text-xs no-print">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-        <!-- 知達會館 -->
+        <!-- 知達工藝會館 -->
         <div class="flex items-center justify-between px-3 py-1.5 bg-rose-50/80 border border-rose-200/90 rounded-lg">
           <div class="flex items-center space-x-2.5">
             <span class="icon-circle w-5 h-5 bg-rose-200 text-rose-700 text-[10px]">
               <i class="fa-solid fa-hotel"></i>
             </span>
             <div>
-              <div class="flex items-baseline space-x-2">
+              <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
                 <span class="font-bold text-rose-950 text-xs">知達工藝會館</span>
-                <a href="tel:0492306969" class="text-xs font-semibold text-rose-800 hover:underline font-mono">049-2306969</a>
+                <!-- 電話號碼放大 2 級字 (由 text-xs 放大為 text-base / 16px) -->
+                <a href="tel:0492306969" class="text-base font-bold text-rose-800 hover:underline font-mono">049-2306969</a>
+                <!-- 「（進館通知開柵門）」維持放大 2 級字 (text-base / 16px) -->
+                <span class="text-base font-extrabold text-rose-700 tracking-tight">（進館通知開柵門）</span>
               </div>
               <div class="text-[10px] text-rose-600 font-medium mt-0.5">
-                聯絡人：<span class="font-bold text-rose-800">杜志峰、吳淋禎</span>（進館通知開柵門）
+                聯絡人：<span class="font-bold text-rose-800">杜志峰、吳淋禎</span>
               </div>
             </div>
           </div>
@@ -807,20 +815,32 @@
        2. 初始化與雲端資料非同步加載
        ========================================================= */
     window.addEventListener('DOMContentLoaded', () => {
-      updateTimestampDisplay();
+      initPageViewCounter();
       calculateDirectoryRoommates();
       renderCurrentTab();
       fetchCloudDataSilently();
     });
 
-    function updateTimestampDisplay() {
-      const now = new Date();
-      const yy = String(now.getFullYear()).slice(-2);
-      const mm = String(now.getMonth() + 1).padStart(2, '0');
-      const dd = String(now.getDate()).padStart(2, '0');
-      const hh = String(now.getHours()).padStart(2, '0');
-      const min = String(now.getMinutes()).padStart(2, '0');
-      document.getElementById('updateTimestamp').textContent = `${yy}'${mm}${dd}-${hh}${min}`;
+    // 瀏覽次數計數器（累計本機瀏覽與雲端備援計數，以白色文字隱藏呈現）
+    function initPageViewCounter() {
+      const counterEl = document.getElementById('pageViewCounter');
+      let localViews = parseInt(localStorage.getItem('rl_visit_count') || '0', 10) + 1;
+      localStorage.setItem('rl_visit_count', localViews);
+      counterEl.textContent = `views: ${localViews}`;
+
+      // 嘗試透過公開無伺服器計數 API 更新全局計數
+      const counterNamespace = 'restart-life-lab-1031';
+      fetch(`https://api.counterapi.dev/v1/${counterNamespace}/visits/up`)
+        .then(res => res.json())
+        .then(data => {
+          if (data && typeof data.count === 'number') {
+            counterEl.textContent = `views: ${data.count}`;
+          }
+        })
+        .catch(() => {
+          // 網路受限或離線時維持本機計數
+          counterEl.textContent = `views: ${localViews}`;
+        });
     }
 
     async function fetchCloudDataSilently() {
@@ -978,7 +998,6 @@
       activeSortDirection = null;
       closeFilterModal();
       renderCurrentTab();
-      updateTimestampDisplay();
       fetchCloudDataSilently();
     }
 
@@ -1449,7 +1468,7 @@
       return '<span class="icon-circle w-6 h-6 bg-rose-100 text-rose-700"><i class="fa-solid fa-utensils text-xs"></i></span>';
     }
 
-    /* --- [分頁5] 重啟-住宿服務（房屋圖卡模式） --- */
+    /* --- [分頁5] 重啟-住宿服務（房屋圖卡模式 + 藍圈處新增提醒資訊） --- */
     function renderLodgingRoomCards(countBadge) {
       const view = document.getElementById('lodgingRoomView');
       const matched = getProcessedDirectoryList('lodging').filter(i => i.name !== '彭偉峰');
@@ -1482,6 +1501,31 @@
         return `<button type="button" onclick="openFilterModal('${key}', '${title}', event)">${title}${selected ? ' · 已篩選' : ''}${activeSortColumn === key ? (activeSortDirection === 'asc' ? ' ↑' : ' ↓') : ' ▾'}</button>`;
       }).join('');
 
+      // 藍圈處：新增兩條住宿重要注意規範（全館素食禁菸、無一次性備品與瓶裝水）
+      const accommodationNotices = `
+        <div class="mb-5 bg-gradient-to-r from-rose-100/90 via-orange-100/90 to-pink-100/90 border-l-4 border-rose-500 rounded-xl p-3.5 shadow-xs text-rose-950 no-print">
+          <div class="flex items-start space-x-2.5">
+            <span class="icon-circle w-6 h-6 bg-rose-500 text-white mt-0.5 shrink-0 shadow-2xs">
+              <i class="fa-solid fa-triangle-exclamation text-xs"></i>
+            </span>
+            <div class="space-y-1.5 text-sm sm:text-base leading-relaxed">
+              <div class="flex items-baseline space-x-2">
+                <span class="inline-block w-2 h-2 rounded-full bg-rose-500 shrink-0"></span>
+                <p class="font-bold text-rose-900">
+                  正巧民宿（活動場地）為素食會館，全館<span class="text-rose-700 underline decoration-rose-400 font-extrabold decoration-2 underline-offset-2">禁止葷食禁止抽菸</span>。（包括含有肉類或海鮮的餅乾、泡麵等等）
+                </p>
+              </div>
+              <div class="flex items-baseline space-x-2">
+                <span class="inline-block w-2 h-2 rounded-full bg-orange-500 shrink-0"></span>
+                <p class="font-bold text-rose-900">
+                  正巧民宿和知達會館房間皆<span class="text-rose-700 underline decoration-rose-400 font-extrabold decoration-2 underline-offset-2">「無提供」一次性備品</span>（牙刷、浴帽、紙拖等等）及瓶裝水，請記得自備盥洗用品與保溫瓶。
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
       const hotels = new Map();
       visibleRooms.forEach(room => {
         const hotel = room[0].hotel || '未指定飯店';
@@ -1505,8 +1549,9 @@
         });
       });
 
-      view.innerHTML = `<div class="room-toolbar no-print">${controls}</div>
-        <p class="room-help">移入房間看大家揮手，手機可點一下卡片。分組編號為資料中的住宿分組，房號目前保留待分配，後續填入後將自動呈現。</p>` +
+      view.innerHTML = `<div class="room-toolbar no-print">${controls}</div>` +
+        accommodationNotices +
+        `<p class="room-help">移入房間看大家揮手，手機可點一下卡片。分組編號為資料中的住宿分組，房號目前保留待分配，後續填入後將自動呈現。</p>` +
         (hotels.size ? Array.from(hotels, ([hotel, rooms]) => {
           const hotelName = hotel === '知達' ? '知達工藝會館' : hotel === '正巧' ? '正巧文旅' : hotel;
           return `<section class="hotel-section"><h2 class="hotel-title" style="color:${hotel.includes('正巧') ? '#c2410c' : '#881337'}">${escapeHtml(hotelName)} <small>${rooms.length} 間房</small></h2><div class="rooms-grid">${rooms.map(room => {
