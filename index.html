@@ -147,7 +147,7 @@
     .room-sign {display:flex;justify-content:space-between;align-items:center;gap:8px;color:#881337;font-weight:800;font-size:14px;margin-bottom:12px;}
     .room-sign span {font-size:12px;background:#fff1f2;padding:4px 9px;border-radius:10px;white-space:nowrap;}
     .room-number-badge {font-size:12px;background:#fff7ed;color:#c2410c;border:1px dashed #fdba74;padding:2px 8px;border-radius:8px;font-family:monospace;font-weight:700;}
-    .room-number-empty {font-size:11px;color:#cbd5e1;border:1px dashed #e2e8f0;padding:2px 8px;border-radius:8px;font-weight:500;}
+    .room-number-empty {font-size:11px;color:#94a3b8;border:1px dashed #cbd5e1;padding:2px 8px;border-radius:8px;font-weight:600;font-family:monospace;background:#f8fafc;}
     .room-facade {position:relative;background:linear-gradient(135deg,#ffe4e6,#fff1e6);border:2px solid #fecdd3;border-bottom:6px solid #fda4af;border-radius:14px 14px 0 0;min-height:230px;padding:18px 12px 12px;}
     .room-card.hotel-orange .room-facade {background:linear-gradient(135deg,#ffedd5,#fff7ed);border-color:#fed7aa;border-bottom-color:#fdba74;}
     .room-group-label {font-size:11px;text-align:center;color:#9f6674;letter-spacing:1px;margin-bottom:15px;}
@@ -1641,7 +1641,7 @@
             const roomNo = (room.find(p => p.roomNumber && p.roomNumber.trim()) || {}).roomNumber || '';
             const roomNoBadge = roomNo 
               ? `<span class="room-number-badge"><i class="fa-solid fa-key mr-1 text-[10px]"></i>房號 ${escapeHtml(roomNo)}</span>`
-              : `<span class="room-number-empty" title="房號待分配"><i class="fa-solid fa-door-closed mr-1 text-[10px]"></i>房號：待分配</span>`;
+              : `<span class="room-number-empty" title="房號待填入"><i class="fa-solid fa-door-closed mr-1 text-[10px]"></i>房號：--</span>`;
 
             const names = room.map(person => {
               const isMatched = searchQuery && matchedPeople.has(person);
