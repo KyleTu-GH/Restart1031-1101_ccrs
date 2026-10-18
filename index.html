@@ -127,8 +127,8 @@
       flex-shrink: 0;
     }
 
-    /* 篩選彈窗 */
-    #filterDropdownModal {
+    /* 篩選彈窗與資訊彈窗 */
+    #filterDropdownModal, #zhidaNoticeModal {
       box-shadow: 0 20px 25px -5px rgba(244, 63, 94, 0.15), 0 8px 10px -6px rgba(244, 63, 94, 0.1);
     }
 
@@ -138,7 +138,7 @@
     .room-toolbar button {background:white;border:1px solid #fecdd3;border-radius:20px;padding:7px 14px;color:#9f1239;font-size:13px;cursor:pointer;font-weight:600;}
     .room-help {color:#9f6674;font-size:13px;margin:0 0 20px;}
     .hotel-section + .hotel-section {margin-top:30px;}
-    .hotel-title {font-size:20px;font-weight:800;color:#881337;margin:0 0 16px;display:flex;align-items:center;gap:10px;}
+    .hotel-title {font-size:20px;font-weight:800;color:#881337;margin:0 0 16px;display:flex;align-items:center;flex-wrap:wrap;gap:10px;}
     .hotel-title small {font-size:12px;font-weight:500;color:#9f6674;}
     .rooms-grid {display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:22px;}
     .room-card {position:relative;min-width:0;background:#fff;border:1px solid #fecdd3;border-radius:20px;padding:16px 16px 0;box-shadow:0 5px 16px #88133709;outline:none;cursor:pointer;transition:box-shadow .2s,transform .2s;}
@@ -454,6 +454,65 @@
       </div>
     </div>
   </main>
+
+  <!-- 知達會館住宿注意事項 彈窗視窗 -->
+  <div id="zhidaNoticeOverlay" onclick="closeZhidaNoticeModal()" class="fixed inset-0 bg-rose-950/40 z-50 hidden backdrop-blur-[2px] transition-opacity"></div>
+  <div id="zhidaNoticeModal" class="fixed z-50 hidden top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl border border-blue-200 p-6 w-[92vw] max-w-lg shadow-2xl text-slate-800">
+    <div class="flex items-center justify-between pb-3 mb-3 border-b border-rose-100">
+      <div class="text-lg font-extrabold text-blue-900 flex items-center space-x-2.5">
+        <span class="icon-circle w-8 h-8 bg-blue-100 text-blue-700">
+          <i class="fa-solid fa-circle-info text-base"></i>
+        </span>
+        <span>知達會館 住宿注意事項</span>
+      </div>
+      <button onclick="closeZhidaNoticeModal()" class="text-rose-400 hover:text-rose-700 text-lg p-1.5 rounded-full hover:bg-rose-50 transition-colors" aria-label="關閉">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <!-- ※ 隔天 09:15 前完成退房，9:30準時發車 重點公告卡片 -->
+    <div class="mb-4 bg-gradient-to-r from-amber-500/10 via-rose-500/10 to-orange-500/10 border-l-4 border-rose-500 rounded-xl p-3 text-rose-950">
+      <div class="flex items-center space-x-2">
+        <span class="icon-circle w-5 h-5 bg-rose-500 text-white shrink-0 text-[11px] font-bold">※</span>
+        <p class="font-extrabold text-sm sm:text-base text-rose-900 tracking-tight">
+          各位夥伴需在隔天 <span class="text-rose-600 underline underline-offset-2 decoration-2 decoration-rose-400">09:15 前</span>完成退房，<span class="text-rose-600 font-black">9:30 準時發車</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="space-y-3 text-sm sm:text-base leading-relaxed text-slate-700">
+      <div class="flex items-start space-x-2.5 p-2.5 rounded-lg bg-blue-50/60 border border-blue-100">
+        <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold shrink-0 mt-0.5">1</span>
+        <p><span class="font-bold text-slate-900">早餐供餐時間：</span>07:00 - 09:00；<span class="font-bold text-slate-900">用餐地點：</span>知達工藝會館 1 樓</p>
+      </div>
+
+      <div class="flex items-start space-x-2.5 p-2.5 rounded-lg bg-rose-50/60 border border-rose-100">
+        <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-rose-600 text-white text-xs font-bold shrink-0 mt-0.5">2</span>
+        <p>進入客房後，將鎖匙的插梢插入入口處的通電孔中，即可通電</p>
+      </div>
+
+      <div class="flex items-start space-x-2.5 p-2.5 rounded-lg bg-amber-50/60 border border-amber-100">
+        <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-amber-600 text-white text-xs font-bold shrink-0 mt-0.5">3</span>
+        <p>會館客房內電話可互撥，如您欲撥 R302 → <span class="font-bold text-amber-900">直撥 302</span> 即可通話</p>
+      </div>
+
+      <div class="flex items-start space-x-2.5 p-2.5 rounded-lg bg-orange-50/70 border border-orange-200">
+        <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-orange-600 text-white text-xs font-bold shrink-0 mt-0.5">4</span>
+        <p class="font-semibold text-orange-950">會館不提供任何一次性用品，請自備</p>
+      </div>
+
+      <div class="flex items-start space-x-2.5 p-2.5 rounded-lg bg-emerald-50/60 border border-emerald-100">
+        <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-emerald-600 text-white text-xs font-bold shrink-0 mt-0.5">5</span>
+        <p>若您有任何問題，可電話<span class="font-bold text-emerald-900">直撥 9 或 100</span> 即可聯絡櫃台為您服務</p>
+      </div>
+    </div>
+
+    <div class="pt-4 border-t border-rose-100 flex justify-end mt-4">
+      <button onclick="closeZhidaNoticeModal()" class="px-5 py-2 text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-full shadow-sm transition-colors cursor-pointer">
+        我知道了
+      </button>
+    </div>
+  </div>
 
   <!-- 表頭篩選彈窗與遮罩 -->
   <div id="filterModalOverlay" onclick="closeFilterModal()" class="fixed inset-0 bg-rose-950/20 z-40 hidden backdrop-blur-[2px]"></div>
@@ -997,6 +1056,7 @@
       activeSortColumn = null;
       activeSortDirection = null;
       closeFilterModal();
+      closeZhidaNoticeModal();
       renderCurrentTab();
       fetchCloudDataSilently();
     }
@@ -1468,7 +1528,7 @@
       return '<span class="icon-circle w-6 h-6 bg-rose-100 text-rose-700"><i class="fa-solid fa-utensils text-xs"></i></span>';
     }
 
-    /* --- [分頁5] 重啟-住宿服務（房屋圖卡模式 + 藍圈處新增提醒資訊） --- */
+    /* --- [分頁5] 重啟-住宿服務（房屋圖卡模式 + 住宿注意事項彈窗） --- */
     function renderLodgingRoomCards(countBadge) {
       const view = document.getElementById('lodgingRoomView');
       const matched = getProcessedDirectoryList('lodging').filter(i => i.name !== '彭偉峰');
@@ -1501,7 +1561,7 @@
         return `<button type="button" onclick="openFilterModal('${key}', '${title}', event)">${title}${selected ? ' · 已篩選' : ''}${activeSortColumn === key ? (activeSortDirection === 'asc' ? ' ↑' : ' ↓') : ' ▾'}</button>`;
       }).join('');
 
-      // 藍圈處：新增兩條住宿重要注意規範（全館素食禁菸、無一次性備品與瓶裝水）
+      // 住宿重要注意規範（全館素食禁菸、無一次性備品與瓶裝水）
       const accommodationNotices = `
         <div class="mb-5 bg-gradient-to-r from-rose-100/90 via-orange-100/90 to-pink-100/90 border-l-4 border-rose-500 rounded-xl p-3.5 shadow-xs text-rose-950 no-print">
           <div class="flex items-start space-x-2.5">
@@ -1553,8 +1613,26 @@
         accommodationNotices +
         `<p class="room-help">移入房間看大家揮手，手機可點一下卡片。分組編號為資料中的住宿分組，房號目前保留待分配，後續填入後將自動呈現。</p>` +
         (hotels.size ? Array.from(hotels, ([hotel, rooms]) => {
+          const isZhida = hotel.includes('知達');
           const hotelName = hotel === '知達' ? '知達工藝會館' : hotel === '正巧' ? '正巧文旅' : hotel;
-          return `<section class="hotel-section"><h2 class="hotel-title" style="color:${hotel.includes('正巧') ? '#c2410c' : '#881337'}">${escapeHtml(hotelName)} <small>${rooms.length} 間房</small></h2><div class="rooms-grid">${rooms.map(room => {
+          
+          // 在知達工藝會館標題右側加入注意事項按鈕
+          const zhidaNoticeButton = isZhida ? `
+            <button type="button" onclick="openZhidaNoticeModal()" class="inline-flex items-center space-x-1.5 px-3 py-1 text-xs sm:text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-full shadow-sm hover:shadow-md transition-all ml-1 sm:ml-2 cursor-pointer no-print">
+              <i class="fa-solid fa-circle-exclamation text-xs"></i>
+              <span>知達會館住宿注意事項</span>
+            </button>
+          ` : '';
+
+          return `<section class="hotel-section">
+            <div class="hotel-title" style="color:${hotel.includes('正巧') ? '#c2410c' : '#881337'}">
+              <div class="flex items-center gap-2">
+                <span>${escapeHtml(hotelName)}</span>
+                <small>${rooms.length} 間房</small>
+              </div>
+              ${zhidaNoticeButton}
+            </div>
+            <div class="rooms-grid">${rooms.map(room => {
             const first = room[0];
             const designIndex = roomDesigns.get(roomKey(first));
             const design = getRoomDesign(designIndex, hotel);
@@ -1594,6 +1672,25 @@
     function toggleRoomGreeting(card) {
       const open = card.classList.toggle('is-open');
       card.setAttribute('aria-pressed', String(open));
+    }
+
+    // 知達會館住宿注意事項彈窗控制
+    function openZhidaNoticeModal() {
+      const modal = document.getElementById('zhidaNoticeModal');
+      const overlay = document.getElementById('zhidaNoticeOverlay');
+      if (modal && overlay) {
+        overlay.classList.remove('hidden');
+        modal.classList.remove('hidden');
+      }
+    }
+
+    function closeZhidaNoticeModal() {
+      const modal = document.getElementById('zhidaNoticeModal');
+      const overlay = document.getElementById('zhidaNoticeOverlay');
+      if (modal && overlay) {
+        modal.classList.add('hidden');
+        overlay.classList.add('hidden');
+      }
     }
 
     function getRoomDesign(index, hotel) {
