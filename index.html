@@ -21,7 +21,7 @@
       .table-container { max-height: none !important; overflow: visible !important; border: none !important; }
     }
 
-    /* 自訂捲軸樣式 - 粉橘粉紅適配 */
+    /* 自訂捲軸樣式 - 粉橘粉紅家族適配 */
     ::-webkit-scrollbar {
       width: 8px;
       height: 8px;
@@ -214,7 +214,7 @@
         <div class="flex flex-col sm:flex-row sm:items-baseline sm:space-x-3">
           <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-rose-950">10/31-11/01 重啟人生-翻轉實驗室</h1>
           <div class="flex items-center space-x-2 mt-1 sm:mt-0">
-            <!-- 網站架構版本 (代表網站架構發布更新，非內容更新) -->
+            <!-- 網站架構版本 (代表網站架構發布更新) -->
             <span id="siteArchitectureVersion" title="網站架構更新版本" class="text-xs text-rose-700 font-mono tracking-tight select-none bg-rose-100/70 px-2.5 py-0.5 rounded-full border border-rose-200/90 w-fit">架構版本 26'1017-2150</span>
             <!-- 瀏覽計數器：使用白色文字，知道的人反白選取後才能看到數字 -->
             <span id="pageViewCounter" title="網頁累積瀏覽次數 (反白選取可見)" class="text-xs text-white select-all font-mono tracking-tight cursor-default px-1 rounded transition-colors hover:bg-rose-100 hover:text-rose-600" aria-label="瀏覽次數">views: --</span>
@@ -293,7 +293,7 @@
       </div>
     </div>
 
-    <!-- 餐飲服務四家餐廳資訊導覽卡片（極簡緊湊版，標註車長與領談人） -->
+    <!-- 餐飲服務四家餐廳資訊導覽卡片（極簡緊湊版，標註車長與領談人；植田割烹車長為盧建邦） -->
     <div id="diningInfoCard" class="hidden bg-white/95 border border-rose-200 rounded-xl px-3 py-2 mb-3 shadow-xs text-xs no-print">
       <div class="flex items-center justify-between pb-1.5 mb-1.5 border-b border-rose-100">
         <div class="text-xs font-bold text-rose-800 flex items-center">
@@ -324,7 +324,7 @@
           </a>
         </div>
 
-        <!-- 植田割烹 -->
+        <!-- 植田割烹 (車長：盧建邦 ｜ 領談：范永銀) -->
         <div class="px-2.5 py-1.5 bg-orange-50/80 border border-orange-200/90 rounded-lg flex items-center justify-between">
           <div class="min-w-0 pr-1.5">
             <div class="font-bold text-orange-950 text-xs truncate flex items-center">
@@ -335,7 +335,7 @@
               <a href="tel:0928385269" class="hover:underline font-semibold font-mono">0928-385269</a>
             </div>
             <div class="text-[10px] text-orange-800 font-medium mt-0.5 truncate">
-              車長：<span class="font-bold text-rose-900">胡靖韋</span> ｜ 領談：<span class="font-bold text-orange-800">范永銀</span>
+              車長：<span class="font-bold text-rose-900">盧建邦</span> ｜ 領談：<span class="font-bold text-orange-800">范永銀</span>
             </div>
           </div>
           <a href="https://maps.app.goo.gl/iaRERmMCGPQs8jzFA" target="_blank" class="shrink-0 inline-flex items-center px-2 py-0.5 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-full text-[10px] hover:from-orange-600 hover:to-amber-600 transition-colors shadow-2xs">
@@ -395,7 +395,7 @@
             <div>
               <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
                 <span class="font-bold text-rose-950 text-xs">知達工藝會館</span>
-                <!-- 電話號碼放大 2 級字 (由 text-xs 放大為 text-base / 16px) -->
+                <!-- 電話號碼放大 2 級字 (text-base / 16px) -->
                 <a href="tel:0492306969" class="text-base font-bold text-rose-800 hover:underline font-mono">049-2306969</a>
                 <!-- 「（進館通知開柵門）」維持放大 2 級字 (text-base / 16px) -->
                 <span class="text-base font-extrabold text-rose-700 tracking-tight">（進館通知開柵門）</span>
@@ -566,8 +566,7 @@
     const GOOGLE_SHEET_DIR_BASE = 'https://docs.google.com/spreadsheets/d/1IG9gdIuvad5sj0RWC8hzvIvdBYSQo4j0ERf910AV24U';
     const GOOGLE_SHEET_DIR_URLS = [
       `${GOOGLE_SHEET_DIR_BASE}/export?format=csv`,
-      `${GOOGLE_SHEET_DIR_BASE}/gviz/tq?tqx=out:csv`,
-      'https://docs.google.com/spreadsheets/d/1rtaD9Y4-1iv4rD68QNT64dv1x-o02rUc2kyosc26LVM/export?format=csv'
+      `${GOOGLE_SHEET_DIR_BASE}/gviz/tq?tqx=out:csv`
     ];
 
     const GOOGLE_SHEET_SCHEDULE_BASE = 'https://docs.google.com/spreadsheets/d/1RFAeooSPtmmVMPGeyO9o-SbNtvLr38_DoDHFoCFxQ9c';
@@ -578,8 +577,8 @@
       `${GOOGLE_SHEET_SCHEDULE_BASE}/gviz/tq?tqx=out:csv&gid=1928975316`
     ];
 
-    // 餐飲服務各餐廳指定：遊覽車車長
-    const DINING_BUS_CAPTAINS = new Set(['李筱瑋', '胡靖韋', '莫惠萍', '吳全峰']);
+    // 餐飲服務各餐廳指定：遊覽車車長（植田割烹由盧建邦擔任車長）
+    const DINING_BUS_CAPTAINS = new Set(['李筱瑋', '盧建邦', '莫惠萍', '吳全峰']);
     // 餐飲服務各餐廳指定：領談人
     const DINING_INTERVIEWERS = new Set(['林珊汝', '范永銀', '梁懷貞', '洪淑姮', '杜志峰']);
     // 住宿聯絡人
@@ -600,7 +599,7 @@
     let searchTextCache = new Map();
     let searchTimer = null;
 
-    // 依據當前分頁維度，提取精準的搜尋文字（避免把室友等跨人員資訊混入非住宿檢索）
+    // 依據當前分頁維度提取精準檢索內容
     function getSearchText(item, tab) {
       const cacheKey = `${tab}_${item.id || item.name || ''}`;
       let text = searchTextCache.get(cacheKey);
@@ -608,16 +607,12 @@
         if (tab === 'schedule') {
           text = `${item.date || ''} ${item.startTime || ''} ${item.endTime || ''} ${item.location || ''} ${item.activity || ''} ${String(item.note || '').split('\n').filter(line => !line.includes('需行政支援')).join('\n')}`.toLowerCase();
         } else if (tab === 'overview') {
-          // 總表：僅檢索本人的隊別、姓名、交通、餐廳、住宿飯店與房型（排除 roommates，避免抓出室友）
           text = `${item.team || ''} ${item.name || ''} ${item.trafficOut || ''} ${item.trafficBack || ''} ${item.restaurant || ''} ${item.hotel || ''} ${item.roomType || ''}`.toLowerCase();
         } else if (tab === 'traffic') {
-          // 交通：僅檢索姓名與該員交通方式
           text = `${item.name || ''} ${item.trafficOut || ''} ${item.trafficBack || ''}`.toLowerCase();
         } else if (tab === 'dining') {
-          // 餐飲：僅檢索姓名、餐廳、飲食注意事項與交通方式
           text = `${item.name || ''} ${item.restaurant || ''} ${item.diet || ''} ${item.trafficOut || ''}`.toLowerCase();
         } else if (tab === 'lodging') {
-          // 住宿：僅檢索姓名、飯店、房型與分組代號
           text = `${item.name || ''} ${item.hotel || ''} ${item.roomType || ''} ${item.roomGroup || ''}`.toLowerCase();
         } else {
           text = `${item.team || ''} ${item.name || ''}`.toLowerCase();
@@ -627,7 +622,7 @@
       return text;
     }
 
-    // 嚴格對照指定資料庫 (gid=1928975316) 實體流程
+    // 完整內建 17 項標準流程（離線基準）
     let scheduleData = [
       {
         id: 1,
@@ -801,93 +796,94 @@
       }
     ];
 
-    // 成員總表基準資料
+    // 成員總表基準資料（完整內建 62 位成員）
     let rawDirectoryData = [
-      { team: "白", name: "林政緯", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "不吃：豬", hotel: "正巧", roomType: "2人房", roomGroup: "正巧-2人房_5", roommates: "林政緯-妻, 林政緯-看護" },
-      { team: "白", name: "林政緯-妻", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "不吃：豬", hotel: "正巧", roomType: "2人房", roomGroup: "正巧-2人房_5", roommates: "林政緯, 林政緯-看護" },
-      { team: "白", name: "林政緯-看護", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "不吃：豬", hotel: "正巧", roomType: "2人房", roomGroup: "正巧-2人房_5", roommates: "林政緯, 林政緯-妻" },
-      { team: "白", name: "陳群玉", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_1", roommates: "傅國虹, 劉毓菁, 李筱瑋" },
-      { team: "白", name: "傅國虹", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", isDiningLeader: "否", diet: "不吃：辣", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_1", roommates: "陳群玉, 劉毓菁, 李筱瑋" },
-      { team: "白", name: "劉毓菁", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_1", roommates: "陳群玉, 傅國虹, 李筱瑋" },
-      { team: "白", name: "吳惠君", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_4", roommates: "魏鈴芳, 吳佩容, 周宗弘" },
-      { team: "白", name: "林慧茹", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_3", roommates: "黃瑪琍" },
-      { team: "白", name: "黃瑪琍", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "植田割烹", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_3", roommates: "林慧茹" },
-      { team: "白", name: "吳羿慧", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", isDiningLeader: "否", diet: "不吃：牛羊", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_4", roommates: "徐珮甄" },
-      { team: "白", name: "薛雅文", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "麵五三屋", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_5", roommates: "殷燕伶" },
-      { team: "白", name: "陳俐君", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_6", roommates: "何琇菱" },
-      { team: "白", name: "陳若雲", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_8", roommates: "謝宜倩" },
-      { team: "白", name: "魏志毓", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "弎食鉄板", isDiningLeader: "否", diet: "素食：蛋奶素", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_11", roommates: "吳建逢" },
-      { team: "白", name: "劉又壬", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "麵五三屋", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_13", roommates: "鍾淳仁" },
-      { team: "白", name: "吳全峰", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", isDiningLeader: "是", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_14", roommates: "田富元（田爸）" },
-      { team: "白", name: "陶逸婕", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_17", roommates: "吳淋禎" },
+      { team: "白", name: "林政緯", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "不吃：豬", hotel: "正巧", roomType: "2人房", roomGroup: "正巧-2人房_5", roomNumber: "", roommates: "林政緯-妻, 林政緯-看護" },
+      { team: "白", name: "林政緯-妻", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "不吃：豬", hotel: "正巧", roomType: "2人房", roomGroup: "正巧-2人房_5", roomNumber: "", roommates: "林政緯, 林政緯-看護" },
+      { team: "白", name: "林政緯-看護", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "不吃：豬", hotel: "正巧", roomType: "2人房", roomGroup: "正巧-2人房_5", roomNumber: "", roommates: "林政緯, 林政緯-妻" },
+      { team: "白", name: "陳群玉", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_1", roomNumber: "", roommates: "傅國虹, 劉毓菁, 李筱瑋" },
+      { team: "白", name: "傅國虹", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", isDiningLeader: "否", diet: "不吃：辣", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_1", roomNumber: "", roommates: "陳群玉, 劉毓菁, 李筱瑋" },
+      { team: "白", name: "劉毓菁", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_1", roomNumber: "", roommates: "陳群玉, 傅國虹, 李筱瑋" },
+      { team: "白", name: "吳惠君", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_4", roomNumber: "", roommates: "魏鈴芳, 吳佩容, 周宗弘" },
+      { team: "白", name: "林慧茹", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_3", roomNumber: "", roommates: "黃瑪琍" },
+      { team: "白", name: "黃瑪琍", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "植田割烹", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_3", roomNumber: "", roommates: "林慧茹" },
+      { team: "白", name: "吳羿慧", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", isDiningLeader: "否", diet: "不吃：牛羊", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_4", roomNumber: "", roommates: "徐珮甄" },
+      { team: "白", name: "薛雅文", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "麵五三屋", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_5", roomNumber: "", roommates: "殷燕伶" },
+      { team: "白", name: "陳俐君", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_6", roomNumber: "", roommates: "何琇菱" },
+      { team: "白", name: "陳若雲", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_8", roomNumber: "", roommates: "謝宜倩" },
+      { team: "白", name: "魏志毓", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "弎食鉄板", isDiningLeader: "否", diet: "素食：蛋奶素", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_11", roomNumber: "", roommates: "吳建逢" },
+      { team: "白", name: "劉又壬", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "麵五三屋", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_13", roomNumber: "", roommates: "鍾淳仁" },
+      { team: "白", name: "吳全峰", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", isDiningLeader: "是", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_14", roomNumber: "", roommates: "田富元（田爸）" },
+      { team: "白", name: "陶逸婕", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_17", roomNumber: "", roommates: "吳淋禎" },
       
-      { team: "紅", name: "李筱瑋", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "弎食鉄板", isDiningLeader: "是", diet: "無", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_1", roommates: "陳群玉, 傅國虹, 劉毓菁" },
-      { team: "紅", name: "郭淑貞", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_2", roommates: "潘麗婧, 張婷婷, 陳尹恩" },
-      { team: "紅", name: "潘麗婧", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_2", roommates: "郭淑貞, 張婷婷, 陳尹恩" },
-      { team: "紅", name: "汪方巧", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "弎食鉄板", isDiningLeader: "否", diet: "不吃：鴨肉", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_3", roommates: "胡智容, 許家倫, 廖培芯" },
-      { team: "紅", name: "胡智容", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "不吃：辣", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_3", roommates: "汪方巧, 許家倫, 廖培芯" },
-      { team: "紅", name: "莫惠萍", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "是", diet: "不吃：牛羊", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_1", roommates: "黃立軒" },
-      { team: "紅", name: "殷燕伶", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "植田割烹", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_5", roommates: "薛雅文" },
-      { team: "紅", name: "盧萱語", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "過敏：蛋和小麥", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_7", roommates: "陳美好" },
-      { team: "紅", name: "林郁婷", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "不吃：牛", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_9", roommates: "黃義涵" },
-      { team: "紅", name: "黃義涵", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "弎食鉄板", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_9", roommates: "林郁婷" },
-      { team: "紅", name: "陳厚任", trafficOut: "自行", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "NO", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_10", roommates: "葉少強" },
-      { team: "紅", name: "葉少強", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "弎食鉄板", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_10", roommates: "陳厚任" },
-      { team: "紅", name: "鍾淳仁", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "植田割烹", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_13", roommates: "劉又壬" },
-      { team: "紅", name: "彭偉峰", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "植田割烹", isDiningLeader: "否", diet: "無", hotel: "無", roomType: "無", roomGroup: "無-無_無", roommates: "無" },
+      { team: "紅", name: "李筱瑋", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "弎食鉄板", isDiningLeader: "是", diet: "無", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_1", roomNumber: "", roommates: "陳群玉, 傅國虹, 劉毓菁" },
+      { team: "紅", name: "郭淑貞", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_2", roomNumber: "", roommates: "潘麗婧, 張婷婷, 陳尹恩" },
+      { team: "紅", name: "潘麗婧", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_2", roomNumber: "", roommates: "郭淑貞, 張婷婷, 陳尹恩" },
+      { team: "紅", name: "汪方巧", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "弎食鉄板", isDiningLeader: "否", diet: "不吃：鴨肉", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_3", roomNumber: "", roommates: "胡智容, 許家倫, 廖培芯" },
+      { team: "紅", name: "胡智容", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "不吃：辣", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_3", roomNumber: "", roommates: "汪方巧, 許家倫, 廖培芯" },
+      { team: "紅", name: "莫惠萍", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "是", diet: "不吃：牛羊", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_1", roomNumber: "", roommates: "黃立軒" },
+      { team: "紅", name: "殷燕伶", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "植田割烹", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_5", roomNumber: "", roommates: "薛雅文" },
+      { team: "紅", name: "盧萱語", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "過敏：蛋和小麥", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_7", roomNumber: "", roommates: "陳美好" },
+      { team: "紅", name: "林郁婷", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "不吃：牛", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_9", roomNumber: "", roommates: "黃義涵" },
+      { team: "紅", name: "黃義涵", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "弎食鉄板", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_9", roomNumber: "", roommates: "林郁婷" },
+      { team: "紅", name: "陳厚任", trafficOut: "自行", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "NO", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_10", roomNumber: "", roommates: "葉少強" },
+      { team: "紅", name: "葉少強", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "弎食鉄板", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_10", roomNumber: "", roommates: "陳厚任" },
+      { team: "紅", name: "鍾淳仁", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "植田割烹", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_13", roomNumber: "", roommates: "劉又壬" },
+      { team: "紅", name: "彭偉峰", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "植田割烹", isDiningLeader: "否", diet: "無", hotel: "無", roomType: "無", roomGroup: "無-無_無", roomNumber: "", roommates: "無" },
 
-      { team: "接班人", name: "謝文憲", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "2人房", roomGroup: "正巧-2人房_1", roommates: "無" },
-      { team: "接班人", name: "范永銀", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "植田割烹", isDiningLeader: "否", diet: "不吃：蒜", hotel: "正巧", roomType: "2人房", roomGroup: "正巧-2人房_2", roommates: "無" },
-      { team: "接班人", name: "梁懷貞", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "2人房", roomGroup: "正巧-2人房_3", roommates: "李紘逸" },
-      { team: "接班人", name: "吳緁苓", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "NO", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "2人房", roomGroup: "正巧-2人房_4", roommates: "洪淑姮" },
-      { team: "接班人", name: "洪淑姮", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "2人房", roomGroup: "正巧-2人房_4", roommates: "吳緁苓" },
-      { team: "接班人", name: "廖培芯", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "是", restaurant: "NO", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_3", roommates: "汪方巧, 胡智容, 許家倫" },
-      { team: "接班人", name: "吳佩容", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_4", roommates: "吳惠君, 魏鈴芳, 周宗弘" },
-      { team: "接班人", name: "周宗弘", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_4", roommates: "吳惠君, 魏鈴芳, 吳佩容" },
-      { team: "接班人", name: "田富元（田爸）", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "NO", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_14", roommates: "吳全峰" },
-      { team: "接班人", name: "吳曉宣", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "麵五三屋", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_15", roommates: "陳翊榛" },
-      { team: "接班人", name: "陳翊榛", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "麵五三屋", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_15", roommates: "吳曉宣" },
-      { team: "接班人", name: "林珊汝", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "弎食鉄板", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_16", roommates: "林珊汝-夫, 林珊汝-子（6歲）" },
-      { team: "接班人", name: "林珊汝-夫", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "弎食鉄板", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_16", roommates: "林珊汝, 林珊汝-子（6歲）" },
-      { team: "接班人", name: "林珊汝-子（6歲）", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "弎食鉄板", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_16", roommates: "林珊汝, 林珊汝-夫" },
-      { team: "接班人", name: "吳淋禎", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "NO", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_17", roommates: "陶逸婕" },
-      { team: "接班人", name: "杜志峰", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_18", roommates: "無" },
+      { team: "接班人", name: "謝文憲", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "2人房", roomGroup: "正巧-2人房_1", roomNumber: "", roommates: "無" },
+      { team: "接班人", name: "范永銀", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "植田割烹", isDiningLeader: "否", diet: "不吃：蒜", hotel: "正巧", roomType: "2人房", roomGroup: "正巧-2人房_2", roomNumber: "", roommates: "無" },
+      { team: "接班人", name: "梁懷貞", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "2人房", roomGroup: "正巧-2人房_3", roomNumber: "", roommates: "李紘逸" },
+      { team: "接班人", name: "吳緁苓", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "NO", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "2人房", roomGroup: "正巧-2人房_4", roomNumber: "", roommates: "洪淑姮" },
+      { team: "接班人", name: "洪淑姮", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "2人房", roomGroup: "正巧-2人房_4", roomNumber: "", roommates: "吳緁苓" },
+      { team: "接班人", name: "廖培芯", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "是", restaurant: "NO", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_3", roomNumber: "", roommates: "汪方巧, 胡智容, 許家倫" },
+      { team: "接班人", name: "吳佩容", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_4", roomNumber: "", roommates: "吳惠君, 魏鈴芳, 周宗弘" },
+      { team: "接班人", name: "周宗弘", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_4", roomNumber: "", roommates: "吳惠君, 魏鈴芳, 吳佩容" },
+      { team: "接班人", name: "田富元（田爸）", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "NO", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_14", roomNumber: "", roommates: "吳全峰" },
+      { team: "接班人", name: "吳曉宣", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "麵五三屋", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_15", roomNumber: "", roommates: "陳翊榛" },
+      { team: "接班人", name: "陳翊榛", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "麵五三屋", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_15", roomNumber: "", roommates: "吳曉宣" },
+      { team: "接班人", name: "林珊汝", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "弎食鉄板", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_16", roomNumber: "", roommates: "林珊汝-夫, 林珊汝-子（6歲）" },
+      { team: "接班人", name: "林珊汝-夫", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "弎食鉄板", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_16", roomNumber: "", roommates: "林珊汝, 林珊汝-子（6歲）" },
+      { team: "接班人", name: "林珊汝-子（6歲）", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "弎食鉄板", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_16", roomNumber: "", roommates: "林珊汝, 林珊汝-夫" },
+      { team: "接班人", name: "吳淋禎", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "NO", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_17", roomNumber: "", roommates: "陶逸婕" },
+      { team: "接班人", name: "杜志峰", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_18", roomNumber: "", roommates: "無" },
 
-      { team: "綠", name: "李紘逸", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "弎食鉄板", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "2人房", roomGroup: "正巧-2人房_3", roommates: "梁懷貞" },
-      { team: "綠", name: "張婷婷", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "植田割烹", isDiningLeader: "否", diet: "不吃：牛羊", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_2", roommates: "郭淑貞, 潘麗婧, 陳尹恩" },
-      { team: "綠", name: "陳尹恩", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "素食：蛋奶素、五辛素", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_2", roommates: "郭淑貞, 潘麗婧, 張婷婷" },
-      { team: "綠", name: "許家倫", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "NO", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_3", roommates: "汪方巧, 胡智容, 廖培芯" },
-      { team: "綠", name: "魏鈴芳", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "植田割烹", isDiningLeader: "否", diet: "不吃：牛", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_4", roommates: "吳惠君, 吳佩容, 周宗弘" },
-      { team: "綠", name: "黃立軒", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "植田割烹", isDiningLeader: "否", diet: "素食：蛋奶素、五辛素", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_1", roommates: "莫惠萍" },
-      { team: "綠", name: "沈佳慧", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_2", roommates: "陳揚舒" },
-      { team: "綠", name: "陳揚舒", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "弎食鉄板", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_2", roommates: "沈佳慧" },
-      { team: "綠", name: "徐珮甄", trafficOut: "自行", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "NO", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_4", roommates: "吳羿慧" },
-      { team: "綠", name: "何琇菱", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "弎食鉄板", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_6", roommates: "陳俐君" },
-      { team: "綠", name: "陳美好", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_7", roommates: "盧萱語" },
-      { team: "綠", name: "謝宜倩", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "植田割烹", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_8", roommates: "陳若雲" },
-      { team: "綠", name: "吳建逢", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_11", roommates: "魏志毓" },
-      { team: "綠", name: "胡靖韋", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "植田割烹", isDiningLeader: "是", diet: "不吃：牛羊", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_12", roommates: "盧建邦" },
-      { team: "綠", name: "盧建邦", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "植田割烹", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_12", roommates: "胡靖韋" }
+      { team: "綠", name: "李紘逸", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "弎食鉄板", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "2人房", roomGroup: "正巧-2人房_3", roomNumber: "", roommates: "梁懷貞" },
+      { team: "綠", name: "張婷婷", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "植田割烹", isDiningLeader: "否", diet: "不吃：牛羊", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_2", roomNumber: "", roommates: "郭淑貞, 潘麗婧, 陳尹恩" },
+      { team: "綠", name: "陳尹恩", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "素食：蛋奶素、五辛素", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_2", roomNumber: "", roommates: "郭淑貞, 潘麗婧, 張婷婷" },
+      { team: "綠", name: "許家倫", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "NO", isDiningLeader: "否", diet: "無", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_3", roomNumber: "", roommates: "汪方巧, 胡智容, 廖培芯" },
+      { team: "綠", name: "魏鈴芳", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "植田割烹", isDiningLeader: "否", diet: "不吃：牛", hotel: "正巧", roomType: "4人房", roomGroup: "正巧-4人房_4", roomNumber: "", roommates: "吳惠君, 吳佩容, 周宗弘" },
+      { team: "綠", name: "黃立軒", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "植田割烹", isDiningLeader: "否", diet: "素食：蛋奶素、五辛素", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_1", roomNumber: "", roommates: "莫惠萍" },
+      { team: "綠", name: "沈佳慧", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_2", roomNumber: "", roommates: "陳揚舒" },
+      { team: "綠", name: "陳揚舒", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "弎食鉄板", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_2", roomNumber: "", roommates: "沈佳慧" },
+      { team: "綠", name: "徐珮甄", trafficOut: "自行", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "NO", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_4", roomNumber: "", roommates: "吳羿慧" },
+      { team: "綠", name: "何琇菱", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "弎食鉄板", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_6", roomNumber: "", roommates: "陳俐君" },
+      { team: "綠", name: "陳美好", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_7", roomNumber: "", roommates: "盧萱語" },
+      { team: "綠", name: "謝宜倩", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "植田割烹", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_8", roomNumber: "", roommates: "陳若雲" },
+      { team: "綠", name: "吳建逢", trafficOut: "開車", trafficBack: "開車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", isDiningLeader: "否", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_11", roomNumber: "", roommates: "魏志毓" },
+      { team: "綠", name: "胡靖韋", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "植田割烹", isDiningLeader: "否", diet: "不吃：牛羊", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_12", roomNumber: "", roommates: "盧建邦" },
+      { team: "綠", name: "盧建邦", trafficOut: "遊覽車", trafficBack: "遊覽車", isTrafficLeader: "否", restaurant: "植田割烹", isDiningLeader: "是", diet: "無", hotel: "知達", roomType: "2人房", roomGroup: "知達-2人房_12", roomNumber: "", roommates: "胡靖韋" }
     ];
 
     /* =========================================================
-       2. 初始化與雲端資料非同步加載
+       2. 初始化與保證初次渲染（First Render Guarantee）
        ========================================================= */
     window.addEventListener('DOMContentLoaded', () => {
       initPageViewCounter();
       calculateDirectoryRoommates();
+      // 第一時間立刻用基準資料完成渲染，絕不白屏
       renderCurrentTab();
+      // 隨後在背景非同步嘗試同步最新雲端資料
       fetchCloudDataSilently();
     });
 
-    // 瀏覽次數計數器（累計本機瀏覽與雲端備援計數，以白色文字隱藏呈現）
+    // 瀏覽次數計數器（白色文字，反白選取後可見）
     function initPageViewCounter() {
       const counterEl = document.getElementById('pageViewCounter');
       let localViews = parseInt(localStorage.getItem('rl_visit_count') || '0', 10) + 1;
       localStorage.setItem('rl_visit_count', localViews);
       counterEl.textContent = `views: ${localViews}`;
 
-      // 嘗試透過公開無伺服器計數 API 更新全局計數
       const counterNamespace = 'restart-life-lab-1031';
       fetch(`https://api.counterapi.dev/v1/${counterNamespace}/visits/up`)
         .then(res => res.json())
@@ -897,7 +893,6 @@
           }
         })
         .catch(() => {
-          // 網路受限或離線時維持本機計數
           counterEl.textContent = `views: ${localViews}`;
         });
     }
@@ -910,7 +905,6 @@
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 9000);
 
-        // 1. 同步成員名冊（多端點備援支援）
         async function fetchDirectoryCsv() {
           for (const url of GOOGLE_SHEET_DIR_URLS) {
             try {
@@ -921,14 +915,11 @@
                   return text;
                 }
               }
-            } catch (e) {
-              // 嘗試下一個備援端點
-            }
+            } catch (e) {}
           }
           return null;
         }
 
-        // 2. 平行嘗試抓取活動流程試算表
         async function fetchScheduleCsv() {
           for (const url of GOOGLE_SHEET_SCHEDULE_URLS) {
             try {
@@ -939,9 +930,7 @@
                   return text;
                 }
               }
-            } catch (e) {
-              // 嘗試下一個備援端點
-            }
+            } catch (e) {}
           }
           return null;
         }
@@ -949,7 +938,6 @@
         const [csvDirText, scheduleCsvText] = await Promise.all([fetchDirectoryCsv(), fetchScheduleCsv()]);
         clearTimeout(timeoutId);
 
-        // 解析最新「重啟-活動流程」
         if (scheduleCsvText) {
           Papa.parse(scheduleCsvText, {
             header: true,
@@ -1001,7 +989,6 @@
           });
         }
 
-        // 解析最新成員名單（完整反映試算表中吳佩容與吳曉宣之更新，移除硬編碼覆寫）
         if (csvDirText) {
           Papa.parse(csvDirText, {
             header: true,
@@ -1398,7 +1385,7 @@
       return '';
     }
 
-    /* --- [分頁4] 重啟-餐飲服務 (包含車長、領談人與所有用餐人員) --- */
+    /* --- [分頁4] 重啟-餐飲服務 --- */
     function renderDiningTab(thead, tbody, countBadge) {
       thead.innerHTML = `
         <tr class="text-base font-semibold">
@@ -1462,7 +1449,6 @@
 
         const dietDisplay = formatDietDisplay(item.diet);
 
-        // 判斷幹部徽章：遊覽車 車長 & 領談人
         const isBusCaptain = DINING_BUS_CAPTAINS.has(item.name);
         const isInterviewer = DINING_INTERVIEWERS.has(item.name);
 
@@ -1528,7 +1514,7 @@
       return '<span class="icon-circle w-6 h-6 bg-rose-100 text-rose-700"><i class="fa-solid fa-utensils text-xs"></i></span>';
     }
 
-    /* --- [分頁5] 重啟-住宿服務（房屋圖卡模式 + 住宿注意事項彈窗） --- */
+    /* --- [分頁5] 重啟-住宿服務 --- */
     function renderLodgingRoomCards(countBadge) {
       const view = document.getElementById('lodgingRoomView');
       const matched = getProcessedDirectoryList('lodging').filter(i => i.name !== '彭偉峰');
@@ -1547,7 +1533,6 @@
       const visibleRooms = new Map();
       const matchedPeople = new Set(matched);
 
-      // 當有搜尋條件時，僅顯示「該成員本身符合搜尋」所在的房間
       matched.forEach(item => {
         const key = roomKey(item);
         if (!visibleRooms.has(key)) visibleRooms.set(key, allRooms.get(key));
@@ -1561,7 +1546,6 @@
         return `<button type="button" onclick="openFilterModal('${key}', '${title}', event)">${title}${selected ? ' · 已篩選' : ''}${activeSortColumn === key ? (activeSortDirection === 'asc' ? ' ↑' : ' ↓') : ' ▾'}</button>`;
       }).join('');
 
-      // 住宿重要注意規範（全館素食禁菸、無一次性備品與瓶裝水）
       const accommodationNotices = `
         <div class="mb-5 bg-gradient-to-r from-rose-100/90 via-orange-100/90 to-pink-100/90 border-l-4 border-rose-500 rounded-xl p-3.5 shadow-xs text-rose-950 no-print">
           <div class="flex items-start space-x-2.5">
@@ -1593,7 +1577,25 @@
         hotels.get(hotel).push(room);
       });
 
+      // 房間依據聯絡人置頂、並依「房號」由少到多排序
       hotels.forEach((rooms, hotel) => {
+        const getRoomNo = (room) => {
+          const found = room.find(p => p.roomNumber && String(p.roomNumber).trim() !== '');
+          return found ? String(found.roomNumber).trim() : '';
+        };
+
+        const compareRoomNumbers = (noA, noB, roomA, roomB) => {
+          if (noA && noB) {
+            return noA.localeCompare(noB, undefined, { numeric: true, sensitivity: 'base' });
+          }
+          if (noA && !noB) return -1;
+          if (!noA && noB) return 1;
+
+          const grpA = (roomA[0] && roomA[0].roomGroup) || '';
+          const grpB = (roomB[0] && roomB[0].roomGroup) || '';
+          return grpA.localeCompare(grpB, undefined, { numeric: true, sensitivity: 'base' });
+        };
+
         rooms.sort((roomA, roomB) => {
           const hasContactA = roomA.some(p => 
             (hotel.includes('知達') && LODGING_CONTACTS_ZHIDA.has(p.name)) ||
@@ -1603,9 +1605,13 @@
             (hotel.includes('知達') && LODGING_CONTACTS_ZHIDA.has(p.name)) ||
             (hotel.includes('正巧') && LODGING_CONTACTS_ZHENGQIAO.has(p.name))
           );
+
           if (hasContactA && !hasContactB) return -1;
           if (!hasContactA && hasContactB) return 1;
-          return 0;
+
+          const noA = getRoomNo(roomA);
+          const noB = getRoomNo(roomB);
+          return compareRoomNumbers(noA, noB, roomA, roomB);
         });
       });
 
@@ -1614,9 +1620,9 @@
         `<p class="room-help">移入房間看大家揮手，手機可點一下卡片。分組編號為資料中的住宿分組，房號目前保留待分配，後續填入後將自動呈現。</p>` +
         (hotels.size ? Array.from(hotels, ([hotel, rooms]) => {
           const isZhida = hotel.includes('知達');
-          const hotelName = hotel === '知達' ? '知達工藝會館' : hotel === '正巧' ? '正巧文旅' : hotel;
+          const isZhengqiao = hotel.includes('正巧');
+          const hotelName = isZhida ? '知達工藝會館' : isZhengqiao ? '正巧文旅' : hotel;
           
-          // 在知達工藝會館標題右側加入注意事項按鈕
           const zhidaNoticeButton = isZhida ? `
             <button type="button" onclick="openZhidaNoticeModal()" class="inline-flex items-center space-x-1.5 px-3 py-1 text-xs sm:text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-full shadow-sm hover:shadow-md transition-all ml-1 sm:ml-2 cursor-pointer no-print">
               <i class="fa-solid fa-circle-exclamation text-xs"></i>
@@ -1625,7 +1631,7 @@
           ` : '';
 
           return `<section class="hotel-section">
-            <div class="hotel-title" style="color:${hotel.includes('正巧') ? '#c2410c' : '#881337'}">
+            <div class="hotel-title" style="color:${isZhengqiao ? '#c2410c' : '#881337'}">
               <div class="flex items-center gap-2">
                 <span>${escapeHtml(hotelName)}</span>
                 <small>${rooms.length} 間房</small>
@@ -1674,7 +1680,6 @@
       card.setAttribute('aria-pressed', String(open));
     }
 
-    // 知達會館住宿注意事項彈窗控制
     function openZhidaNoticeModal() {
       const modal = document.getElementById('zhidaNoticeModal');
       const overlay = document.getElementById('zhidaNoticeOverlay');
@@ -1766,26 +1771,23 @@
       `;
     }
 
-    /* =========================================================
-       6. 排序與表頭過濾邏輯
-       ========================================================= */
     function renderHeaderTh(colTitle, colKey, widthClass) {
-      const hasFilter = columnFilters[colKey] && columnFilters[colKey].size > 0;
+      const isFiltered = columnFilters[colKey] && columnFilters[colKey].size > 0;
       const isSorted = activeSortColumn === colKey;
-      let sortIcon = 'fa-solid fa-arrow-down-up-across-line text-rose-300';
+      let sortIcon = '';
       if (isSorted) {
         sortIcon = activeSortDirection === 'asc' 
-          ? 'fa-solid fa-arrow-up-short-wide text-rose-600' 
-          : 'fa-solid fa-arrow-down-wide-short text-rose-600';
+          ? '<i class="fa-solid fa-arrow-down-a-z text-xs text-rose-600 ml-1"></i>' 
+          : '<i class="fa-solid fa-arrow-up-z-a text-xs text-rose-600 ml-1"></i>';
       }
 
       return `
         <th class="py-3.5 px-3 font-semibold ${widthClass}">
-          <div class="flex items-center justify-between group">
-            <span class="text-rose-950">${colTitle}</span>
-            <button onclick="openFilterModal('${colKey}', '${colTitle}', event)" class="p-1 rounded-full hover:bg-rose-200/80 transition-colors">
-              <span class="icon-circle w-6 h-6 bg-rose-200/70 text-rose-700 ${hasFilter ? 'bg-rose-300 text-rose-900' : ''}">
-                <i class="${sortIcon} text-xs"></i>
+          <div class="flex items-center justify-between">
+            <span class="text-rose-950 flex items-center">${colTitle} ${sortIcon}</span>
+            <button onclick="openFilterModal('${colKey}', '${colTitle}', event)" class="p-1 rounded-full hover:bg-rose-200 transition-colors" title="篩選此欄">
+              <span class="icon-circle w-6 h-6 bg-rose-200/80 text-rose-700 ${isFiltered ? 'bg-rose-300 text-rose-900 font-bold' : ''}">
+                <i class="fa-solid fa-filter text-xs"></i>
               </span>
             </button>
           </div>
@@ -1793,13 +1795,16 @@
       `;
     }
 
-    function getProcessedDirectoryList(tab = currentTab) {
+    /* =========================================================
+       6. 排序與精準檢索運算邏輯
+       ========================================================= */
+    function getProcessedDirectoryList(tab) {
       let list = [...rawDirectoryData];
 
       if (searchQuery) {
         list = list.filter(item => {
-          const rowText = getSearchText(item, tab);
-          return rowText.includes(searchQuery);
+          const text = getSearchText(item, tab);
+          return text.includes(searchQuery);
         });
       }
 
@@ -1818,7 +1823,6 @@
 
       if (activeSortColumn && activeSortDirection) {
         list.sort((a, b) => {
-          // 交通服務分頁中，車長永遠置頂於第一行
           if (tab === 'traffic') {
             const leaderA = isTrafficLeader(a);
             const leaderB = isTrafficLeader(b);
@@ -1832,11 +1836,11 @@
         });
       } else {
         if (tab === 'overview') {
-          // 嚴格排序規則：
-          // 1. 隊別：白 (1) ➔ 紅 (2) ➔ 綠 (3) ➔ 接班人 (4)
+          // 總表四層排序：
+          // 1. 隊別：白 (1) → 紅 (2) → 綠 (3) → 接班人 (4)
           // 2. 姓名：繁體中文筆畫由少至多
-          // 3. 交通去/回：遊覽車/遊覽車 (1) ➔ 自行/遊覽車 (2) ➔ 開車/開車 (3) ➔ 其他 (4)
-          // 4. 住宿安排：知達 (1) ➔ 正巧4人房 (2) ➔ 正巧2人房 (3) ➔ 其他 (4)
+          // 3. 交通去/回：遊覽車/遊覽車 (1) → 自行/遊覽車 (2) → 開車/開車 (3) → 其他 (4)
+          // 4. 住宿安排：知達 (1) → 正巧4人房 (2) → 正巧2人房 (3) → 其他 (4)
           const teamOrder = { '白': 1, '紅': 2, '綠': 3, '接班人': 4 };
 
           const getTrafficOrder = item => {
