@@ -76,7 +76,7 @@
       opacity: 0.7;
     }
 
-    /* 知達工藝會館：立體小屋卡片（沉穩靛青／藍綠風格，與正巧明顯區隔） */
+    /* 知達工藝會館：立體小屋卡片（沉穩靛青風格） */
     .house-card-zhida {
       position: relative;
       background: #ffffff;
@@ -172,7 +172,6 @@
             <span class="text-xs px-2 py-0.5 rounded-full bg-rose-100 text-rose-700 font-medium">
               架構版本 26'1017-2150
             </span>
-            <!-- 瀏覽計數工具（白色隱藏字） -->
             <span id="page-view-counter" class="text-white text-xs select-all cursor-default" title="網頁累計瀏覽次數">
               views: --
             </span>
@@ -320,7 +319,7 @@
     // 2. 基準資料：嚴格參照 Google Sheets 原始資料庫
     // ==========================================
 
-    // 活動流程：嚴格參照 10/31-11/01_流程_v2b-重啟夥伴 工作表 (16 項流程)
+    // 嚴格對照 10/31-11/01_流程_v2b-重啟夥伴
     const DEFAULT_SCHEDULE = [
       {
         date: "10/31 (六)",
@@ -460,7 +459,7 @@
       }
     ];
 
-    // 成員資料：完整 62 位名單（含司機 1、司機 2 及知達 208 房）
+    // 完整 62 位成員資料（直接自 Google Sheets 提取，零缺漏）
     const DEFAULT_MEMBERS = [
       { team: "白", name: "吳全峰", relation: "本人", trafficDep: "遊覽車", trafficRet: "遊覽車", trafficCombo: "遊覽車/遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", diningTraffic: "遊覽車", diningLeader: "麵五三-車長", diningInterviewer: "", dietNote: "無", lodging: "知達", lodgingTraffic: "遊覽車", lodgingContact: "", roomNumber: "506", roomType: "2人房", bedCount: "2床", roomGroup: "16", fullRoomKey: "知達-2人房_16" },
       { team: "白", name: "吳羿慧", relation: "本人", trafficDep: "遊覽車", trafficRet: "遊覽車", trafficCombo: "遊覽車/遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", diningTraffic: "遊覽車", diningLeader: "", diningInterviewer: "", dietNote: "不吃：牛羊", lodging: "知達", lodgingTraffic: "遊覽車", lodgingContact: "", roomNumber: "307", roomType: "2人房", bedCount: "2床", roomGroup: "4", fullRoomKey: "知達-2人房_04" },
@@ -549,7 +548,7 @@
     // ==========================================
     // 3. 系統狀態
     // ==========================================
-    let currentTab = 'lodging';
+    let currentTab = 'roster';
     let scheduleData = [...DEFAULT_SCHEDULE];
     let memberData = [...DEFAULT_MEMBERS];
     let searchQuery = '';
@@ -659,7 +658,7 @@
     }
 
     // ==========================================
-    // 5. 分頁：重啟-住宿服務 (知達與正巧不同色系、移除組別、含司機)
+    // 5. 分頁：重啟-住宿服務
     // ==========================================
     function renderLodging(container, badge) {
       const roomsMap = {};
@@ -711,7 +710,6 @@
 
       let html = `
         <div class="space-y-6">
-          <!-- 頂部飯店快速聯絡卡 (定位點嚴格使用 NAV_URLS) -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div class="bg-white p-4 rounded-2xl border border-indigo-100 shadow-sm flex items-center justify-between gap-3">
               <div>
@@ -745,7 +743,6 @@
             </div>
           </div>
 
-          <!-- 重要規範警示卡片 -->
           <div class="p-4 rounded-2xl bg-gradient-to-r from-rose-100/90 via-orange-100/80 to-amber-100/90 border border-rose-200 shadow-sm space-y-1.5 text-xs sm:text-sm text-slate-700">
             <div class="flex items-start gap-2">
               <i class="fa-solid fa-triangle-exclamation text-rose-600 mt-0.5 shrink-0"></i>
@@ -757,7 +754,7 @@
             </div>
           </div>
 
-          <!-- 知達工藝會館區塊 (沉穩靛青／藍綠風格，房間數 19 間) -->
+          <!-- 知達工藝會館區塊 (沉穩靛青風格) -->
           <div class="space-y-3">
             <div class="flex items-center justify-between flex-wrap gap-2">
               <div class="flex items-center gap-3">
@@ -779,7 +776,7 @@
             </div>
           </div>
 
-          <!-- 正巧文旅區塊 (粉紅／粉橘風格) -->
+          <!-- 正巧文旅區塊 (粉橘風格) -->
           <div class="space-y-3 pt-4 border-t border-rose-100">
             <div class="flex items-center gap-3">
               <span class="w-7 h-7 icon-circle bg-rose-500 text-white text-xs">
@@ -836,7 +833,6 @@
               </ul>
             </div>
             
-            <!-- 已徹底移除「組別」字樣，乾淨簡潔 -->
             <div class="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
               <span>${isZhida ? '知達會館' : '正巧文旅'}</span>
               <span class="waving-person inline-block ${isZhida ? 'text-indigo-400' : 'text-rose-400'}" title="歡迎入住">
@@ -849,7 +845,7 @@
     }
 
     // ==========================================
-    // 6. 分頁：重啟-活動流程 (100% 嚴格對照資料庫，無增刪)
+    // 6. 分頁：重啟-活動流程
     // ==========================================
     function renderSchedule(container, badge) {
       let list = scheduleData.filter(s => {
@@ -906,7 +902,7 @@
     }
 
     // ==========================================
-    // 7. 分頁：重啟-交通服務 (移除司機 + 嚴格排序)
+    // 7. 分頁：重啟-交通服務
     // ==========================================
     function renderTraffic(container, badge) {
       let list = memberData.filter(m => !m.name.includes('司機'));
@@ -956,7 +952,6 @@
 
       let html = `
         <div class="space-y-4">
-          <!-- 頂部正巧與導航資訊橫幅 -->
           <div class="bg-gradient-to-r from-rose-100/90 via-orange-100/80 to-amber-100/90 p-3.5 sm:p-4 rounded-2xl border border-rose-200/90 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <div class="flex items-center gap-3">
               <span class="w-10 h-10 icon-circle bg-rose-500 text-white shadow-sm shrink-0">
@@ -980,7 +975,6 @@
             </div>
           </div>
 
-          <!-- 交通服務名冊表格 -->
           <div class="bg-white rounded-2xl border border-rose-100 shadow-sm overflow-hidden">
             <div class="overflow-x-auto custom-scrollbar">
               <table class="w-full text-left border-collapse text-sm">
@@ -1044,7 +1038,7 @@
     }
 
     // ==========================================
-    // 8. 分頁：重啟-餐飲服務 (排序列與藍框位置)
+    // 8. 分頁：重啟-餐飲服務
     // ==========================================
     function renderDining(container, badge) {
       const RESTAURANT_CONFIG = [
@@ -1246,7 +1240,7 @@
     }
 
     // ==========================================
-    // 9. 分頁：重啟-總表 (四階層排序)
+    // 9. 分頁：重啟-總表 (62位全員呈現)
     // ==========================================
     function renderRoster(container, badge) {
       let list = memberData.filter(m => {
@@ -1371,7 +1365,7 @@
         header: true,
         skipEmptyLines: true,
         complete: function(results) {
-          if (results && results.data && results.data.length >= 20) {
+          if (results && results.data && results.data.length >= 50) {
             const mapped = results.data.map(r => ({
               team: r['隊別'] || '',
               name: r['姓名'] || '',
@@ -1395,7 +1389,7 @@
               fullRoomKey: r['住宿-房型-分組'] || ''
             })).filter(m => m.name && m.name.trim().length > 0);
 
-            if (mapped.length >= 20) {
+            if (mapped.length >= 55) {
               enrichRoommates(mapped);
               memberData = mapped;
               isCloudSynced = true;
@@ -1404,7 +1398,7 @@
           if (callback) callback();
         },
         error: function(err) {
-          console.warn('雲端載入防護：維持本地完整基準資料。', err);
+          console.warn('雲端同步安全防護：自動使用內建完整 62 位成員資料庫。', err);
           if (callback) callback();
         }
       });
