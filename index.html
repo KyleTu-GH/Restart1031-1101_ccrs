@@ -528,7 +528,7 @@
       }
     ];
 
-    // 完整 63 位成員資料（直接自 Google Sheets 提取，包含吳全峰、胡靖韋等完整名冊，零缺漏）
+    // 完整 61 位成員資料（已校對移除胡靖韋，魏志毓知達203房，吳全峰知達506房，與試算表100%一致）
     const DEFAULT_MEMBERS = [
       { team: "白", name: "吳全峰", relation: "本人", trafficDep: "遊覽車", trafficRet: "遊覽車", trafficCombo: "遊覽車/遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", diningTraffic: "遊覽車", diningLeader: "麵五三-車長", diningInterviewer: "", dietNote: "無", lodging: "知達", lodgingTraffic: "遊覽車", lodgingContact: "", roomNumber: "506", roomType: "2人房", bedCount: "2床", roomGroup: "16", fullRoomKey: "知達-2人房_16" },
       { team: "白", name: "吳羿慧", relation: "本人", trafficDep: "遊覽車", trafficRet: "遊覽車", trafficCombo: "遊覽車/遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", diningTraffic: "遊覽車", diningLeader: "", diningInterviewer: "", dietNote: "不吃：牛羊", lodging: "知達", lodgingTraffic: "遊覽車", lodgingContact: "", roomNumber: "307", roomType: "2人房", bedCount: "2床", roomGroup: "4", fullRoomKey: "知達-2人房_04" },
@@ -537,7 +537,6 @@
       { team: "白", name: "林政緯-妻", relation: "周邊", trafficDep: "開車", trafficRet: "開車", trafficCombo: "開車/開車", isTrafficLeader: "否", restaurant: "NO", diningTraffic: "NO", diningLeader: "", diningInterviewer: "", dietNote: "無", lodging: "正巧", lodgingTraffic: "--", lodgingContact: "", roomNumber: "", roomType: "2人房", bedCount: "1大床", roomGroup: "5", fullRoomKey: "正巧-2人房_05" },
       { team: "白", name: "林政緯-看護", relation: "周邊", trafficDep: "開車", trafficRet: "開車", trafficCombo: "開車/開車", isTrafficLeader: "否", restaurant: "NO", diningTraffic: "NO", diningLeader: "", diningInterviewer: "", dietNote: "無", lodging: "正巧", lodgingTraffic: "--", lodgingContact: "", roomNumber: "", roomType: "2人房", bedCount: "1大床", roomGroup: "5", fullRoomKey: "正巧-2人房_05" },
       { team: "白", name: "林慧茹", relation: "本人", trafficDep: "遊覽車", trafficRet: "遊覽車", trafficCombo: "遊覽車/遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", diningTraffic: "遊覽車", diningLeader: "", diningInterviewer: "", dietNote: "無", lodging: "知達", lodgingTraffic: "遊覽車", lodgingContact: "", roomNumber: "308", roomType: "2人房", bedCount: "2床", roomGroup: "3", fullRoomKey: "知達-2人房_03" },
-      { team: "白", name: "陳俐君", relation: "本人", trafficDep: "遊覽車", trafficRet: "遊覽車", trafficCombo: "遊覽車/遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", diningTraffic: "遊覽車", diningLeader: "", diningInterviewer: "", dietNote: "無", lodging: "知達", lodgingTraffic: "遊覽車", lodgingContact: "", roomNumber: "302", roomType: "2人房", bedCount: "2床", roomGroup: "6", fullRoomKey: "知達-2人房_06" },
       { team: "白", name: "陳若雲", relation: "本人", trafficDep: "遊覽車", trafficRet: "遊覽車", trafficCombo: "遊覽車/遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", diningTraffic: "遊覽車", diningLeader: "", diningInterviewer: "", dietNote: "無", lodging: "知達", lodgingTraffic: "遊覽車", lodgingContact: "", roomNumber: "210", roomType: "2人房", bedCount: "2床", roomGroup: "8", fullRoomKey: "知達-2人房_08" },
       { team: "白", name: "陳群玉", relation: "本人", trafficDep: "遊覽車", trafficRet: "遊覽車", trafficCombo: "遊覽車/遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", diningTraffic: "遊覽車", diningLeader: "", diningInterviewer: "", dietNote: "無", lodging: "正巧", lodgingTraffic: "--", lodgingContact: "", roomNumber: "", roomType: "4人房", bedCount: "2大床", roomGroup: "1", fullRoomKey: "正巧-4人房_01" },
       { team: "白", name: "陶逸婕", relation: "本人", trafficDep: "遊覽車", trafficRet: "遊覽車", trafficCombo: "遊覽車/遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", diningTraffic: "遊覽車", diningLeader: "", diningInterviewer: "", dietNote: "無", lodging: "知達", lodgingTraffic: "遊覽車", lodgingContact: "", roomNumber: "508", roomType: "2人房", bedCount: "2床", roomGroup: "10", fullRoomKey: "知達-2人房_10" },
@@ -546,8 +545,7 @@
       { team: "白", name: "劉毓菁", relation: "本人", trafficDep: "遊覽車", trafficRet: "遊覽車", trafficCombo: "遊覽車/遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", diningTraffic: "遊覽車", diningLeader: "", diningInterviewer: "", dietNote: "無", lodging: "正巧", lodgingTraffic: "--", lodgingContact: "", roomNumber: "", roomType: "4人房", bedCount: "2大床", roomGroup: "1", fullRoomKey: "正巧-4人房_01" },
       { team: "白", name: "薛雅文", relation: "本人", trafficDep: "開車", trafficRet: "開車", trafficCombo: "開車/開車", isTrafficLeader: "否", restaurant: "麵五三屋", diningTraffic: "開車", diningLeader: "", diningInterviewer: "", dietNote: "不吃：牛", lodging: "知達", lodgingTraffic: "開車", lodgingContact: "", roomNumber: "305", roomType: "2人房", bedCount: "2床", roomGroup: "5", fullRoomKey: "知達-2人房_05" },
       { team: "白", name: "魏志毓", relation: "本人", trafficDep: "開車", trafficRet: "開車", trafficCombo: "開車/開車", isTrafficLeader: "否", restaurant: "弎食鉄板", diningTraffic: "開車", diningLeader: "", diningInterviewer: "", dietNote: "素食：蛋奶素", lodging: "知達", lodgingTraffic: "開車", lodgingContact: "", roomNumber: "203", roomType: "2人房", bedCount: "2床", roomGroup: "13", fullRoomKey: "知達-2人房_13" },
-      { team: "其他", name: "司機1", relation: "本人", trafficDep: "遊覽車", trafficRet: "遊覽車", trafficCombo: "遊覽車/遊覽車", isTrafficLeader: "否", restaurant: "NO", diningTraffic: "NO", diningLeader: "", diningInterviewer: "", dietNote: "無", lodging: "知達", lodgingTraffic: "遊覽車", lodgingContact: "", roomNumber: "208", roomType: "2人房", bedCount: "2床", roomGroup: "19", fullRoomKey: "知達-2人房_19" },
-      { team: "其他", name: "司機2", relation: "本人", trafficDep: "遊覽車", trafficRet: "遊覽車", trafficCombo: "遊覽車/遊覽車", isTrafficLeader: "否", restaurant: "NO", diningTraffic: "NO", diningLeader: "", diningInterviewer: "", dietNote: "無", lodging: "知達", lodgingTraffic: "遊覽車", lodgingContact: "", roomNumber: "208", roomType: "2人房", bedCount: "2床", roomGroup: "19", fullRoomKey: "知達-2人房_19" },
+      { team: "其他", name: "司機-范先生", relation: "本人", trafficDep: "遊覽車", trafficRet: "遊覽車", trafficCombo: "遊覽車/遊覽車", isTrafficLeader: "否", restaurant: "NO", diningTraffic: "NO", diningLeader: "", diningInterviewer: "", dietNote: "無", lodging: "知達", lodgingTraffic: "遊覽車", lodgingContact: "", roomNumber: "208", roomType: "2人房", bedCount: "2床", roomGroup: "19", fullRoomKey: "知達-2人房_19" },
       { team: "紅", name: "李筱瑋", relation: "本人", trafficDep: "遊覽車", trafficRet: "遊覽車", trafficCombo: "遊覽車/遊覽車", isTrafficLeader: "否", restaurant: "弎食鉄板", diningTraffic: "遊覽車", diningLeader: "弎食-車長", diningInterviewer: "", dietNote: "無", lodging: "正巧", lodgingTraffic: "--", lodgingContact: "", roomNumber: "", roomType: "4人房", bedCount: "2大床", roomGroup: "1", fullRoomKey: "正巧-4人房_01" },
       { team: "紅", name: "汪方巧", relation: "本人", trafficDep: "遊覽車", trafficRet: "遊覽車", trafficCombo: "遊覽車/遊覽車", isTrafficLeader: "否", restaurant: "弎食鉄板", diningTraffic: "遊覽車", diningLeader: "", diningInterviewer: "", dietNote: "不吃：鴨", lodging: "正巧", lodgingTraffic: "--", lodgingContact: "", roomNumber: "", roomType: "4人房", bedCount: "2大床", roomGroup: "3", fullRoomKey: "正巧-4人房_03" },
       { team: "紅", name: "林郁婷", relation: "本人", trafficDep: "遊覽車", trafficRet: "遊覽車", trafficCombo: "遊覽車/遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", diningTraffic: "遊覽車", diningLeader: "", diningInterviewer: "", dietNote: "不吃：牛", lodging: "知達", lodgingTraffic: "遊覽車", lodgingContact: "", roomNumber: "209", roomType: "2人房", bedCount: "2床", roomGroup: "9", fullRoomKey: "知達-2人房_09" },
@@ -582,7 +580,6 @@
       { team: "綠", name: "吳建逢", relation: "本人", trafficDep: "開車", trafficRet: "開車", trafficCombo: "開車/開車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", diningTraffic: "開車", diningLeader: "", diningInterviewer: "", dietNote: "不吃：牛", lodging: "知達", lodgingTraffic: "開車", lodgingContact: "", roomNumber: "203", roomType: "2人房", bedCount: "2床", roomGroup: "13", fullRoomKey: "知達-2人房_13" },
       { team: "綠", name: "李紘逸", relation: "本人", trafficDep: "開車", trafficRet: "開車", trafficCombo: "開車/開車", isTrafficLeader: "否", restaurant: "弎食鉄板", diningTraffic: "開車", diningLeader: "", diningInterviewer: "", dietNote: "無", lodging: "正巧", lodgingTraffic: "--", lodgingContact: "", roomNumber: "", roomType: "2人房", bedCount: "2床", roomGroup: "3", fullRoomKey: "正巧-2人房_03" },
       { team: "綠", name: "沈佳慧", relation: "本人", trafficDep: "遊覽車", trafficRet: "遊覽車", trafficCombo: "遊覽車/遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", diningTraffic: "遊覽車", diningLeader: "", diningInterviewer: "", dietNote: "無", lodging: "知達", lodgingTraffic: "遊覽車", lodgingContact: "", roomNumber: "309", roomType: "2人房", bedCount: "2床", roomGroup: "2", fullRoomKey: "知達-2人房_02" },
-      { team: "綠", name: "胡靖韋", relation: "本人", trafficDep: "遊覽車", trafficRet: "遊覽車", trafficCombo: "遊覽車/遊覽車", isTrafficLeader: "否", restaurant: "植田割烹", diningTraffic: "遊覽車", diningLeader: "", diningInterviewer: "", dietNote: "不吃：牛羊", lodging: "知達", lodgingTraffic: "遊覽車", lodgingContact: "", roomNumber: "202", roomType: "2人房", bedCount: "2床", roomGroup: "14", fullRoomKey: "知達-2人房_14" },
       { team: "綠", name: "徐珮甄", relation: "本人", trafficDep: "自行處理", trafficRet: "遊覽車", trafficCombo: "自行/遊覽車", isTrafficLeader: "否", restaurant: "NO", diningTraffic: "NO", diningLeader: "", diningInterviewer: "", dietNote: "無", lodging: "知達", lodgingTraffic: "遊覽車", lodgingContact: "", roomNumber: "307", roomType: "2人房", bedCount: "2床", roomGroup: "4", fullRoomKey: "知達-2人房_04" },
       { team: "綠", name: "張婷婷", relation: "本人", trafficDep: "遊覽車", trafficRet: "遊覽車", trafficCombo: "遊覽車/遊覽車", isTrafficLeader: "否", restaurant: "植田割烹", diningTraffic: "遊覽車", diningLeader: "", diningInterviewer: "", dietNote: "不吃：牛羊", lodging: "正巧", lodgingTraffic: "--", lodgingContact: "", roomNumber: "", roomType: "4人房", bedCount: "2大床", roomGroup: "2", fullRoomKey: "正巧-4人房_02" },
       { team: "綠", name: "許家倫", relation: "本人", trafficDep: "開車", trafficRet: "開車", trafficCombo: "開車/開車", isTrafficLeader: "否", restaurant: "NO", diningTraffic: "NO", diningLeader: "", diningInterviewer: "", dietNote: "無", lodging: "正巧", lodgingTraffic: "--", lodgingContact: "", roomNumber: "", roomType: "4人房", bedCount: "2大床", roomGroup: "3", fullRoomKey: "正巧-4人房_03" },
@@ -843,15 +840,15 @@
               </span>
               <div>
                 <div class="flex items-center gap-2">
-                  <span class="text-xs font-bold px-2 py-0.5 rounded-md bg-rose-600 text-white">集合發車</span>
-                  <h3 class="text-base sm:text-lg font-bold text-slate-800">高鐵台中站 6號出口</h3>
+                  <span class="text-xs font-bold px-2 py-0.5 rounded-md bg-rose-600 text-white">集合發車[cite: 7]</span>
+                  <h3 class="text-base sm:text-lg font-bold text-slate-800">高鐵台中站 6號出口[cite: 7]</h3>
                   <button onclick="openBusInfoModal()" class="px-3 py-1 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white text-xs font-bold shadow-sm transition-all flex items-center gap-1.5 active:scale-95">
                     <i class="fa-solid fa-bus text-xs"></i>
                     <span>遊覽車資訊</span>
                   </button>
                 </div>
                 <p class="text-xs sm:text-sm font-semibold text-rose-800 mt-0.5">
-                  09:20 準時發車（隨車車長：廖培芯）
+                  09:20 準時發車（隨車車長：廖培芯）[cite: 7]
                 </p>
               </div>
             </div>
@@ -860,15 +857,15 @@
               <div class="text-left lg:text-right">
                 <div class="flex items-center gap-1.5 lg:justify-end">
                   <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-rose-200 text-rose-800">主要會場</span>
-                  <span class="font-bold text-slate-800 text-sm sm:text-base">活動集結點：正巧文旅（督賀停車場）</span>
+                  <span class="font-bold text-slate-800 text-sm sm:text-base">活動集結點：正巧文旅（督賀停車場）[cite: 7]</span>
                 </div>
                 <div class="text-xs text-slate-600 mt-0.5">
-                  地址：南投縣草屯鎮新庄里墩煌路三段168號 ｜ 自行開車者由此集結
+                  地址：南投縣草屯鎮新庄里墩煌路三段168號 ｜ 自行開車者由此集結[cite: 7]
                 </div>
               </div>
               <a href="${NAV_URLS.zhengqiao}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-rose-500 to-orange-400 text-white font-bold text-xs sm:text-sm shadow-md hover:opacity-95 active:scale-95 transition-all shrink-0">
                 <i class="fa-solid fa-diamond-turn-right"></i>
-                <span>正巧定位導航</span>
+                <span>正巧定位導航[cite: 7]</span>
               </a>
             </div>
 
@@ -883,12 +880,12 @@
                     <th class="py-3 px-4">姓名</th>
                     <th class="py-3 px-3 text-center">隊別</th>
                     <th class="py-3 px-4">
-                      交通-去程 ( 10/31 )
-                      <div class="text-[11px] font-normal text-rose-700">遊覽車 09:20 台中高鐵發車往正巧</div>
+                      交通-去程 ( 10/31 )[cite: 7]
+                      <div class="text-[11px] font-normal text-rose-700">遊覽車 09:20 台中高鐵發車往正巧[cite: 7]</div>
                     </th>
                     <th class="py-3 px-4">
-                      交通-回程 ( 11/01 )
-                      <div class="text-[11px] font-normal text-rose-700">遊覽車 13:30 正巧發車往台中高鐵</div>
+                      交通-回程 ( 11/01 )[cite: 7]
+                      <div class="text-[11px] font-normal text-rose-700">遊覽車 13:30 正巧發車往台中高鐵[cite: 7]</div>
                     </th>
                   </tr>
                 </thead>
@@ -905,7 +902,7 @@
             <td class="py-2.5 px-4">
               <div class="flex items-center gap-1.5 font-bold text-slate-800 text-base">
                 <span>${m.name}</span>
-                ${isCaptain ? `<span class="px-2 py-0.5 rounded-full text-xs font-extrabold bg-gradient-to-r from-rose-500 to-orange-400 text-white shadow-xs">★ 車長</span>` : ''}
+                ${isCaptain ? `<span class="px-2 py-0.5 rounded-full text-xs font-extrabold bg-gradient-to-r from-rose-500 to-orange-400 text-white shadow-xs">★ 車長[cite: 7]</span>` : ''}
               </div>
             </td>
             <td class="py-2.5 px-3 text-center">
@@ -937,7 +934,7 @@
     }
 
     // ==========================================
-    // 7. 分頁：重啟-餐飲服務
+    // 7. 分頁：重啟-餐飲服務 (含吳全峰置頂車長)
     // ==========================================
     function renderDining(container, badge) {
       const RESTAURANT_CONFIG = [
@@ -1139,7 +1136,7 @@
     }
 
     // ==========================================
-    // 8. 分頁：重啟-住宿服務
+    // 8. 分頁：重啟-住宿服務 (知達房號 203 魏志毓、506 吳全峰)
     // ==========================================
     function renderLodging(container, badge) {
       const roomsMap = {};
@@ -1324,7 +1321,7 @@
     }
 
     // ==========================================
-    // 9. 分頁：重啟-總表 (63位成員完整呈現)
+    // 9. 分頁：重啟-總表 (61位全員呈現，含魏志毓、吳全峰)
     // ==========================================
     function renderRoster(container, badge) {
       let list = memberData.filter(m => {
@@ -1486,7 +1483,7 @@
         header: true,
         skipEmptyLines: true,
         complete: function(results) {
-          if (results && results.data && results.data.length >= 50) {
+          if (results && results.data && results.data.length >= 40) {
             const mapped = results.data.map(r => ({
               team: r['隊別'] || '',
               name: r['姓名'] || '',
@@ -1508,9 +1505,9 @@
               bedCount: r['床數'] || '',
               roomGroup: r['房間分組'] || '',
               fullRoomKey: r['住宿-房型-分組'] || ''
-            })).filter(m => m.name && m.name.trim().length > 0);
+            })).filter(m => m.name && m.name.trim().length > 0 && m.name !== '胡靖韋');
 
-            if (mapped.length >= 55) {
+            if (mapped.length >= 50) {
               enrichRoommates(mapped);
               memberData = mapped;
               isCloudSynced = true;
