@@ -172,6 +172,7 @@
             <span class="text-xs px-2 py-0.5 rounded-full bg-rose-100 text-rose-700 font-medium">
               架構版本 26'1017-2150
             </span>
+            <!-- 瀏覽計數工具（白色隱藏字） -->
             <span id="page-view-counter" class="text-white text-xs select-all cursor-default" title="網頁累計瀏覽次數">
               views: --
             </span>
@@ -253,11 +254,33 @@
       </div>
 
       <!-- 遊覽車照片展示區 -->
-      <div class="rounded-2xl overflow-hidden border border-rose-200 shadow-sm mb-4 relative bg-slate-50">
-        <img src="遊覽車照片.jpg" alt="遊覽車照片" class="w-full h-auto object-cover max-h-72">
-        <div class="absolute bottom-2 right-2 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-xl border border-rose-100 shadow-md text-xs sm:text-sm font-extrabold text-slate-800 space-y-0.5">
-          <div class="text-blue-700"><i class="fa-solid fa-id-card mr-1"></i> 車牌：KAB-8330</div>
-          <div class="text-rose-700"><i class="fa-solid fa-user-tie mr-1"></i> 司機：范先生</div>
+      <div class="rounded-2xl overflow-hidden border border-rose-200 shadow-sm mb-4 relative bg-rose-50/50">
+        <img id="bus-img-element"
+             src="https://lh3.googleusercontent.com/d/1ZdvXtrITG6hDYDB2RjqjBSFx472WzCMD" 
+             alt="遊覽車照片" 
+             class="w-full h-auto object-cover max-h-72 block"
+             onerror="if(this.src!=='遊覽車照片.jpg'){this.src='遊覽車照片.jpg';}else{this.style.display='none';document.getElementById('bus-fallback-card').classList.remove('hidden');}">
+        
+        <!-- 極端無網路時的優雅備援卡片 -->
+        <div id="bus-fallback-card" class="hidden p-6 text-center space-y-3 bg-gradient-to-br from-pink-100 via-rose-50 to-orange-100">
+          <div class="w-16 h-16 mx-auto rounded-full bg-rose-500 text-white flex items-center justify-center text-2xl shadow-md">
+            <i class="fa-solid fa-bus"></i>
+          </div>
+          <div>
+            <div class="text-base font-extrabold text-slate-800">飯糰旅遊（粉紅特色巴士）</div>
+            <div class="text-xs text-slate-500 mt-1">南投草屯二日遊專用接駁車</div>
+          </div>
+        </div>
+
+        <!-- 車牌與司機資訊徽章 -->
+        <div class="p-3 bg-white/95 backdrop-blur-sm border-t border-rose-100 flex items-center justify-around text-xs sm:text-sm font-extrabold text-slate-800">
+          <div class="text-blue-700 flex items-center gap-1.5">
+            <i class="fa-solid fa-id-card"></i> <span>車牌：KAB-8330</span>
+          </div>
+          <div class="h-4 w-px bg-slate-200"></div>
+          <div class="text-rose-700 flex items-center gap-1.5">
+            <i class="fa-solid fa-user-tie"></i> <span>司機：范先生</span>
+          </div>
         </div>
       </div>
 
@@ -358,14 +381,23 @@
     // 2. 基準資料：嚴格參照 Google Sheets 原始資料庫
     // ==========================================
 
+    // 嚴格對照 10/31-11/01_流程_v2b-重啟夥伴 (共 18 項流程)
     const DEFAULT_SCHEDULE = [
+      {
+        date: "10/31 (六)",
+        start: "08:45",
+        end: "09:20",
+        activity: "接駁車：高鐵台中站 6 號出口",
+        place: "高鐵台中站-6號出口",
+        note: "- 遊覽車預定 9:20發車-6號出口（車長：廖培芯）\n- 正巧文旅 禁葷食，建議夥伴上車前即將食物（尤其是葷食）處理完畢"
+      },
       {
         date: "10/31 (六)",
         start: "09:20",
         end: "10:00",
-        activity: "接駁車：高鐵台中站 6 號出口 → 正巧文旅",
+        activity: "接駁車 出發往 正巧文旅",
         place: "高鐵台中站-6號出口",
-        note: "- 遊覽車預定 9:20發車-6號出口（車長：廖培芯）\n- 正巧文旅 禁葷食，建議夥伴上車前即將食物（尤其是葷食）處理完畢"
+        note: "- 正巧文旅 禁葷食，建議夥伴上車前即將食物（尤其是葷食）處理完畢"
       },
       {
         date: "10/31 (六)",
@@ -497,6 +529,7 @@
       }
     ];
 
+    // 完整 62 位成員資料（直接自 Google Sheets 提取，零缺漏）
     const DEFAULT_MEMBERS = [
       { team: "白", name: "吳全峰", relation: "本人", trafficDep: "遊覽車", trafficRet: "遊覽車", trafficCombo: "遊覽車/遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", diningTraffic: "遊覽車", diningLeader: "麵五三-車長", diningInterviewer: "", dietNote: "無", lodging: "知達", lodgingTraffic: "遊覽車", lodgingContact: "", roomNumber: "506", roomType: "2人房", bedCount: "2床", roomGroup: "16", fullRoomKey: "知達-2人房_16" },
       { team: "白", name: "吳羿慧", relation: "本人", trafficDep: "遊覽車", trafficRet: "遊覽車", trafficCombo: "遊覽車/遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", diningTraffic: "遊覽車", diningLeader: "", diningInterviewer: "", dietNote: "不吃：牛羊", lodging: "知達", lodgingTraffic: "遊覽車", lodgingContact: "", roomNumber: "307", roomType: "2人房", bedCount: "2床", roomGroup: "4", fullRoomKey: "知達-2人房_04" },
@@ -585,7 +618,7 @@
     // ==========================================
     // 3. 系統狀態
     // ==========================================
-    let currentTab = 'traffic';
+    let currentTab = 'schedule';
     let scheduleData = [...DEFAULT_SCHEDULE];
     let memberData = [...DEFAULT_MEMBERS];
     let searchQuery = '';
@@ -695,7 +728,64 @@
     }
 
     // ==========================================
-    // 5. 分頁：重啟-交通服務 (依附圖要求調整表頭與遊覽車按鈕)
+    // 5. 分頁：重啟-活動流程 (18 項完整流程)
+    // ==========================================
+    function renderSchedule(container, badge) {
+      let list = scheduleData.filter(s => {
+        if (!searchQuery) return true;
+        return getContextualSearchText(s, 'schedule').includes(searchQuery);
+      });
+
+      if (badge) {
+        badge.innerHTML = `<i class="fa-solid fa-clock-rotate-left mr-1"></i> 共 ${list.length} 項流程 ${isCloudSynced ? '(雲端同步)' : ''}`;
+      }
+
+      let html = `
+        <div class="bg-white rounded-2xl border border-rose-100 shadow-sm overflow-hidden">
+          <div class="overflow-x-auto custom-scrollbar">
+            <table class="w-full text-left border-collapse text-sm">
+              <thead>
+                <tr class="bg-rose-100/80 border-b border-rose-200 text-rose-900 font-bold text-xs sm:text-sm sticky top-0 z-10">
+                  <th class="py-3 px-3 w-12 text-center">#</th>
+                  <th class="py-3 px-3 text-center">日期</th>
+                  <th class="py-3 px-3 text-center">時間</th>
+                  <th class="py-3 px-4">地點</th>
+                  <th class="py-3 px-5">活動內容</th>
+                  <th class="py-3 px-5">備註</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-rose-50">
+      `;
+
+      list.forEach((s, idx) => {
+        html += `
+          <tr class="${idx % 2 === 0 ? 'bg-white' : 'bg-rose-50/20'} hover:bg-rose-100/40 transition-colors">
+            <td class="py-3 px-3 text-center text-xs text-slate-400">${idx + 1}</td>
+            <td class="py-3 px-3 text-center font-bold text-slate-700 whitespace-nowrap">${s.date}</td>
+            <td class="py-3 px-3 text-center whitespace-nowrap">
+              <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-xs font-mono font-bold bg-rose-100 text-rose-700">
+                ${s.start} - ${s.end}
+              </span>
+            </td>
+            <td class="py-3 px-4 font-semibold text-slate-800">${s.place || '--'}</td>
+            <td class="py-3 px-5 font-bold text-slate-900 text-base">${s.activity}</td>
+            <td class="py-3 px-5 text-xs text-slate-600 leading-relaxed whitespace-pre-line">${s.note || '--'}</td>
+          </tr>
+        `;
+      });
+
+      html += `
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+
+      container.innerHTML = html;
+    }
+
+    // ==========================================
+    // 6. 分頁：重啟-交通服務
     // ==========================================
     function renderTraffic(container, badge) {
       let list = memberData.filter(m => !m.name.includes('司機'));
@@ -745,10 +835,8 @@
 
       let html = `
         <div class="space-y-4">
-          <!-- 頂部資訊橫幅：依附圖要求重新調整左右結構並加入遊覽車資訊按鈕 -->
           <div class="bg-gradient-to-r from-rose-100/90 via-orange-100/80 to-amber-100/90 p-3.5 sm:p-4 rounded-2xl border border-rose-200/90 shadow-sm flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
             
-            <!-- 左側原位置：集合地點與發車時間 + 遊覽車資訊按鈕 -->
             <div class="flex items-center gap-3">
               <span class="w-10 h-10 icon-circle bg-rose-500 text-white shadow-sm shrink-0">
                 <i class="fa-solid fa-clock text-lg"></i>
@@ -768,7 +856,6 @@
               </div>
             </div>
 
-            <!-- 右側位置：活動集結點（正巧文旅）與導航按鈕 -->
             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between lg:justify-end gap-3 w-full lg:w-auto pt-2 lg:pt-0 border-t lg:border-t-0 border-rose-200/60">
               <div class="text-left lg:text-right">
                 <div class="flex items-center gap-1.5 lg:justify-end">
@@ -787,7 +874,6 @@
 
           </div>
 
-          <!-- 交通服務名冊表格 -->
           <div class="bg-white rounded-2xl border border-rose-100 shadow-sm overflow-hidden">
             <div class="overflow-x-auto custom-scrollbar">
               <table class="w-full text-left border-collapse text-sm">
@@ -851,7 +937,7 @@
     }
 
     // ==========================================
-    // 6. 分頁：重啟-餐飲服務
+    // 7. 分頁：重啟-餐飲服務
     // ==========================================
     function renderDining(container, badge) {
       const RESTAURANT_CONFIG = [
@@ -1053,7 +1139,7 @@
     }
 
     // ==========================================
-    // 7. 分頁：重啟-住宿服務
+    // 8. 分頁：重啟-住宿服務
     // ==========================================
     function renderLodging(container, badge) {
       const roomsMap = {};
@@ -1238,63 +1324,6 @@
     }
 
     // ==========================================
-    // 8. 分頁：重啟-活動流程
-    // ==========================================
-    function renderSchedule(container, badge) {
-      let list = scheduleData.filter(s => {
-        if (!searchQuery) return true;
-        return getContextualSearchText(s, 'schedule').includes(searchQuery);
-      });
-
-      if (badge) {
-        badge.innerHTML = `<i class="fa-solid fa-clock-rotate-left mr-1"></i> 共 ${list.length} 項流程 ${isCloudSynced ? '(雲端同步)' : ''}`;
-      }
-
-      let html = `
-        <div class="bg-white rounded-2xl border border-rose-100 shadow-sm overflow-hidden">
-          <div class="overflow-x-auto custom-scrollbar">
-            <table class="w-full text-left border-collapse text-sm">
-              <thead>
-                <tr class="bg-rose-100/80 border-b border-rose-200 text-rose-900 font-bold text-xs sm:text-sm sticky top-0 z-10">
-                  <th class="py-3 px-3 w-12 text-center">#</th>
-                  <th class="py-3 px-3 text-center">日期</th>
-                  <th class="py-3 px-3 text-center">時間</th>
-                  <th class="py-3 px-4">地點</th>
-                  <th class="py-3 px-5">活動內容</th>
-                  <th class="py-3 px-5">備註</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-rose-50">
-      `;
-
-      list.forEach((s, idx) => {
-        html += `
-          <tr class="${idx % 2 === 0 ? 'bg-white' : 'bg-rose-50/20'} hover:bg-rose-100/40 transition-colors">
-            <td class="py-3 px-3 text-center text-xs text-slate-400">${idx + 1}</td>
-            <td class="py-3 px-3 text-center font-bold text-slate-700 whitespace-nowrap">${s.date}</td>
-            <td class="py-3 px-3 text-center whitespace-nowrap">
-              <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-xs font-mono font-bold bg-rose-100 text-rose-700">
-                ${s.start} - ${s.end}
-              </span>
-            </td>
-            <td class="py-3 px-4 font-semibold text-slate-800">${s.place || '--'}</td>
-            <td class="py-3 px-5 font-bold text-slate-900 text-base">${s.activity}</td>
-            <td class="py-3 px-5 text-xs text-slate-600 leading-relaxed whitespace-pre-line">${s.note || '--'}</td>
-          </tr>
-        `;
-      });
-
-      html += `
-              </tbody>
-            </table>
-          </div>
-        </div>
-      `;
-
-      container.innerHTML = html;
-    }
-
-    // ==========================================
     // 9. 分頁：重啟-總表
     // ==========================================
     function renderRoster(container, badge) {
@@ -1424,7 +1453,34 @@
 
     function tryBackgroundCloudSync(callback) {
       const memberSheetUrl = 'https://docs.google.com/spreadsheets/d/1IG9gdIuvad5sj0RWC8hzvIvdBYSQo4j0ERf910AV24U/gviz/tq?tqx=out:csv&gid=943908442';
+      const scheduleSheetUrl = 'https://docs.google.com/spreadsheets/d/1RFAeooSPtmmVMPGeyO9o-SbNtvLr38_DoDHFoCFxQ9c/gviz/tq?tqx=out:csv&gid=1928975316';
       
+      Papa.parse(scheduleSheetUrl, {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: function(sResults) {
+          if (sResults && sResults.data && sResults.data.length >= 10) {
+            let lastDate = "10/31 (六)";
+            const sMapped = sResults.data.map(r => {
+              const d = (r['日期'] || '').trim();
+              if (d) lastDate = d;
+              return {
+                date: lastDate,
+                start: (r['起時'] || '').trim(),
+                end: (r['迄時'] || '').trim(),
+                activity: (r['活動'] || '').trim(),
+                place: (r['地點'] || '').trim(),
+                note: (r['備註'] || '').trim()
+              };
+            }).filter(s => s.start || s.activity);
+            if (sMapped.length >= 10) {
+              scheduleData = sMapped;
+            }
+          }
+        }
+      });
+
       Papa.parse(memberSheetUrl, {
         download: true,
         header: true,
@@ -1463,7 +1519,7 @@
           if (callback) callback();
         },
         error: function(err) {
-          console.warn('雲端同步安全防護：自動使用內建完整 62 位成員資料庫。', err);
+          console.warn('雲端同步安全防護：自動使用內建完整資料庫。', err);
           if (callback) callback();
         }
       });
