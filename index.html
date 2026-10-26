@@ -172,7 +172,6 @@
             <span class="text-xs px-2 py-0.5 rounded-full bg-rose-100 text-rose-700 font-medium">
               架構版本 26'1017-2150
             </span>
-            <!-- 瀏覽計數工具（白色隱藏字） -->
             <span id="page-view-counter" class="text-white text-xs select-all cursor-default" title="網頁累計瀏覽次數">
               views: --
             </span>
@@ -529,7 +528,7 @@
       }
     ];
 
-    // 完整 62 位成員資料（直接自 Google Sheets 提取，零缺漏）
+    // 完整 63 位成員資料（直接自 Google Sheets 提取，包含吳全峰、胡靖韋等完整名冊，零缺漏）
     const DEFAULT_MEMBERS = [
       { team: "白", name: "吳全峰", relation: "本人", trafficDep: "遊覽車", trafficRet: "遊覽車", trafficCombo: "遊覽車/遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", diningTraffic: "遊覽車", diningLeader: "麵五三-車長", diningInterviewer: "", dietNote: "無", lodging: "知達", lodgingTraffic: "遊覽車", lodgingContact: "", roomNumber: "506", roomType: "2人房", bedCount: "2床", roomGroup: "16", fullRoomKey: "知達-2人房_16" },
       { team: "白", name: "吳羿慧", relation: "本人", trafficDep: "遊覽車", trafficRet: "遊覽車", trafficCombo: "遊覽車/遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", diningTraffic: "遊覽車", diningLeader: "", diningInterviewer: "", dietNote: "不吃：牛羊", lodging: "知達", lodgingTraffic: "遊覽車", lodgingContact: "", roomNumber: "307", roomType: "2人房", bedCount: "2床", roomGroup: "4", fullRoomKey: "知達-2人房_04" },
@@ -583,6 +582,7 @@
       { team: "綠", name: "吳建逢", relation: "本人", trafficDep: "開車", trafficRet: "開車", trafficCombo: "開車/開車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", diningTraffic: "開車", diningLeader: "", diningInterviewer: "", dietNote: "不吃：牛", lodging: "知達", lodgingTraffic: "開車", lodgingContact: "", roomNumber: "203", roomType: "2人房", bedCount: "2床", roomGroup: "13", fullRoomKey: "知達-2人房_13" },
       { team: "綠", name: "李紘逸", relation: "本人", trafficDep: "開車", trafficRet: "開車", trafficCombo: "開車/開車", isTrafficLeader: "否", restaurant: "弎食鉄板", diningTraffic: "開車", diningLeader: "", diningInterviewer: "", dietNote: "無", lodging: "正巧", lodgingTraffic: "--", lodgingContact: "", roomNumber: "", roomType: "2人房", bedCount: "2床", roomGroup: "3", fullRoomKey: "正巧-2人房_03" },
       { team: "綠", name: "沈佳慧", relation: "本人", trafficDep: "遊覽車", trafficRet: "遊覽車", trafficCombo: "遊覽車/遊覽車", isTrafficLeader: "否", restaurant: "湫禾壽喜燒", diningTraffic: "遊覽車", diningLeader: "", diningInterviewer: "", dietNote: "無", lodging: "知達", lodgingTraffic: "遊覽車", lodgingContact: "", roomNumber: "309", roomType: "2人房", bedCount: "2床", roomGroup: "2", fullRoomKey: "知達-2人房_02" },
+      { team: "綠", name: "胡靖韋", relation: "本人", trafficDep: "遊覽車", trafficRet: "遊覽車", trafficCombo: "遊覽車/遊覽車", isTrafficLeader: "否", restaurant: "植田割烹", diningTraffic: "遊覽車", diningLeader: "", diningInterviewer: "", dietNote: "不吃：牛羊", lodging: "知達", lodgingTraffic: "遊覽車", lodgingContact: "", roomNumber: "202", roomType: "2人房", bedCount: "2床", roomGroup: "14", fullRoomKey: "知達-2人房_14" },
       { team: "綠", name: "徐珮甄", relation: "本人", trafficDep: "自行處理", trafficRet: "遊覽車", trafficCombo: "自行/遊覽車", isTrafficLeader: "否", restaurant: "NO", diningTraffic: "NO", diningLeader: "", diningInterviewer: "", dietNote: "無", lodging: "知達", lodgingTraffic: "遊覽車", lodgingContact: "", roomNumber: "307", roomType: "2人房", bedCount: "2床", roomGroup: "4", fullRoomKey: "知達-2人房_04" },
       { team: "綠", name: "張婷婷", relation: "本人", trafficDep: "遊覽車", trafficRet: "遊覽車", trafficCombo: "遊覽車/遊覽車", isTrafficLeader: "否", restaurant: "植田割烹", diningTraffic: "遊覽車", diningLeader: "", diningInterviewer: "", dietNote: "不吃：牛羊", lodging: "正巧", lodgingTraffic: "--", lodgingContact: "", roomNumber: "", roomType: "4人房", bedCount: "2大床", roomGroup: "2", fullRoomKey: "正巧-4人房_02" },
       { team: "綠", name: "許家倫", relation: "本人", trafficDep: "開車", trafficRet: "開車", trafficCombo: "開車/開車", isTrafficLeader: "否", restaurant: "NO", diningTraffic: "NO", diningLeader: "", diningInterviewer: "", dietNote: "無", lodging: "正巧", lodgingTraffic: "--", lodgingContact: "", roomNumber: "", roomType: "4人房", bedCount: "2大床", roomGroup: "3", fullRoomKey: "正巧-4人房_03" },
@@ -618,7 +618,7 @@
     // ==========================================
     // 3. 系統狀態
     // ==========================================
-    let currentTab = 'schedule';
+    let currentTab = 'roster';
     let scheduleData = [...DEFAULT_SCHEDULE];
     let memberData = [...DEFAULT_MEMBERS];
     let searchQuery = '';
@@ -728,7 +728,7 @@
     }
 
     // ==========================================
-    // 5. 分頁：重啟-活動流程 (18 項完整流程)
+    // 5. 分頁：重啟-活動流程
     // ==========================================
     function renderSchedule(container, badge) {
       let list = scheduleData.filter(s => {
@@ -1324,7 +1324,7 @@
     }
 
     // ==========================================
-    // 9. 分頁：重啟-總表
+    // 9. 分頁：重啟-總表 (63位成員完整呈現)
     // ==========================================
     function renderRoster(container, badge) {
       let list = memberData.filter(m => {
