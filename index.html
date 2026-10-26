@@ -235,6 +235,45 @@
     </div>
   </main>
 
+  <!-- 遊覽車資訊對話視窗 (Modal) -->
+  <div id="bus-info-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-rose-200 transform transition-all relative">
+      <button onclick="closeBusInfoModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-rose-50 text-rose-600 hover:bg-rose-100 flex items-center justify-center transition-all">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="flex items-center gap-3 mb-4">
+        <span class="w-10 h-10 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center text-lg">
+          <i class="fa-solid fa-bus"></i>
+        </span>
+        <div>
+          <h3 class="text-xl font-bold text-slate-800">遊覽車資訊</h3>
+          <p class="text-xs text-slate-500">飯糰旅遊 ｜ 粉紅特色巴士</p>
+        </div>
+      </div>
+
+      <!-- 遊覽車照片展示區 -->
+      <div class="rounded-2xl overflow-hidden border border-rose-200 shadow-sm mb-4 relative bg-slate-50">
+        <img src="遊覽車照片.jpg" alt="遊覽車照片" class="w-full h-auto object-cover max-h-72">
+        <div class="absolute bottom-2 right-2 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-xl border border-rose-100 shadow-md text-xs sm:text-sm font-extrabold text-slate-800 space-y-0.5">
+          <div class="text-blue-700"><i class="fa-solid fa-id-card mr-1"></i> 車牌：KAB-8330</div>
+          <div class="text-rose-700"><i class="fa-solid fa-user-tie mr-1"></i> 司機：范先生</div>
+        </div>
+      </div>
+
+      <div class="p-3 bg-rose-50 rounded-xl border border-rose-100 text-xs sm:text-sm text-slate-700 space-y-1">
+        <div>• <strong>發車集合</strong>：10/31 (六) 09:20 高鐵台中站 6 號出口準時發車</div>
+        <div>• <strong>隨車車長</strong>：廖培芯</div>
+      </div>
+
+      <div class="mt-5 flex justify-end">
+        <button onclick="closeBusInfoModal()" class="px-5 py-2 rounded-xl bg-gradient-to-r from-rose-500 to-orange-400 text-white font-bold text-sm shadow hover:opacity-95 transition-all">
+          關閉
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- 知達會館注意事項對話視窗 (Modal) -->
   <div id="zhida-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-rose-200 transform transition-all relative">
@@ -319,7 +358,6 @@
     // 2. 基準資料：嚴格參照 Google Sheets 原始資料庫
     // ==========================================
 
-    // 嚴格對照 10/31-11/01_流程_v2b-重啟夥伴
     const DEFAULT_SCHEDULE = [
       {
         date: "10/31 (六)",
@@ -459,7 +497,6 @@
       }
     ];
 
-    // 完整 62 位成員資料（直接自 Google Sheets 提取，零缺漏）
     const DEFAULT_MEMBERS = [
       { team: "白", name: "吳全峰", relation: "本人", trafficDep: "遊覽車", trafficRet: "遊覽車", trafficCombo: "遊覽車/遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", diningTraffic: "遊覽車", diningLeader: "麵五三-車長", diningInterviewer: "", dietNote: "無", lodging: "知達", lodgingTraffic: "遊覽車", lodgingContact: "", roomNumber: "506", roomType: "2人房", bedCount: "2床", roomGroup: "16", fullRoomKey: "知達-2人房_16" },
       { team: "白", name: "吳羿慧", relation: "本人", trafficDep: "遊覽車", trafficRet: "遊覽車", trafficCombo: "遊覽車/遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", diningTraffic: "遊覽車", diningLeader: "", diningInterviewer: "", dietNote: "不吃：牛羊", lodging: "知達", lodgingTraffic: "遊覽車", lodgingContact: "", roomNumber: "307", roomType: "2人房", bedCount: "2床", roomGroup: "4", fullRoomKey: "知達-2人房_04" },
@@ -548,7 +585,7 @@
     // ==========================================
     // 3. 系統狀態
     // ==========================================
-    let currentTab = 'roster';
+    let currentTab = 'traffic';
     let scheduleData = [...DEFAULT_SCHEDULE];
     let memberData = [...DEFAULT_MEMBERS];
     let searchQuery = '';
@@ -658,251 +695,7 @@
     }
 
     // ==========================================
-    // 5. 分頁：重啟-住宿服務
-    // ==========================================
-    function renderLodging(container, badge) {
-      const roomsMap = {};
-      memberData.forEach(m => {
-        if (!m.lodging || m.lodging === 'NO' || m.lodging === '--') return;
-        const key = m.fullRoomKey || `${m.lodging}-${m.roomType}_${m.roomGroup || '01'}`;
-        if (!roomsMap[key]) {
-          roomsMap[key] = {
-            key,
-            hotel: m.lodging,
-            roomType: m.roomType || '2人房',
-            roomNumber: m.roomNumber || '',
-            members: []
-          };
-        }
-        if (m.roomNumber && !roomsMap[key].roomNumber) {
-          roomsMap[key].roomNumber = m.roomNumber;
-        }
-        roomsMap[key].members.push(m);
-      });
-
-      const allRooms = Object.values(roomsMap);
-      const zhidaRooms = allRooms.filter(r => r.hotel.includes('知達'));
-      const zhengqiaoRooms = allRooms.filter(r => r.hotel.includes('正巧'));
-
-      const sortRooms = (rooms, contactNames) => {
-        return rooms.sort((a, b) => {
-          const aHasContact = a.members.some(m => contactNames.includes(m.name) || (m.lodgingContact && m.lodgingContact.includes('聯絡人')));
-          const bHasContact = b.members.some(m => contactNames.includes(m.name) || (m.lodgingContact && m.lodgingContact.includes('聯絡人')));
-          if (aHasContact && !bHasContact) return -1;
-          if (!aHasContact && bHasContact) return 1;
-          if (a.roomNumber && b.roomNumber) {
-            return strokeCollator.compare(a.roomNumber, b.roomNumber);
-          }
-          if (a.roomNumber && !b.roomNumber) return -1;
-          if (!a.roomNumber && b.roomNumber) return 1;
-          return a.key.localeCompare(b.key);
-        });
-      };
-
-      sortRooms(zhidaRooms, ZHIDA_CONTACTS);
-      sortRooms(zhengqiaoRooms, ZHENGQIAO_CONTACTS);
-
-      const totalResidents = memberData.filter(m => m.lodging && m.lodging !== 'NO' && m.lodging !== '--').length;
-
-      if (badge) {
-        badge.innerHTML = `<i class="fa-solid fa-bed mr-1"></i> 共 ${allRooms.length} 間房 ｜ ${totalResidents} 位住宿人員 ${isCloudSynced ? '(雲端同步)' : ''}`;
-      }
-
-      let html = `
-        <div class="space-y-6">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div class="bg-white p-4 rounded-2xl border border-indigo-100 shadow-sm flex items-center justify-between gap-3">
-              <div>
-                <div class="flex items-center gap-2">
-                  <h4 class="font-bold text-slate-800 text-base">知達工藝會館</h4>
-                  <a href="tel:0492306969" class="text-base font-bold text-indigo-600 hover:underline">049-2306969</a>
-                  <span class="text-base font-extrabold text-rose-700">（進館通知開柵門）</span>
-                </div>
-                <div class="text-xs text-slate-500 mt-1">聯絡人：杜志峰、吳淋禎</div>
-              </div>
-              <div class="flex items-center gap-1.5 shrink-0">
-                <a href="${NAV_URLS.zhida}" target="_blank" rel="noopener noreferrer" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-indigo-500 to-sky-500 text-white font-bold text-xs shadow-xs hover:opacity-95">
-                  <i class="fa-solid fa-location-dot"></i> 導航
-                </a>
-              </div>
-            </div>
-
-            <div class="bg-white p-4 rounded-2xl border border-rose-100 shadow-sm flex items-center justify-between gap-3">
-              <div>
-                <div class="flex items-center gap-2">
-                  <h4 class="font-bold text-slate-800 text-base">正巧文旅</h4>
-                  <a href="tel:0492357166" class="text-base font-bold text-slate-700 hover:underline">049-2357166</a>
-                </div>
-                <div class="text-xs text-slate-500 mt-1">聯絡人：吳緁苓</div>
-              </div>
-              <div class="flex items-center gap-1.5 shrink-0">
-                <a href="${NAV_URLS.zhengqiao}" target="_blank" rel="noopener noreferrer" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-rose-500 to-orange-400 text-white font-bold text-xs shadow-xs hover:opacity-95">
-                  <i class="fa-solid fa-location-dot"></i> 導航
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div class="p-4 rounded-2xl bg-gradient-to-r from-rose-100/90 via-orange-100/80 to-amber-100/90 border border-rose-200 shadow-sm space-y-1.5 text-xs sm:text-sm text-slate-700">
-            <div class="flex items-start gap-2">
-              <i class="fa-solid fa-triangle-exclamation text-rose-600 mt-0.5 shrink-0"></i>
-              <span><strong>正巧民宿（活動場地）為素食會館，全館<span class="text-rose-700 underline font-bold">禁止葷食禁止抽菸</span>。</strong>（包括含有肉類或海鮮的餅乾、泡麵等等）</span>
-            </div>
-            <div class="flex items-start gap-2">
-              <i class="fa-solid fa-bottle-water text-rose-600 mt-0.5 shrink-0"></i>
-              <span>正巧民宿和知達會館房間皆<strong>「無提供」一次性備品</strong>（牙刷、浴帽、紙拖等等）及瓶裝水，請記得自備盥洗用品與保溫瓶。</span>
-            </div>
-          </div>
-
-          <!-- 知達工藝會館區塊 (沉穩靛青風格) -->
-          <div class="space-y-3">
-            <div class="flex items-center justify-between flex-wrap gap-2">
-              <div class="flex items-center gap-3">
-                <span class="w-7 h-7 icon-circle bg-indigo-600 text-white text-xs">
-                  <i class="fa-solid fa-hotel"></i>
-                </span>
-                <h3 class="text-lg font-bold text-slate-800">知達工藝會館</h3>
-                <span class="text-xs px-2.5 py-0.5 rounded-full bg-indigo-100 text-indigo-700 font-bold border border-indigo-200">
-                  ${zhidaRooms.length} 間房
-                </span>
-              </div>
-              <button onclick="openZhidaModal()" class="px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-sm transition-all flex items-center gap-1.5">
-                <i class="fa-solid fa-circle-exclamation"></i>
-                <span>知達會館住宿注意事項</span>
-              </button>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              ${zhidaRooms.map(r => renderHouseCard(r, ZHIDA_CONTACTS, 'zhida')).join('')}
-            </div>
-          </div>
-
-          <!-- 正巧文旅區塊 (粉橘風格) -->
-          <div class="space-y-3 pt-4 border-t border-rose-100">
-            <div class="flex items-center gap-3">
-              <span class="w-7 h-7 icon-circle bg-rose-500 text-white text-xs">
-                <i class="fa-solid fa-house"></i>
-              </span>
-              <h3 class="text-lg font-bold text-slate-800">正巧文旅</h3>
-              <span class="text-xs px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-700 font-bold border border-rose-200">
-                ${zhengqiaoRooms.length} 間房
-              </span>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              ${zhengqiaoRooms.map(r => renderHouseCard(r, ZHENGQIAO_CONTACTS, 'zhengqiao')).join('')}
-            </div>
-          </div>
-        </div>
-      `;
-
-      container.innerHTML = html;
-    }
-
-    function renderHouseCard(room, contactNames, theme) {
-      const isContactRoom = room.members.some(m => contactNames.includes(m.name) || (m.lodgingContact && m.lodgingContact.includes('聯絡人')));
-      const roomNumDisplay = room.roomNumber && room.roomNumber.trim().length > 0 ? `房號 ${room.roomNumber}` : '房號：--';
-      const isRoomNumEmpty = !room.roomNumber || room.roomNumber.trim().length === 0;
-
-      const isZhida = (theme === 'zhida');
-      const cardClass = isZhida ? 'house-card-zhida' : 'house-card-zhengqiao';
-      const roofClass = isZhida ? 'house-roof-zhida' : 'house-roof-zhengqiao';
-      const ringClass = isContactRoom ? (isZhida ? 'ring-2 ring-indigo-400' : 'ring-2 ring-rose-400') : '';
-      const typeBadgeClass = isZhida ? 'bg-indigo-50 text-indigo-700' : 'bg-rose-50 text-rose-700';
-
-      return `
-        <div class="${cardClass} flex flex-col justify-between overflow-hidden ${ringClass}">
-          <div class="${roofClass}"></div>
-          <div class="p-3.5 flex-1 flex flex-col justify-between">
-            <div>
-              <div class="flex items-center justify-between text-xs mb-2">
-                <span class="px-2 py-0.5 rounded-md font-bold ${typeBadgeClass}">${room.roomType}</span>
-                <span class="px-2 py-0.5 rounded-md text-xs font-mono font-bold ${isRoomNumEmpty ? 'bg-slate-100 text-slate-400' : 'bg-amber-100 text-amber-800 border border-amber-200'}">
-                  <i class="fa-solid fa-key mr-1"></i>${roomNumDisplay}
-                </span>
-              </div>
-              <ul class="room-roster space-y-1.5 my-2">
-                ${room.members.map(m => {
-                  const isContact = contactNames.includes(m.name) || (m.lodgingContact && m.lodgingContact.includes('聯絡人'));
-                  const isSearchMatch = searchQuery && m.name.toLowerCase().includes(searchQuery);
-                  return `
-                    <li class="flex items-center justify-between ${isSearchMatch ? 'highlight-member' : ''}">
-                      <span>${m.name}</span>
-                      ${isContact ? `<span class="text-[11px] px-1.5 py-0.2 rounded ${isZhida ? 'bg-indigo-600' : 'bg-rose-500'} text-white font-extrabold">聯絡人</span>` : ''}
-                    </li>
-                  `;
-                }).join('')}
-              </ul>
-            </div>
-            
-            <div class="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
-              <span>${isZhida ? '知達會館' : '正巧文旅'}</span>
-              <span class="waving-person inline-block ${isZhida ? 'text-indigo-400' : 'text-rose-400'}" title="歡迎入住">
-                <i class="fa-solid fa-person-walking-luggage waving-arm text-sm"></i>
-              </span>
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    // ==========================================
-    // 6. 分頁：重啟-活動流程
-    // ==========================================
-    function renderSchedule(container, badge) {
-      let list = scheduleData.filter(s => {
-        if (!searchQuery) return true;
-        return getContextualSearchText(s, 'schedule').includes(searchQuery);
-      });
-
-      if (badge) {
-        badge.innerHTML = `<i class="fa-solid fa-clock-rotate-left mr-1"></i> 共 ${list.length} 項流程 ${isCloudSynced ? '(雲端同步)' : ''}`;
-      }
-
-      let html = `
-        <div class="bg-white rounded-2xl border border-rose-100 shadow-sm overflow-hidden">
-          <div class="overflow-x-auto custom-scrollbar">
-            <table class="w-full text-left border-collapse text-sm">
-              <thead>
-                <tr class="bg-rose-100/80 border-b border-rose-200 text-rose-900 font-bold text-xs sm:text-sm sticky top-0 z-10">
-                  <th class="py-3 px-3 w-12 text-center">#</th>
-                  <th class="py-3 px-3 text-center">日期</th>
-                  <th class="py-3 px-3 text-center">時間</th>
-                  <th class="py-3 px-4">地點</th>
-                  <th class="py-3 px-5">活動內容</th>
-                  <th class="py-3 px-5">備註</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-rose-50">
-      `;
-
-      list.forEach((s, idx) => {
-        html += `
-          <tr class="${idx % 2 === 0 ? 'bg-white' : 'bg-rose-50/20'} hover:bg-rose-100/40 transition-colors">
-            <td class="py-3 px-3 text-center text-xs text-slate-400">${idx + 1}</td>
-            <td class="py-3 px-3 text-center font-bold text-slate-700 whitespace-nowrap">${s.date}</td>
-            <td class="py-3 px-3 text-center whitespace-nowrap">
-              <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-xs font-mono font-bold bg-rose-100 text-rose-700">
-                ${s.start} - ${s.end}
-              </span>
-            </td>
-            <td class="py-3 px-4 font-semibold text-slate-800">${s.place || '--'}</td>
-            <td class="py-3 px-5 font-bold text-slate-900 text-base">${s.activity}</td>
-            <td class="py-3 px-5 text-xs text-slate-600 leading-relaxed whitespace-pre-line">${s.note || '--'}</td>
-          </tr>
-        `;
-      });
-
-      html += `
-              </tbody>
-            </table>
-          </div>
-        </div>
-      `;
-
-      container.innerHTML = html;
-    }
-
-    // ==========================================
-    // 7. 分頁：重啟-交通服務
+    // 5. 分頁：重啟-交通服務 (依附圖要求調整表頭與遊覽車按鈕)
     // ==========================================
     function renderTraffic(container, badge) {
       let list = memberData.filter(m => !m.name.includes('司機'));
@@ -952,29 +745,49 @@
 
       let html = `
         <div class="space-y-4">
-          <div class="bg-gradient-to-r from-rose-100/90 via-orange-100/80 to-amber-100/90 p-3.5 sm:p-4 rounded-2xl border border-rose-200/90 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <!-- 頂部資訊橫幅：依附圖要求重新調整左右結構並加入遊覽車資訊按鈕 -->
+          <div class="bg-gradient-to-r from-rose-100/90 via-orange-100/80 to-amber-100/90 p-3.5 sm:p-4 rounded-2xl border border-rose-200/90 shadow-sm flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+            
+            <!-- 左側原位置：集合地點與發車時間 + 遊覽車資訊按鈕 -->
             <div class="flex items-center gap-3">
               <span class="w-10 h-10 icon-circle bg-rose-500 text-white shadow-sm shrink-0">
-                <i class="fa-solid fa-location-dot text-lg"></i>
+                <i class="fa-solid fa-clock text-lg"></i>
               </span>
               <div>
                 <div class="flex items-center gap-2">
-                  <h3 class="text-base sm:text-lg font-bold text-slate-800">活動集結點：正巧文旅（督賀停車場）</h3>
-                  <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-rose-200 text-rose-800">主要會場</span>
+                  <span class="text-xs font-bold px-2 py-0.5 rounded-md bg-rose-600 text-white">集合發車</span>
+                  <h3 class="text-base sm:text-lg font-bold text-slate-800">高鐵台中站 6號出口</h3>
+                  <button onclick="openBusInfoModal()" class="px-3 py-1 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white text-xs font-bold shadow-sm transition-all flex items-center gap-1.5 active:scale-95">
+                    <i class="fa-solid fa-bus text-xs"></i>
+                    <span>遊覽車資訊</span>
+                  </button>
                 </div>
-                <p class="text-xs sm:text-sm text-slate-600 mt-0.5">
-                  地址：南投縣草屯鎮新庄里墩煌路三段168號 ｜ 遊覽車與自行開車均由此集結
+                <p class="text-xs sm:text-sm font-semibold text-rose-800 mt-0.5">
+                  09:20 準時發車（隨車車長：廖培芯）
                 </p>
               </div>
             </div>
-            <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
-              <a href="${NAV_URLS.zhengqiao}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-rose-500 to-orange-400 text-white font-bold text-xs sm:text-sm shadow-md hover:opacity-95 active:scale-95 transition-all">
+
+            <!-- 右側位置：活動集結點（正巧文旅）與導航按鈕 -->
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between lg:justify-end gap-3 w-full lg:w-auto pt-2 lg:pt-0 border-t lg:border-t-0 border-rose-200/60">
+              <div class="text-left lg:text-right">
+                <div class="flex items-center gap-1.5 lg:justify-end">
+                  <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-rose-200 text-rose-800">主要會場</span>
+                  <span class="font-bold text-slate-800 text-sm sm:text-base">活動集結點：正巧文旅（督賀停車場）</span>
+                </div>
+                <div class="text-xs text-slate-600 mt-0.5">
+                  地址：南投縣草屯鎮新庄里墩煌路三段168號 ｜ 自行開車者由此集結
+                </div>
+              </div>
+              <a href="${NAV_URLS.zhengqiao}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-rose-500 to-orange-400 text-white font-bold text-xs sm:text-sm shadow-md hover:opacity-95 active:scale-95 transition-all shrink-0">
                 <i class="fa-solid fa-diamond-turn-right"></i>
                 <span>正巧定位導航</span>
               </a>
             </div>
+
           </div>
 
+          <!-- 交通服務名冊表格 -->
           <div class="bg-white rounded-2xl border border-rose-100 shadow-sm overflow-hidden">
             <div class="overflow-x-auto custom-scrollbar">
               <table class="w-full text-left border-collapse text-sm">
@@ -1038,7 +851,7 @@
     }
 
     // ==========================================
-    // 8. 分頁：重啟-餐飲服務
+    // 6. 分頁：重啟-餐飲服務
     // ==========================================
     function renderDining(container, badge) {
       const RESTAURANT_CONFIG = [
@@ -1240,7 +1053,249 @@
     }
 
     // ==========================================
-    // 9. 分頁：重啟-總表 (62位全員呈現)
+    // 7. 分頁：重啟-住宿服務
+    // ==========================================
+    function renderLodging(container, badge) {
+      const roomsMap = {};
+      memberData.forEach(m => {
+        if (!m.lodging || m.lodging === 'NO' || m.lodging === '--') return;
+        const key = m.fullRoomKey || `${m.lodging}-${m.roomType}_${m.roomGroup || '01'}`;
+        if (!roomsMap[key]) {
+          roomsMap[key] = {
+            key,
+            hotel: m.lodging,
+            roomType: m.roomType || '2人房',
+            roomNumber: m.roomNumber || '',
+            members: []
+          };
+        }
+        if (m.roomNumber && !roomsMap[key].roomNumber) {
+          roomsMap[key].roomNumber = m.roomNumber;
+        }
+        roomsMap[key].members.push(m);
+      });
+
+      const allRooms = Object.values(roomsMap);
+      const zhidaRooms = allRooms.filter(r => r.hotel.includes('知達'));
+      const zhengqiaoRooms = allRooms.filter(r => r.hotel.includes('正巧'));
+
+      const sortRooms = (rooms, contactNames) => {
+        return rooms.sort((a, b) => {
+          const aHasContact = a.members.some(m => contactNames.includes(m.name) || (m.lodgingContact && m.lodgingContact.includes('聯絡人')));
+          const bHasContact = b.members.some(m => contactNames.includes(m.name) || (m.lodgingContact && m.lodgingContact.includes('聯絡人')));
+          if (aHasContact && !bHasContact) return -1;
+          if (!aHasContact && bHasContact) return 1;
+          if (a.roomNumber && b.roomNumber) {
+            return strokeCollator.compare(a.roomNumber, b.roomNumber);
+          }
+          if (a.roomNumber && !b.roomNumber) return -1;
+          if (!a.roomNumber && b.roomNumber) return 1;
+          return a.key.localeCompare(b.key);
+        });
+      };
+
+      sortRooms(zhidaRooms, ZHIDA_CONTACTS);
+      sortRooms(zhengqiaoRooms, ZHENGQIAO_CONTACTS);
+
+      const totalResidents = memberData.filter(m => m.lodging && m.lodging !== 'NO' && m.lodging !== '--').length;
+
+      if (badge) {
+        badge.innerHTML = `<i class="fa-solid fa-bed mr-1"></i> 共 ${allRooms.length} 間房 ｜ ${totalResidents} 位住宿人員 ${isCloudSynced ? '(雲端同步)' : ''}`;
+      }
+
+      let html = `
+        <div class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div class="bg-white p-4 rounded-2xl border border-indigo-100 shadow-sm flex items-center justify-between gap-3">
+              <div>
+                <div class="flex items-center gap-2">
+                  <h4 class="font-bold text-slate-800 text-base">知達工藝會館</h4>
+                  <a href="tel:0492306969" class="text-base font-bold text-indigo-600 hover:underline">049-2306969</a>
+                  <span class="text-base font-extrabold text-rose-700">（進館通知開柵門）</span>
+                </div>
+                <div class="text-xs text-slate-500 mt-1">聯絡人：杜志峰、吳淋禎</div>
+              </div>
+              <div class="flex items-center gap-1.5 shrink-0">
+                <a href="${NAV_URLS.zhida}" target="_blank" rel="noopener noreferrer" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-indigo-500 to-sky-500 text-white font-bold text-xs shadow-xs hover:opacity-95">
+                  <i class="fa-solid fa-location-dot"></i> 導航
+                </a>
+              </div>
+            </div>
+
+            <div class="bg-white p-4 rounded-2xl border border-rose-100 shadow-sm flex items-center justify-between gap-3">
+              <div>
+                <div class="flex items-center gap-2">
+                  <h4 class="font-bold text-slate-800 text-base">正巧文旅</h4>
+                  <a href="tel:0492357166" class="text-base font-bold text-slate-700 hover:underline">049-2357166</a>
+                </div>
+                <div class="text-xs text-slate-500 mt-1">聯絡人：吳緁苓</div>
+              </div>
+              <div class="flex items-center gap-1.5 shrink-0">
+                <a href="${NAV_URLS.zhengqiao}" target="_blank" rel="noopener noreferrer" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-rose-500 to-orange-400 text-white font-bold text-xs shadow-xs hover:opacity-95">
+                  <i class="fa-solid fa-location-dot"></i> 導航
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-gradient-to-r from-rose-100/90 via-orange-100/80 to-amber-100/90 border border-rose-200 shadow-sm space-y-1.5 text-xs sm:text-sm text-slate-700">
+            <div class="flex items-start gap-2">
+              <i class="fa-solid fa-triangle-exclamation text-rose-600 mt-0.5 shrink-0"></i>
+              <span><strong>正巧民宿（活動場地）為素食會館，全館<span class="text-rose-700 underline font-bold">禁止葷食禁止抽菸</span>。</strong>（包括含有肉類或海鮮的餅乾、泡麵等等）</span>
+            </div>
+            <div class="flex items-start gap-2">
+              <i class="fa-solid fa-bottle-water text-rose-600 mt-0.5 shrink-0"></i>
+              <span>正巧民宿和知達會館房間皆<strong>「無提供」一次性備品</strong>（牙刷、浴帽、紙拖等等）及瓶裝水，請記得自備盥洗用品與保溫瓶。</span>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+              <div class="flex items-center gap-3">
+                <span class="w-7 h-7 icon-circle bg-indigo-600 text-white text-xs">
+                  <i class="fa-solid fa-hotel"></i>
+                </span>
+                <h3 class="text-lg font-bold text-slate-800">知達工藝會館</h3>
+                <span class="text-xs px-2.5 py-0.5 rounded-full bg-indigo-100 text-indigo-700 font-bold border border-indigo-200">
+                  ${zhidaRooms.length} 間房
+                </span>
+              </div>
+              <button onclick="openZhidaModal()" class="px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-sm transition-all flex items-center gap-1.5">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <span>知達會館住宿注意事項</span>
+              </button>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              ${zhidaRooms.map(r => renderHouseCard(r, ZHIDA_CONTACTS, 'zhida')).join('')}
+            </div>
+          </div>
+
+          <div class="space-y-3 pt-4 border-t border-rose-100">
+            <div class="flex items-center gap-3">
+              <span class="w-7 h-7 icon-circle bg-rose-500 text-white text-xs">
+                <i class="fa-solid fa-house"></i>
+              </span>
+              <h3 class="text-lg font-bold text-slate-800">正巧文旅</h3>
+              <span class="text-xs px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-700 font-bold border border-rose-200">
+                ${zhengqiaoRooms.length} 間房
+              </span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              ${zhengqiaoRooms.map(r => renderHouseCard(r, ZHENGQIAO_CONTACTS, 'zhengqiao')).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+
+      container.innerHTML = html;
+    }
+
+    function renderHouseCard(room, contactNames, theme) {
+      const isContactRoom = room.members.some(m => contactNames.includes(m.name) || (m.lodgingContact && m.lodgingContact.includes('聯絡人')));
+      const roomNumDisplay = room.roomNumber && room.roomNumber.trim().length > 0 ? `房號 ${room.roomNumber}` : '房號：--';
+      const isRoomNumEmpty = !room.roomNumber || room.roomNumber.trim().length === 0;
+
+      const isZhida = (theme === 'zhida');
+      const cardClass = isZhida ? 'house-card-zhida' : 'house-card-zhengqiao';
+      const roofClass = isZhida ? 'house-roof-zhida' : 'house-roof-zhengqiao';
+      const ringClass = isContactRoom ? (isZhida ? 'ring-2 ring-indigo-400' : 'ring-2 ring-rose-400') : '';
+      const typeBadgeClass = isZhida ? 'bg-indigo-50 text-indigo-700' : 'bg-rose-50 text-rose-700';
+
+      return `
+        <div class="${cardClass} flex flex-col justify-between overflow-hidden ${ringClass}">
+          <div class="${roofClass}"></div>
+          <div class="p-3.5 flex-1 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between text-xs mb-2">
+                <span class="px-2 py-0.5 rounded-md font-bold ${typeBadgeClass}">${room.roomType}</span>
+                <span class="px-2 py-0.5 rounded-md text-xs font-mono font-bold ${isRoomNumEmpty ? 'bg-slate-100 text-slate-400' : 'bg-amber-100 text-amber-800 border border-amber-200'}">
+                  <i class="fa-solid fa-key mr-1"></i>${roomNumDisplay}
+                </span>
+              </div>
+              <ul class="room-roster space-y-1.5 my-2">
+                ${room.members.map(m => {
+                  const isContact = contactNames.includes(m.name) || (m.lodgingContact && m.lodgingContact.includes('聯絡人'));
+                  const isSearchMatch = searchQuery && m.name.toLowerCase().includes(searchQuery);
+                  return `
+                    <li class="flex items-center justify-between ${isSearchMatch ? 'highlight-member' : ''}">
+                      <span>${m.name}</span>
+                      ${isContact ? `<span class="text-[11px] px-1.5 py-0.2 rounded ${isZhida ? 'bg-indigo-600' : 'bg-rose-500'} text-white font-extrabold">聯絡人</span>` : ''}
+                    </li>
+                  `;
+                }).join('')}
+              </ul>
+            </div>
+            
+            <div class="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
+              <span>${isZhida ? '知達會館' : '正巧文旅'}</span>
+              <span class="waving-person inline-block ${isZhida ? 'text-indigo-400' : 'text-rose-400'}" title="歡迎入住">
+                <i class="fa-solid fa-person-walking-luggage waving-arm text-sm"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // ==========================================
+    // 8. 分頁：重啟-活動流程
+    // ==========================================
+    function renderSchedule(container, badge) {
+      let list = scheduleData.filter(s => {
+        if (!searchQuery) return true;
+        return getContextualSearchText(s, 'schedule').includes(searchQuery);
+      });
+
+      if (badge) {
+        badge.innerHTML = `<i class="fa-solid fa-clock-rotate-left mr-1"></i> 共 ${list.length} 項流程 ${isCloudSynced ? '(雲端同步)' : ''}`;
+      }
+
+      let html = `
+        <div class="bg-white rounded-2xl border border-rose-100 shadow-sm overflow-hidden">
+          <div class="overflow-x-auto custom-scrollbar">
+            <table class="w-full text-left border-collapse text-sm">
+              <thead>
+                <tr class="bg-rose-100/80 border-b border-rose-200 text-rose-900 font-bold text-xs sm:text-sm sticky top-0 z-10">
+                  <th class="py-3 px-3 w-12 text-center">#</th>
+                  <th class="py-3 px-3 text-center">日期</th>
+                  <th class="py-3 px-3 text-center">時間</th>
+                  <th class="py-3 px-4">地點</th>
+                  <th class="py-3 px-5">活動內容</th>
+                  <th class="py-3 px-5">備註</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-rose-50">
+      `;
+
+      list.forEach((s, idx) => {
+        html += `
+          <tr class="${idx % 2 === 0 ? 'bg-white' : 'bg-rose-50/20'} hover:bg-rose-100/40 transition-colors">
+            <td class="py-3 px-3 text-center text-xs text-slate-400">${idx + 1}</td>
+            <td class="py-3 px-3 text-center font-bold text-slate-700 whitespace-nowrap">${s.date}</td>
+            <td class="py-3 px-3 text-center whitespace-nowrap">
+              <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-xs font-mono font-bold bg-rose-100 text-rose-700">
+                ${s.start} - ${s.end}
+              </span>
+            </td>
+            <td class="py-3 px-4 font-semibold text-slate-800">${s.place || '--'}</td>
+            <td class="py-3 px-5 font-bold text-slate-900 text-base">${s.activity}</td>
+            <td class="py-3 px-5 text-xs text-slate-600 leading-relaxed whitespace-pre-line">${s.note || '--'}</td>
+          </tr>
+        `;
+      });
+
+      html += `
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+
+      container.innerHTML = html;
+    }
+
+    // ==========================================
+    // 9. 分頁：重啟-總表
     // ==========================================
     function renderRoster(container, badge) {
       let list = memberData.filter(m => {
@@ -1336,6 +1391,16 @@
       if (team === '綠') return 'bg-emerald-100 text-emerald-700 border border-emerald-200';
       if (team === '接班人') return 'bg-amber-100 text-amber-800 border border-amber-200';
       return 'bg-slate-100 text-slate-600';
+    }
+
+    function openBusInfoModal() {
+      const modal = document.getElementById('bus-info-modal');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeBusInfoModal() {
+      const modal = document.getElementById('bus-info-modal');
+      if (modal) modal.classList.add('hidden');
     }
 
     function openZhidaModal() {
