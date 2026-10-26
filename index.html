@@ -351,7 +351,7 @@
 
   <script>
     // ==========================================
-    // 1. 定位點與電話常數（嚴格對照 店家名稱 分頁）
+    // 1. 定位點與電話常數
     // ==========================================
     const NAV_URLS = {
       zhengqiao: "https://maps.app.goo.gl/vmJmVTdyx5MDzBDJA", // 正巧（督賀停車場）
@@ -380,7 +380,6 @@
     // 2. 基準資料：嚴格參照 Google Sheets 原始資料庫
     // ==========================================
 
-    // 嚴格對照 10/31-11/01_流程_v2b-重啟夥伴 (共 18 項流程)
     const DEFAULT_SCHEDULE = [
       {
         date: "10/31 (六)",
@@ -528,7 +527,7 @@
       }
     ];
 
-    // 完整 61 位成員資料（已校對移除胡靖韋，魏志毓知達203房，吳全峰知達506房，與試算表100%一致）
+    // 核心 61 位成員資料（已校驗：含吳全峰、魏志毓知達203房）
     const DEFAULT_MEMBERS = [
       { team: "白", name: "吳全峰", relation: "本人", trafficDep: "遊覽車", trafficRet: "遊覽車", trafficCombo: "遊覽車/遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", diningTraffic: "遊覽車", diningLeader: "麵五三-車長", diningInterviewer: "", dietNote: "無", lodging: "知達", lodgingTraffic: "遊覽車", lodgingContact: "", roomNumber: "506", roomType: "2人房", bedCount: "2床", roomGroup: "16", fullRoomKey: "知達-2人房_16" },
       { team: "白", name: "吳羿慧", relation: "本人", trafficDep: "遊覽車", trafficRet: "遊覽車", trafficCombo: "遊覽車/遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", diningTraffic: "遊覽車", diningLeader: "", diningInterviewer: "", dietNote: "不吃：牛羊", lodging: "知達", lodgingTraffic: "遊覽車", lodgingContact: "", roomNumber: "307", roomType: "2人房", bedCount: "2床", roomGroup: "4", fullRoomKey: "知達-2人房_04" },
@@ -782,7 +781,7 @@
     }
 
     // ==========================================
-    // 6. 分頁：重啟-交通服務
+    // 6. 分頁：重啟-交通服務 (已排除司機)
     // ==========================================
     function renderTraffic(container, badge) {
       let list = memberData.filter(m => !m.name.includes('司機'));
@@ -934,7 +933,7 @@
     }
 
     // ==========================================
-    // 7. 分頁：重啟-餐飲服務 (含吳全峰置頂車長)
+    // 7. 分頁：重啟-餐飲服務 (吳全峰固定置頂麵五三屋車長)
     // ==========================================
     function renderDining(container, badge) {
       const RESTAURANT_CONFIG = [
@@ -1321,7 +1320,7 @@
     }
 
     // ==========================================
-    // 9. 分頁：重啟-總表 (61位全員呈現，含魏志毓、吳全峰)
+    // 9. 分頁：重啟-總表 (61位成員完整呈現，含魏志毓、吳全峰)
     // ==========================================
     function renderRoster(container, badge) {
       let list = memberData.filter(m => {
@@ -1448,6 +1447,7 @@
       });
     }
 
+    // 核心安全修復：防止雲端解析異常時誤把吳全峰覆蓋掉
     function tryBackgroundCloudSync(callback) {
       const memberSheetUrl = 'https://docs.google.com/spreadsheets/d/1IG9gdIuvad5sj0RWC8hzvIvdBYSQo4j0ERf910AV24U/gviz/tq?tqx=out:csv&gid=943908442';
       const scheduleSheetUrl = 'https://docs.google.com/spreadsheets/d/1RFAeooSPtmmVMPGeyO9o-SbNtvLr38_DoDHFoCFxQ9c/gviz/tq?tqx=out:csv&gid=1928975316';
@@ -1484,7 +1484,17 @@
         skipEmptyLines: true,
         complete: function(results) {
           if (results && results.data && results.data.length >= 40) {
-            const mapped = results.data.map(r => ({
+            // 安全清洗欄位名稱（去除首尾空白與不可見字元）
+            const cleanedData = results.data.map(row => {
+              const cleaned = {};
+              Object.keys(row).forEach(key => {
+                const cleanKey = key.trim().replace(/^[\uFEFF\xA0]+/, '');
+                cleaned[cleanKey] = (row[key] || '').toString().trim();
+              });
+              return cleaned;
+            });
+
+            const mapped = cleanedData.map(r => ({
               team: r['隊別'] || '',
               name: r['姓名'] || '',
               relation: r['關係'] || '本人',
@@ -1505,12 +1515,17 @@
               bedCount: r['床數'] || '',
               roomGroup: r['房間分組'] || '',
               fullRoomKey: r['住宿-房型-分組'] || ''
-            })).filter(m => m.name && m.name.trim().length > 0 && m.name !== '胡靖韋');
+            })).filter(m => m.name && m.name.length > 0 && m.name !== '胡靖韋');
 
-            if (mapped.length >= 50) {
+            // 雙重驗證：只有當雲端資料同時具備有效長度且確實包含吳全峰時，才進行覆蓋
+            const hasWu = mapped.some(m => m.name.includes('吳全峰'));
+            if (mapped.length >= 50 && hasWu) {
               enrichRoommates(mapped);
               memberData = mapped;
               isCloudSynced = true;
+              renderCurrentTab();
+            } else {
+              console.warn('雲端名單不完整或缺少關鍵成員，自動維持完整基準資料。');
             }
           }
           if (callback) callback();
