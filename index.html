@@ -284,7 +284,7 @@
       </div>
 
       <div class="p-3 bg-rose-50 rounded-xl border border-rose-100 text-xs sm:text-sm text-slate-700 space-y-1">
-        <div>• <strong>發車集合</strong>：10/31 (六) 09:20 高鐵台中站 6 號出口準時發車[cite: 7]</div>
+        <div>• <strong>發車集合</strong>：10/31 (六) 09:20 高鐵台中站 6 號出口準時發車</div>
         <div>• <strong>隨車車長</strong>：廖培芯</div>
       </div>
 
@@ -354,7 +354,7 @@
     // 1. 定位點與電話常數
     // ==========================================
     const NAV_URLS = {
-      zhengqiao: "https://maps.app.goo.gl/vmJmVTdyx5MDzBDJA", // 正巧（督賀停車場）[cite: 7]
+      zhengqiao: "https://maps.app.goo.gl/vmJmVTdyx5MDzBDJA", // 正巧（督賀停車場）
       zhida: "https://maps.app.goo.gl/cHqvGckCUyLCqip19",      // 知達（會館專用停車場）
       sanshi: "https://maps.app.goo.gl/Go3K7hdTDZkgCqPe8",     // 弎食鉄板
       ueda: "https://maps.app.goo.gl/QQoX9UFfehVzwgSo9",       // 植田割烹
@@ -380,7 +380,6 @@
     // 2. 基準資料：嚴格參照 Google Sheets 原始資料庫
     // ==========================================
 
-    // 嚴格對照 10/31-11/01_流程_v2b-重啟夥伴（共 18 項流程）
     const DEFAULT_SCHEDULE = [
       {
         date: "10/31 (六)",
@@ -528,7 +527,6 @@
       }
     ];
 
-    // 核心 61 位成員資料（已校驗：含吳全峰、魏志毓知達203房）
     const DEFAULT_MEMBERS = [
       { team: "白", name: "吳全峰", relation: "本人", trafficDep: "遊覽車", trafficRet: "遊覽車", trafficCombo: "遊覽車/遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", diningTraffic: "遊覽車", diningLeader: "麵五三-車長", diningInterviewer: "", dietNote: "無", lodging: "知達", lodgingTraffic: "遊覽車", lodgingContact: "", roomNumber: "506", roomType: "2人房", bedCount: "2床", roomGroup: "16", fullRoomKey: "知達-2人房_16" },
       { team: "白", name: "吳羿慧", relation: "本人", trafficDep: "遊覽車", trafficRet: "遊覽車", trafficCombo: "遊覽車/遊覽車", isTrafficLeader: "否", restaurant: "麵五三屋", diningTraffic: "遊覽車", diningLeader: "", diningInterviewer: "", dietNote: "不吃：牛羊", lodging: "知達", lodgingTraffic: "遊覽車", lodgingContact: "", roomNumber: "307", roomType: "2人房", bedCount: "2床", roomGroup: "4", fullRoomKey: "知達-2人房_04" },
@@ -726,9 +724,6 @@
 
     // ==========================================
     // 5. 分頁：重啟-活動流程
-    // 調整：
-    // - 10/31 與 11/01 第一筆日期用黑色粗體字，其餘用灰色正常字形
-    // - 10/31 與 11/01 用不同底色區隔（10/31 柔粉玫瑰，11/01 溫馨暖橘）
     // ==========================================
     function renderSchedule(container, badge) {
       let list = scheduleData.filter(s => {
@@ -765,7 +760,6 @@
         const isOct31 = (s.date && s.date.includes('10/31'));
         const isNov01 = (s.date && s.date.includes('11/01'));
 
-        // 日期第一筆判斷
         let isFirstOfDate = false;
         if (isOct31 && !hasSeen1031) {
           isFirstOfDate = true;
@@ -775,7 +769,6 @@
           hasSeen1101 = true;
         }
 
-        // 雙日底色區隔（10/31 柔玫瑰白，11/01 溫馨暖橘）
         let rowDayBg = '';
         if (isOct31) {
           rowDayBg = (idx % 2 === 0) ? 'bg-rose-50/20' : 'bg-white';
@@ -789,14 +782,12 @@
           <tr class="${rowDayBg} hover:bg-rose-100/50 transition-colors">
             <td class="py-3 px-3 text-center text-xs text-slate-400">${idx + 1}</td>
             
-            <!-- 日期欄位：第一筆為黑色粗體，其餘為灰色正常字形 -->
             <td class="py-3 px-3 text-center whitespace-nowrap">
               ${isFirstOfDate 
                 ? `<span class="text-xs font-bold text-slate-900">${s.date}</span>` 
                 : `<span class="text-xs font-normal text-slate-400">${s.date}</span>`}
             </td>
             
-            <!-- 時間：字形放大 2 級 (text-sm sm:text-base font-bold) -->
             <td class="py-3 px-3 text-center whitespace-nowrap">
               <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-sm sm:text-base font-mono font-bold bg-rose-100 text-rose-800 shadow-2xs">
                 ${s.start} - ${s.end}
@@ -805,7 +796,6 @@
             
             <td class="py-3 px-4 font-semibold text-slate-800">${s.place || '--'}</td>
             
-            <!-- 活動內容：若為食五家用餐，提供跳轉至餐飲服務的按鈕 -->
             <td class="py-3 px-5">
               <div class="flex flex-wrap items-center justify-between gap-2">
                 <span class="font-bold text-slate-900 text-base">${s.activity}</span>
@@ -834,7 +824,7 @@
     }
 
     // ==========================================
-    // 6. 分頁：重啟-交通服務 (去程3種方式3種底色：遊覽車粉、自行處理藍、開車綠)
+    // 6. 分頁：重啟-交通服務 (已排除所有[cite: 7] 雜字標籤)
     // ==========================================
     function renderTraffic(container, badge) {
       let list = memberData.filter(m => !m.name.includes('司機'));
@@ -892,15 +882,15 @@
               </span>
               <div>
                 <div class="flex items-center gap-2">
-                  <span class="text-xs font-bold px-2 py-0.5 rounded-md bg-rose-600 text-white">集合發車[cite: 7]</span>
-                  <h3 class="text-base sm:text-lg font-bold text-slate-800">高鐵台中站 6號出口[cite: 7]</h3>
+                  <span class="text-xs font-bold px-2 py-0.5 rounded-md bg-rose-600 text-white">集合發車</span>
+                  <h3 class="text-base sm:text-lg font-bold text-slate-800">高鐵台中站 6號出口</h3>
                   <button onclick="openBusInfoModal()" class="px-3 py-1 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white text-xs font-bold shadow-sm transition-all flex items-center gap-1.5 active:scale-95">
                     <i class="fa-solid fa-bus text-xs"></i>
                     <span>遊覽車資訊</span>
                   </button>
                 </div>
                 <p class="text-xs sm:text-sm font-semibold text-rose-800 mt-0.5">
-                  09:20 準時發車（隨車車長：廖培芯）[cite: 7]
+                  09:20 準時發車（隨車車長：廖培芯）
                 </p>
               </div>
             </div>
@@ -909,15 +899,15 @@
               <div class="text-left lg:text-right">
                 <div class="flex items-center gap-1.5 lg:justify-end">
                   <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-rose-200 text-rose-800">主要會場</span>
-                  <span class="font-bold text-slate-800 text-sm sm:text-base">活動集結點：正巧文旅（督賀停車場）[cite: 7]</span>
+                  <span class="font-bold text-slate-800 text-sm sm:text-base">活動集結點：正巧文旅（督賀停車場）</span>
                 </div>
                 <div class="text-xs text-slate-600 mt-0.5">
-                  地址：南投縣草屯鎮新庄里墩煌路三段168號 ｜ 自行開車者由此集結[cite: 7]
+                  地址：南投縣草屯鎮新庄里墩煌路三段168號 ｜ 自行開車者由此集結
                 </div>
               </div>
               <a href="${NAV_URLS.zhengqiao}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-rose-500 to-orange-400 text-white font-bold text-xs sm:text-sm shadow-md hover:opacity-95 active:scale-95 transition-all shrink-0">
                 <i class="fa-solid fa-diamond-turn-right"></i>
-                <span>正巧定位導航[cite: 7]</span>
+                <span>正巧定位導航</span>
               </a>
             </div>
 
@@ -932,12 +922,12 @@
                     <th class="py-3 px-4">姓名</th>
                     <th class="py-3 px-3 text-center">隊別</th>
                     <th class="py-3 px-4">
-                      交通-去程 ( 10/31 )[cite: 7]
-                      <div class="text-[11px] font-normal text-rose-700">遊覽車 09:20 台中高鐵發車往正巧[cite: 7]</div>
+                      交通-去程 ( 10/31 )
+                      <div class="text-[11px] font-normal text-rose-700">遊覽車 09:20 台中高鐵發車往正巧</div>
                     </th>
                     <th class="py-3 px-4">
-                      交通-回程 ( 11/01 )[cite: 7]
-                      <div class="text-[11px] font-normal text-rose-700">遊覽車 13:30 正巧發車往台中高鐵[cite: 7]</div>
+                      交通-回程 ( 11/01 )
+                      <div class="text-[11px] font-normal text-rose-700">遊覽車 13:30 正巧發車往台中高鐵</div>
                     </th>
                   </tr>
                 </thead>
@@ -947,7 +937,6 @@
       list.forEach((m, idx) => {
         const isCaptain = (m.name === '廖培芯' || m.isTrafficLeader === '是');
 
-        // 交通-去程 3 種底色區隔
         let trafficRowBg = 'bg-white hover:bg-slate-50';
         if ((m.trafficDep || '').includes('遊覽車')) {
           trafficRowBg = 'bg-rose-50/50 hover:bg-rose-100/60';
@@ -963,7 +952,7 @@
             <td class="py-2.5 px-4">
               <div class="flex items-center gap-1.5 font-bold text-slate-800 text-base">
                 <span>${m.name}</span>
-                ${isCaptain ? `<span class="px-2 py-0.5 rounded-full text-xs font-extrabold bg-gradient-to-r from-rose-500 to-orange-400 text-white shadow-xs">★ 車長[cite: 7]</span>` : ''}
+                ${isCaptain ? `<span class="px-2 py-0.5 rounded-full text-xs font-extrabold bg-gradient-to-r from-rose-500 to-orange-400 text-white shadow-xs">★ 車長</span>` : ''}
               </div>
             </td>
             <td class="py-2.5 px-3 text-center">
@@ -1008,7 +997,6 @@
     // 7. 分頁：重啟-餐飲服務 (4家餐廳以4種不同底色呈現)
     // ==========================================
     function renderDining(container, badge) {
-      // 4 家餐廳專屬色彩與樣式設定
       const RESTAURANT_CONFIG = [
         {
           key: "弎食鉄板",
@@ -1129,7 +1117,6 @@
 
       html += `</div>`;
 
-      // 4 家餐廳分別以各自專屬的底色渲染表格
       RESTAURANT_CONFIG.forEach(r => {
         let groupList = diningMembers.filter(m => (m.restaurant || '').includes(r.key));
         if (groupList.length === 0 && searchQuery) return;
@@ -1330,7 +1317,7 @@
               </div>
               <div class="flex items-center gap-1.5 shrink-0">
                 <a href="${NAV_URLS.zhengqiao}" target="_blank" rel="noopener noreferrer" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-rose-500 to-orange-400 text-white font-bold text-xs shadow-xs hover:opacity-95">
-                  <i class="fa-solid fa-location-dot"></i> 導航[cite: 7]
+                  <i class="fa-solid fa-location-dot"></i> 導航
                 </a>
               </div>
             </div>
@@ -1563,7 +1550,6 @@
       });
     }
 
-    // 核心安全修復：防止雲端解析異常時誤把吳全峰覆蓋掉
     function tryBackgroundCloudSync(callback) {
       const memberSheetUrl = 'https://docs.google.com/spreadsheets/d/1IG9gdIuvad5sj0RWC8hzvIvdBYSQo4j0ERf910AV24U/gviz/tq?tqx=out:csv&gid=943908442';
       const scheduleSheetUrl = 'https://docs.google.com/spreadsheets/d/1RFAeooSPtmmVMPGeyO9o-SbNtvLr38_DoDHFoCFxQ9c/gviz/tq?tqx=out:csv&gid=1928975316';
