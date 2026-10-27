@@ -284,7 +284,7 @@
       </div>
 
       <div class="p-3 bg-rose-50 rounded-xl border border-rose-100 text-xs sm:text-sm text-slate-700 space-y-1">
-        <div>• <strong>發車集合</strong>：10/31 (六) 09:20 高鐵台中站 6 號出口準時發車</div>
+        <div>• <strong>發車集合</strong>：10/31 (六) 09:20 高鐵台中站 6 號出口準時發車[cite: 7]</div>
         <div>• <strong>隨車車長</strong>：廖培芯</div>
       </div>
 
@@ -354,7 +354,7 @@
     // 1. 定位點與電話常數
     // ==========================================
     const NAV_URLS = {
-      zhengqiao: "https://maps.app.goo.gl/vmJmVTdyx5MDzBDJA", // 正巧（督賀停車場）
+      zhengqiao: "https://maps.app.goo.gl/vmJmVTdyx5MDzBDJA", // 正巧（督賀停車場）[cite: 7]
       zhida: "https://maps.app.goo.gl/cHqvGckCUyLCqip19",      // 知達（會館專用停車場）
       sanshi: "https://maps.app.goo.gl/Go3K7hdTDZkgCqPe8",     // 弎食鉄板
       ueda: "https://maps.app.goo.gl/QQoX9UFfehVzwgSo9",       // 植田割烹
@@ -380,12 +380,13 @@
     // 2. 基準資料：嚴格參照 Google Sheets 原始資料庫
     // ==========================================
 
+    // 嚴格對照 10/31-11/01_流程_v2b-重啟夥伴（共 18 項流程）
     const DEFAULT_SCHEDULE = [
       {
         date: "10/31 (六)",
         start: "08:45",
         end: "09:20",
-        activity: "接駁車：高鐵台中站 6 號出口",
+        activity: "集合 接駁車：高鐵台中站 6 號出口",
         place: "高鐵台中站-6號出口",
         note: "- 遊覽車預定 9:20發車-6號出口（車長：廖培芯）\n- 正巧文旅 禁葷食，建議夥伴上車前即將食物（尤其是葷食）處理完畢"
       },
@@ -612,9 +613,9 @@
     enrichRoommates(DEFAULT_MEMBERS);
 
     // ==========================================
-    // 3. 系統狀態
+    // 3. 系統狀態（預設首頁設為 schedule 活動流程）
     // ==========================================
-    let currentTab = 'roster';
+    let currentTab = 'schedule';
     let scheduleData = [...DEFAULT_SCHEDULE];
     let memberData = [...DEFAULT_MEMBERS];
     let searchQuery = '';
@@ -725,6 +726,9 @@
 
     // ==========================================
     // 5. 分頁：重啟-活動流程
+    // 調整：
+    // - 10/31 與 11/01 第一筆日期用黑色粗體字，其餘用灰色正常字形
+    // - 10/31 與 11/01 用不同底色區隔（10/31 柔粉玫瑰，11/01 溫馨暖橘）
     // ==========================================
     function renderSchedule(container, badge) {
       let list = scheduleData.filter(s => {
@@ -750,21 +754,70 @@
                   <th class="py-3 px-5">備註</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-rose-50">
+              <tbody class="divide-y divide-rose-100/70">
       `;
 
+      let hasSeen1031 = false;
+      let hasSeen1101 = false;
+
       list.forEach((s, idx) => {
+        const isDiningActivity = (s.start === '11:15' && s.end === '14:30') || (s.activity && s.activity.includes('食五家'));
+        const isOct31 = (s.date && s.date.includes('10/31'));
+        const isNov01 = (s.date && s.date.includes('11/01'));
+
+        // 日期第一筆判斷
+        let isFirstOfDate = false;
+        if (isOct31 && !hasSeen1031) {
+          isFirstOfDate = true;
+          hasSeen1031 = true;
+        } else if (isNov01 && !hasSeen1101) {
+          isFirstOfDate = true;
+          hasSeen1101 = true;
+        }
+
+        // 雙日底色區隔（10/31 柔玫瑰白，11/01 溫馨暖橘）
+        let rowDayBg = '';
+        if (isOct31) {
+          rowDayBg = (idx % 2 === 0) ? 'bg-rose-50/20' : 'bg-white';
+        } else if (isNov01) {
+          rowDayBg = (idx % 2 === 0) ? 'bg-amber-50/40' : 'bg-orange-50/20';
+        } else {
+          rowDayBg = (idx % 2 === 0) ? 'bg-white' : 'bg-slate-50/30';
+        }
+
         html += `
-          <tr class="${idx % 2 === 0 ? 'bg-white' : 'bg-rose-50/20'} hover:bg-rose-100/40 transition-colors">
+          <tr class="${rowDayBg} hover:bg-rose-100/50 transition-colors">
             <td class="py-3 px-3 text-center text-xs text-slate-400">${idx + 1}</td>
-            <td class="py-3 px-3 text-center font-bold text-slate-700 whitespace-nowrap">${s.date}</td>
+            
+            <!-- 日期欄位：第一筆為黑色粗體，其餘為灰色正常字形 -->
             <td class="py-3 px-3 text-center whitespace-nowrap">
-              <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-xs font-mono font-bold bg-rose-100 text-rose-700">
+              ${isFirstOfDate 
+                ? `<span class="text-xs font-bold text-slate-900">${s.date}</span>` 
+                : `<span class="text-xs font-normal text-slate-400">${s.date}</span>`}
+            </td>
+            
+            <!-- 時間：字形放大 2 級 (text-sm sm:text-base font-bold) -->
+            <td class="py-3 px-3 text-center whitespace-nowrap">
+              <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-sm sm:text-base font-mono font-bold bg-rose-100 text-rose-800 shadow-2xs">
                 ${s.start} - ${s.end}
               </span>
             </td>
+            
             <td class="py-3 px-4 font-semibold text-slate-800">${s.place || '--'}</td>
-            <td class="py-3 px-5 font-bold text-slate-900 text-base">${s.activity}</td>
+            
+            <!-- 活動內容：若為食五家用餐，提供跳轉至餐飲服務的按鈕 -->
+            <td class="py-3 px-5">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <span class="font-bold text-slate-900 text-base">${s.activity}</span>
+                ${isDiningActivity ? `
+                  <button onclick="switchTab('dining')" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-gradient-to-r from-rose-500 to-orange-400 text-white text-xs font-bold shadow-sm hover:opacity-95 active:scale-95 transition-all">
+                    <i class="fa-solid fa-utensils"></i>
+                    <span>到 重啟-餐飲服務</span>
+                  </button>
+                ` : ''}
+              </div>
+            </td>
+            
             <td class="py-3 px-5 text-xs text-slate-600 leading-relaxed whitespace-pre-line">${s.note || '--'}</td>
           </tr>
         `;
@@ -781,7 +834,7 @@
     }
 
     // ==========================================
-    // 6. 分頁：重啟-交通服務 (已排除司機)
+    // 6. 分頁：重啟-交通服務 (去程3種方式3種底色：遊覽車粉、自行處理藍、開車綠)
     // ==========================================
     function renderTraffic(container, badge) {
       let list = memberData.filter(m => !m.name.includes('司機'));
@@ -888,15 +941,24 @@
                     </th>
                   </tr>
                 </thead>
-                <tbody class="divide-y divide-rose-50">
+                <tbody class="divide-y divide-slate-100">
       `;
 
       list.forEach((m, idx) => {
         const isCaptain = (m.name === '廖培芯' || m.isTrafficLeader === '是');
-        const rowBg = isCaptain ? 'bg-amber-50/60 font-semibold' : (idx % 2 === 0 ? 'bg-white' : 'bg-rose-50/20');
-        
+
+        // 交通-去程 3 種底色區隔
+        let trafficRowBg = 'bg-white hover:bg-slate-50';
+        if ((m.trafficDep || '').includes('遊覽車')) {
+          trafficRowBg = 'bg-rose-50/50 hover:bg-rose-100/60';
+        } else if ((m.trafficDep || '').includes('自行')) {
+          trafficRowBg = 'bg-sky-50/50 hover:bg-sky-100/60';
+        } else if ((m.trafficDep || '').includes('開車')) {
+          trafficRowBg = 'bg-emerald-50/40 hover:bg-emerald-100/60';
+        }
+
         html += `
-          <tr class="${rowBg} hover:bg-rose-100/40 transition-colors">
+          <tr class="${trafficRowBg} transition-colors">
             <td class="py-2.5 px-3 text-center text-xs text-slate-400">${idx + 1}</td>
             <td class="py-2.5 px-4">
               <div class="flex items-center gap-1.5 font-bold text-slate-800 text-base">
@@ -908,13 +970,23 @@
               <span class="px-2 py-0.5 rounded-full text-xs font-medium ${getTeamBadgeClass(m.team)}">${m.team || '--'}</span>
             </td>
             <td class="py-2.5 px-4">
-              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold ${m.trafficDep === '遊覽車' ? 'bg-rose-100 text-rose-700' : 'bg-slate-100 text-slate-700'}">
-                <i class="fa-solid ${m.trafficDep === '遊覽車' ? 'fa-bus' : 'fa-car'}"></i> ${m.trafficDep || '--'}
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold ${
+                (m.trafficDep || '').includes('遊覽車') ? 'bg-rose-100 text-rose-800' :
+                (m.trafficDep || '').includes('自行') ? 'bg-sky-100 text-sky-800' :
+                'bg-emerald-100 text-emerald-800'
+              }">
+                <i class="fa-solid ${(m.trafficDep || '').includes('遊覽車') ? 'fa-bus' : ((m.trafficDep || '').includes('自行') ? 'fa-person-walking' : 'fa-car')}"></i> 
+                ${m.trafficDep || '--'}
               </span>
             </td>
             <td class="py-2.5 px-4">
-              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold ${m.trafficRet === '遊覽車' ? 'bg-rose-100 text-rose-700' : 'bg-slate-100 text-slate-700'}">
-                <i class="fa-solid ${m.trafficRet === '遊覽車' ? 'fa-bus' : 'fa-car'}"></i> ${m.trafficRet || '--'}
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold ${
+                (m.trafficRet || '').includes('遊覽車') ? 'bg-rose-100 text-rose-800' :
+                (m.trafficRet || '').includes('自行') ? 'bg-sky-100 text-sky-800' :
+                'bg-emerald-100 text-emerald-800'
+              }">
+                <i class="fa-solid ${(m.trafficRet || '').includes('遊覽車') ? 'fa-bus' : ((m.trafficRet || '').includes('自行') ? 'fa-person-walking' : 'fa-car')}"></i> 
+                ${m.trafficRet || '--'}
               </span>
             </td>
           </tr>
@@ -933,9 +1005,10 @@
     }
 
     // ==========================================
-    // 7. 分頁：重啟-餐飲服務 (吳全峰固定置頂麵五三屋車長)
+    // 7. 分頁：重啟-餐飲服務 (4家餐廳以4種不同底色呈現)
     // ==========================================
     function renderDining(container, badge) {
+      // 4 家餐廳專屬色彩與樣式設定
       const RESTAURANT_CONFIG = [
         {
           key: "弎食鉄板",
@@ -944,7 +1017,16 @@
           interviewer: "林珊汝",
           nav: NAV_URLS.sanshi,
           tel: RESTAURANT_PHONES.sanshi,
-          addr: "南投縣草屯鎮敦和里碧山路652號"
+          addr: "南投縣草屯鎮敦和里碧山路652號",
+          theme: {
+            bannerBg: "bg-orange-100/80 border-orange-200 text-orange-900",
+            iconBg: "bg-orange-500",
+            cardBorder: "border-orange-200",
+            tableThBg: "bg-orange-50/80 border-orange-100 text-orange-900",
+            rowBgOdd: "bg-orange-50/20",
+            rowBgEven: "bg-white",
+            rowLeaderBg: "bg-orange-100/50"
+          }
         },
         {
           key: "植田割烹",
@@ -953,7 +1035,16 @@
           interviewer: "范永銀",
           nav: NAV_URLS.ueda,
           tel: RESTAURANT_PHONES.ueda,
-          addr: "南投縣草屯鎮敦和里信義街207號"
+          addr: "南投縣草屯鎮敦和里信義街207號",
+          theme: {
+            bannerBg: "bg-teal-100/80 border-teal-200 text-teal-900",
+            iconBg: "bg-teal-600",
+            cardBorder: "border-teal-200",
+            tableThBg: "bg-teal-50/80 border-teal-100 text-teal-900",
+            rowBgOdd: "bg-teal-50/20",
+            rowBgEven: "bg-white",
+            rowLeaderBg: "bg-teal-100/50"
+          }
         },
         {
           key: "湫禾壽喜燒",
@@ -962,7 +1053,16 @@
           interviewer: "梁懷貞、洪淑姮",
           nav: NAV_URLS.qiuhe,
           tel: RESTAURANT_PHONES.qiuhe,
-          addr: "南投縣草屯鎮碧山路820號"
+          addr: "南投縣草屯鎮碧山路820號",
+          theme: {
+            bannerBg: "bg-rose-100/80 border-rose-200 text-rose-900",
+            iconBg: "bg-rose-500",
+            cardBorder: "border-rose-200",
+            tableThBg: "bg-rose-50/80 border-rose-100 text-rose-900",
+            rowBgOdd: "bg-rose-50/20",
+            rowBgEven: "bg-white",
+            rowLeaderBg: "bg-rose-100/50"
+          }
         },
         {
           key: "麵五三屋",
@@ -971,7 +1071,16 @@
           interviewer: "杜志峰",
           nav: NAV_URLS.mianwusan,
           tel: RESTAURANT_PHONES.mianwusan,
-          addr: "南投縣草屯鎮新庄里史館路397巷53號"
+          addr: "南投縣草屯鎮新庄里史館路397巷53號",
+          theme: {
+            bannerBg: "bg-amber-100/80 border-amber-200 text-amber-900",
+            iconBg: "bg-amber-600",
+            cardBorder: "border-amber-200",
+            tableThBg: "bg-amber-50/80 border-amber-100 text-amber-900",
+            rowBgOdd: "bg-amber-50/25",
+            rowBgEven: "bg-white",
+            rowLeaderBg: "bg-amber-100/50"
+          }
         }
       ];
 
@@ -996,7 +1105,7 @@
 
       RESTAURANT_CONFIG.forEach(r => {
         html += `
-          <div class="bg-white p-3.5 rounded-2xl border border-rose-100 shadow-sm flex flex-col justify-between hover:border-rose-300 transition-all">
+          <div class="bg-white p-3.5 rounded-2xl border ${r.theme.cardBorder} shadow-sm flex flex-col justify-between hover:shadow-md transition-all">
             <div>
               <div class="flex items-center justify-between gap-1 mb-1">
                 <h4 class="font-bold text-slate-800 text-sm truncate">${r.title}</h4>
@@ -1009,7 +1118,7 @@
                 <i class="fa-solid fa-phone text-[11px]"></i>
                 <a href="tel:${r.tel.replace(/-/g, '')}" class="hover:underline">${r.tel}</a>
               </div>
-              <div class="text-xs space-y-0.5 text-slate-700 bg-rose-50/50 p-2 rounded-xl">
+              <div class="text-xs space-y-0.5 text-slate-700 bg-slate-50 p-2 rounded-xl border border-slate-100">
                 <div><span class="font-bold text-rose-700">車長：</span>${r.busCaptain}</div>
                 <div><span class="font-bold text-teal-700">領談：</span>${r.interviewer}</div>
               </div>
@@ -1020,6 +1129,7 @@
 
       html += `</div>`;
 
+      // 4 家餐廳分別以各自專屬的底色渲染表格
       RESTAURANT_CONFIG.forEach(r => {
         let groupList = diningMembers.filter(m => (m.restaurant || '').includes(r.key));
         if (groupList.length === 0 && searchQuery) return;
@@ -1054,20 +1164,20 @@
         });
 
         html += `
-          <div class="bg-white rounded-2xl border border-rose-100 shadow-sm overflow-hidden">
-            <div class="bg-rose-100/70 px-4 py-3 border-b border-rose-200 flex flex-wrap items-center justify-between gap-2">
+          <div class="bg-white rounded-2xl border ${r.theme.cardBorder} shadow-sm overflow-hidden">
+            <div class="${r.theme.bannerBg} px-4 py-3 border-b flex flex-wrap items-center justify-between gap-2">
               <div class="flex items-center gap-2">
-                <span class="w-7 h-7 icon-circle bg-rose-500 text-white text-xs shadow-xs">
+                <span class="w-7 h-7 icon-circle ${r.theme.iconBg} text-white text-xs shadow-xs">
                   <i class="fa-solid fa-utensils"></i>
                 </span>
-                <h3 class="font-bold text-slate-800 text-base">${r.title}</h3>
-                <span class="text-xs px-2 py-0.5 rounded-full bg-white text-rose-700 font-bold border border-rose-200">
+                <h3 class="font-bold text-base">${r.title}</h3>
+                <span class="text-xs px-2 py-0.5 rounded-full bg-white font-bold border shadow-2xs">
                   ${groupList.length} 人
                 </span>
 
                 <div class="flex items-center gap-2 text-xs ml-2">
-                  <a href="tel:${r.tel.replace(/-/g, '')}" class="text-rose-700 font-bold hover:underline flex items-center gap-1">
-                    <i class="fa-solid fa-phone text-rose-600"></i> ${r.tel}
+                  <a href="tel:${r.tel.replace(/-/g, '')}" class="font-bold hover:underline flex items-center gap-1">
+                    <i class="fa-solid fa-phone"></i> ${r.tel}
                   </a>
                   <a href="${r.nav}" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 rounded-lg bg-gradient-to-r from-rose-500 to-orange-400 text-white font-bold hover:opacity-95 shadow-xs flex items-center gap-1">
                     <i class="fa-solid fa-location-dot"></i> 定位點導航
@@ -1079,7 +1189,7 @@
             <div class="overflow-x-auto custom-scrollbar">
               <table class="w-full text-left border-collapse text-sm">
                 <thead>
-                  <tr class="bg-rose-50/70 border-b border-rose-100 text-rose-900 font-bold text-xs sticky top-0">
+                  <tr class="${r.theme.tableThBg} border-b font-bold text-xs sticky top-0">
                     <th class="py-2.5 px-3 w-12 text-center">#</th>
                     <th class="py-2.5 px-4">成員姓名</th>
                     <th class="py-2.5 px-3 text-center">隊別</th>
@@ -1087,16 +1197,22 @@
                     <th class="py-2.5 px-4">飲食注意事項 / 禁忌</th>
                   </tr>
                 </thead>
-                <tbody class="divide-y divide-rose-50">
+                <tbody class="divide-y divide-slate-100">
         `;
 
         groupList.forEach((m, idx) => {
           const isCap = DINING_BUS_CAPTAINS.includes(m.name);
           const isInt = DINING_INTERVIEWERS.includes(m.name);
-          const rowBg = (isCap || isInt) ? 'bg-amber-50/60 font-semibold' : (idx % 2 === 0 ? 'bg-white' : 'bg-rose-50/20');
+          
+          let rowBg = '';
+          if (isCap || isInt) {
+            rowBg = r.theme.rowLeaderBg + ' font-semibold';
+          } else {
+            rowBg = (idx % 2 === 0) ? r.theme.rowBgEven : r.theme.rowBgOdd;
+          }
 
           html += `
-            <tr class="${rowBg} hover:bg-rose-100/40 transition-colors">
+            <tr class="${rowBg} hover:opacity-90 transition-colors">
               <td class="py-2.5 px-3 text-center text-xs text-slate-400">${idx + 1}</td>
               <td class="py-2.5 px-4">
                 <div class="flex items-center gap-1.5 font-bold text-slate-800 text-base">
@@ -1135,7 +1251,7 @@
     }
 
     // ==========================================
-    // 8. 分頁：重啟-住宿服務 (知達房號 203 魏志毓、506 吳全峰)
+    // 8. 分頁：重啟-住宿服務
     // ==========================================
     function renderLodging(container, badge) {
       const roomsMap = {};
@@ -1214,7 +1330,7 @@
               </div>
               <div class="flex items-center gap-1.5 shrink-0">
                 <a href="${NAV_URLS.zhengqiao}" target="_blank" rel="noopener noreferrer" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-rose-500 to-orange-400 text-white font-bold text-xs shadow-xs hover:opacity-95">
-                  <i class="fa-solid fa-location-dot"></i> 導航
+                  <i class="fa-solid fa-location-dot"></i> 導航[cite: 7]
                 </a>
               </div>
             </div>
@@ -1473,6 +1589,9 @@
             }).filter(s => s.start || s.activity);
             if (sMapped.length >= 10) {
               scheduleData = sMapped;
+              if (currentTab === 'schedule') {
+                renderCurrentTab();
+              }
             }
           }
         }
@@ -1484,7 +1603,6 @@
         skipEmptyLines: true,
         complete: function(results) {
           if (results && results.data && results.data.length >= 40) {
-            // 安全清洗欄位名稱（去除首尾空白與不可見字元）
             const cleanedData = results.data.map(row => {
               const cleaned = {};
               Object.keys(row).forEach(key => {
@@ -1517,7 +1635,6 @@
               fullRoomKey: r['住宿-房型-分組'] || ''
             })).filter(m => m.name && m.name.length > 0 && m.name !== '胡靖韋');
 
-            // 雙重驗證：只有當雲端資料同時具備有效長度且確實包含吳全峰時，才進行覆蓋
             const hasWu = mapped.some(m => m.name.includes('吳全峰'));
             if (mapped.length >= 50 && hasWu) {
               enrichRoommates(mapped);
