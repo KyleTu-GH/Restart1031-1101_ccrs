@@ -294,7 +294,7 @@
     </div>
   </div>
 
-  <!-- 知達會館注意事項及房間照片對話視窗 (修復：防溢位版型，頂部固定常駐，決不被擋住) -->
+  <!-- 知達會館注意事項及房間照片對話視窗 (防溢位版型，頂部固定常駐) -->
   <div id="zhida-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm overflow-y-auto p-4 sm:p-6 flex items-start sm:items-center justify-center custom-scrollbar">
     <div class="bg-white rounded-3xl max-w-2xl w-full shadow-2xl border border-indigo-200 transform transition-all relative my-auto max-h-[92vh] flex flex-col overflow-hidden">
       
@@ -418,7 +418,6 @@
     // 2. 基準資料：嚴格參照 Google Sheets 原始資料庫
     // ==========================================
 
-    // 嚴格對照 10/31-11/01_流程_v2b-重啟夥伴（共 18 項流程，第 1 項 08:45-09:20 完整載入）
     const DEFAULT_SCHEDULE = [
       {
         date: "10/31 (六)",
@@ -762,7 +761,10 @@
     }
 
     // ==========================================
-    // 5. 分頁：重啟-活動流程 (10/31 與 11/01 第一筆粗黑體，其餘灰字；不同底色區隔)
+    // 5. 分頁：重啟-活動流程
+    // 調整：
+    // - 10/31 第一筆黑色粗體，其餘灰色；暖粉底色 (bg-rose-50 / bg-white)；時間方塊為暖粉底深紅字
+    // - 11/01 第一筆黑色粗體，其餘灰色；高對比晴空藍底色 (bg-sky-100 / bg-sky-50)；時間方塊為深靛青底白字
     // ==========================================
     function renderSchedule(container, badge) {
       let list = scheduleData.filter(s => {
@@ -788,7 +790,7 @@
                   <th class="py-3 px-5">備註</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-rose-100/70">
+              <tbody class="divide-y divide-slate-200/60">
       `;
 
       let hasSeen1031 = false;
@@ -808,33 +810,42 @@
           hasSeen1101 = true;
         }
 
+        // 雙日底色高對比區隔
         let rowDayBg = '';
+        let timeBadgeClass = '';
         if (isOct31) {
-          rowDayBg = (idx % 2 === 0) ? 'bg-rose-50/20' : 'bg-white';
+          rowDayBg = (idx % 2 === 0) ? 'bg-rose-50/30' : 'bg-white';
+          timeBadgeClass = 'bg-rose-100 text-rose-800'; // 10/31 暖粉紅時間方塊
         } else if (isNov01) {
-          rowDayBg = (idx % 2 === 0) ? 'bg-amber-50/40' : 'bg-orange-50/20';
+          // 11/01 顯著晴空藍底色，肉眼清晰可辨
+          rowDayBg = (idx % 2 === 0) ? 'bg-sky-100/70' : 'bg-sky-50';
+          timeBadgeClass = 'bg-indigo-600 text-white shadow-sm'; // 11/01 深靛青白字時間方塊
         } else {
-          rowDayBg = (idx % 2 === 0) ? 'bg-white' : 'bg-slate-50/30';
+          rowDayBg = (idx % 2 === 0) ? 'bg-white' : 'bg-slate-50/50';
+          timeBadgeClass = 'bg-slate-200 text-slate-800';
         }
 
         html += `
-          <tr class="${rowDayBg} hover:bg-rose-100/50 transition-colors">
-            <td class="py-3 px-3 text-center text-xs text-slate-400">${idx + 1}</td>
+          <tr class="${rowDayBg} hover:opacity-90 transition-colors">
+            <td class="py-3 px-3 text-center text-xs text-slate-400 font-medium">${idx + 1}</td>
             
+            <!-- 日期欄位：第一筆為黑色粗體，其餘為灰色正常字形 -->
             <td class="py-3 px-3 text-center whitespace-nowrap">
               ${isFirstOfDate 
                 ? `<span class="text-xs font-bold text-slate-900">${s.date}</span>` 
                 : `<span class="text-xs font-normal text-slate-400">${s.date}</span>`}
             </td>
             
+            <!-- 時間：字形放大 2 級，且 10/31 與 11/01 採用不同配色方塊 -->
             <td class="py-3 px-3 text-center whitespace-nowrap">
-              <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-sm sm:text-base font-mono font-bold bg-rose-100 text-rose-800 shadow-2xs">
+              <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-sm sm:text-base font-mono font-bold ${timeBadgeClass}">
                 ${s.start} - ${s.end}
               </span>
             </td>
             
             <td class="py-3 px-4 font-semibold text-slate-800">${s.place || '--'}</td>
             
+            <!-- 活動內容：若為食五家用餐，提供跳轉至餐飲服務的按鈕 -->
             <td class="py-3 px-5">
               <div class="flex flex-wrap items-center justify-between gap-2">
                 <span class="font-bold text-slate-900 text-base">${s.activity}</span>
@@ -863,7 +874,7 @@
     }
 
     // ==========================================
-    // 6. 分頁：重啟-交通服務 (去程三種方式專屬色彩)
+    // 6. 分頁：重啟-交通服務
     // ==========================================
     function renderTraffic(container, badge) {
       let list = memberData.filter(m => !m.name.includes('司機'));
@@ -1033,7 +1044,7 @@
     }
 
     // ==========================================
-    // 7. 分頁：重啟-餐飲服務 (4家餐廳以4種不同底色呈現)
+    // 7. 分頁：重啟-餐飲服務
     // ==========================================
     function renderDining(container, badge) {
       const RESTAURANT_CONFIG = [
@@ -1590,19 +1601,17 @@
       });
     }
 
-    // 關鍵修復：智慧識別 CSV 真正標題行，避免第 1 列被當成欄名誤刪
     function tryBackgroundCloudSync(callback) {
       const memberSheetUrl = 'https://docs.google.com/spreadsheets/d/1IG9gdIuvad5sj0RWC8hzvIvdBYSQo4j0ERf910AV24U/gviz/tq?tqx=out:csv&gid=943908442';
       const scheduleSheetUrl = 'https://docs.google.com/spreadsheets/d/1RFAeooSPtmmVMPGeyO9o-SbNtvLr38_DoDHFoCFxQ9c/gviz/tq?tqx=out:csv&gid=1928975316';
       
       Papa.parse(scheduleSheetUrl, {
         download: true,
-        header: false, // 先以原始陣列讀取，動態尋找正確表頭
+        header: false,
         skipEmptyLines: true,
         complete: function(sResults) {
           if (sResults && sResults.data && sResults.data.length >= 10) {
             const rawRows = sResults.data;
-            // 尋找包含「起時」或「活動」的行作為真正表頭索引
             let headerIdx = -1;
             for (let i = 0; i < Math.min(5, rawRows.length); i++) {
               const rowStr = rawRows[i].join(',');
