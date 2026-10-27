@@ -260,7 +260,6 @@
              class="w-full h-auto object-cover max-h-72 block"
              onerror="if(this.src!=='遊覽車照片.jpg'){this.src='遊覽車照片.jpg';}else{this.style.display='none';document.getElementById('bus-fallback-card').classList.remove('hidden');}">
         
-        <!-- 極端無網路時的優雅備援卡片 -->
         <div id="bus-fallback-card" class="hidden p-6 text-center space-y-3 bg-gradient-to-br from-pink-100 via-rose-50 to-orange-100">
           <div class="w-16 h-16 mx-auto rounded-full bg-rose-500 text-white flex items-center justify-center text-2xl shadow-md">
             <i class="fa-solid fa-bus"></i>
@@ -271,7 +270,6 @@
           </div>
         </div>
 
-        <!-- 車牌與司機資訊徽章 -->
         <div class="p-3 bg-white/95 backdrop-blur-sm border-t border-rose-100 flex items-center justify-around text-xs sm:text-sm font-extrabold text-slate-800">
           <div class="text-blue-700 flex items-center gap-1.5">
             <i class="fa-solid fa-id-card"></i> <span>車牌：KAB-8330</span>
@@ -296,49 +294,81 @@
     </div>
   </div>
 
-  <!-- 知達會館注意事項對話視窗 (Modal) -->
-  <div id="zhida-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-rose-200 transform transition-all relative">
-      <button onclick="closeZhidaModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-rose-50 text-rose-600 hover:bg-rose-100 flex items-center justify-center transition-all">
+  <!-- 知達會館注意事項及房間照片對話視窗 (Modal) -->
+  <div id="zhida-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-2xl w-full p-6 shadow-2xl border border-indigo-200 transform transition-all relative my-8">
+      <button onclick="closeZhidaModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 text-slate-600 hover:bg-rose-50 hover:text-rose-600 flex items-center justify-center transition-all">
         <i class="fa-solid fa-xmark"></i>
       </button>
 
       <div class="flex items-center gap-3 mb-4">
-        <span class="w-10 h-10 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center text-lg">
-          <i class="fa-solid fa-circle-info"></i>
+        <span class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-lg">
+          <i class="fa-solid fa-hotel"></i>
         </span>
-        <h3 class="text-xl font-bold text-slate-800">知達會館 住宿注意事項</h3>
+        <div>
+          <h3 class="text-xl font-bold text-slate-800">知達注意事項及房間照片</h3>
+          <p class="text-xs text-slate-500">知達工藝會館 住宿指南與房間實景</p>
+        </div>
       </div>
 
-      <div class="mb-4 p-3 bg-gradient-to-r from-rose-500 to-orange-400 text-white rounded-xl text-sm font-bold shadow-sm">
+      <div class="mb-4 p-3 bg-gradient-to-r from-indigo-600 to-sky-500 text-white rounded-xl text-sm font-bold shadow-sm">
         <i class="fa-solid fa-bell mr-1"></i> ※ 各位夥伴需在隔天 09:15 前完成退房，9:30 準時發車
       </div>
 
-      <div class="space-y-3 text-slate-700 text-sm leading-relaxed">
-        <div class="p-3 bg-rose-50/60 rounded-xl border border-rose-100 flex gap-2.5">
-          <span class="font-bold text-rose-600 shrink-0">1.</span>
+      <!-- 注意事項列表 -->
+      <div class="space-y-2.5 text-slate-700 text-xs sm:text-sm leading-relaxed mb-5">
+        <div class="p-3 bg-indigo-50/60 rounded-xl border border-indigo-100 flex gap-2.5">
+          <span class="font-bold text-indigo-600 shrink-0">1.</span>
           <div><strong>早餐供餐時間</strong>：07:00 - 09:00；<strong>用餐地點</strong>：知達工藝會館 1 樓</div>
         </div>
-        <div class="p-3 bg-rose-50/60 rounded-xl border border-rose-100 flex gap-2.5">
-          <span class="font-bold text-rose-600 shrink-0">2.</span>
+        <div class="p-3 bg-indigo-50/60 rounded-xl border border-indigo-100 flex gap-2.5">
+          <span class="font-bold text-indigo-600 shrink-0">2.</span>
           <div>進入客房後，將鎖匙的插梢插入入口處的通電孔中，即可通電。</div>
         </div>
-        <div class="p-3 bg-rose-50/60 rounded-xl border border-rose-100 flex gap-2.5">
-          <span class="font-bold text-rose-600 shrink-0">3.</span>
+        <div class="p-3 bg-indigo-50/60 rounded-xl border border-indigo-100 flex gap-2.5">
+          <span class="font-bold text-indigo-600 shrink-0">3.</span>
           <div>會館客房內電話可互撥，如您欲撥 R302 → <strong>直撥 302</strong> 即可通話。</div>
         </div>
         <div class="p-3 bg-amber-50 rounded-xl border border-amber-200 flex gap-2.5 text-amber-900">
           <span class="font-bold text-amber-600 shrink-0">4.</span>
           <div><strong>會館不提供任何一次性用品，請自備。</strong></div>
         </div>
-        <div class="p-3 bg-rose-50/60 rounded-xl border border-rose-100 flex gap-2.5">
-          <span class="font-bold text-rose-600 shrink-0">5.</span>
+        <div class="p-3 bg-indigo-50/60 rounded-xl border border-indigo-100 flex gap-2.5">
+          <span class="font-bold text-indigo-600 shrink-0">5.</span>
           <div>若您有任何問題，可電話<strong>直撥 9 或 100</strong> 即可聯絡櫃台為您服務。</div>
         </div>
       </div>
 
+      <!-- 知達會館房間照片 (直連雲端 CDN，免上傳到 GitHub 也可穩定顯示) -->
+      <div class="border-t border-slate-100 pt-4">
+        <h4 class="text-sm font-bold text-slate-800 mb-3 flex items-center gap-2">
+          <i class="fa-solid fa-camera text-indigo-600"></i>
+          <span>客房實景照片（知達工藝會館 2人房雙床）</span>
+        </h4>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-slate-50">
+            <img src="https://lh3.googleusercontent.com/d/12VReY1eCHfIji8C1RXECqlM9aylZvsF7" 
+                 alt="知達會館房間照片(1)" 
+                 class="w-full h-48 sm:h-52 object-cover hover:scale-105 transition-transform duration-300 block" 
+                 onerror="if(this.src!=='知達會館(1).jpg'){this.src='知達會館(1).jpg';}">
+            <div class="p-2 bg-white text-center text-xs font-semibold text-slate-600 border-t border-slate-100">
+              客房寢具與窗景配置
+            </div>
+          </div>
+          <div class="rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-slate-50">
+            <img src="https://lh3.googleusercontent.com/d/1xxqlKl1ArkuS7o4RUDbTyyIwHLFB5mHS" 
+                 alt="知達會館房間照片(2)" 
+                 class="w-full h-48 sm:h-52 object-cover hover:scale-105 transition-transform duration-300 block" 
+                 onerror="if(this.src!=='知達會館(2).jpg'){this.src='知達會館(2).jpg';}">
+            <div class="p-2 bg-white text-center text-xs font-semibold text-slate-600 border-t border-slate-100">
+              床頭藝術飾屏與動線實景
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="mt-6 flex justify-end">
-        <button onclick="closeZhidaModal()" class="px-5 py-2 rounded-xl bg-gradient-to-r from-rose-500 to-orange-400 text-white font-bold text-sm shadow hover:opacity-95 transition-all">
+        <button onclick="closeZhidaModal()" class="px-5 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-sky-500 text-white font-bold text-sm shadow hover:opacity-95 transition-all">
           我知道了
         </button>
       </div>
@@ -824,7 +854,7 @@
     }
 
     // ==========================================
-    // 6. 分頁：重啟-交通服務 (已排除所有[cite: 7] 雜字標籤)
+    // 6. 分頁：重啟-交通服務
     // ==========================================
     function renderTraffic(container, badge) {
       let list = memberData.filter(m => !m.name.includes('司機'));
@@ -994,7 +1024,7 @@
     }
 
     // ==========================================
-    // 7. 分頁：重啟-餐飲服務 (4家餐廳以4種不同底色呈現)
+    // 7. 分頁：重啟-餐飲服務
     // ==========================================
     function renderDining(container, badge) {
       const RESTAURANT_CONFIG = [
@@ -1334,9 +1364,10 @@
             </div>
           </div>
 
+          <!-- 知達工藝會館：按鈕已移至紅框處 -->
           <div class="space-y-3">
             <div class="flex items-center justify-between flex-wrap gap-2">
-              <div class="flex items-center gap-3">
+              <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
                 <span class="w-7 h-7 icon-circle bg-indigo-600 text-white text-xs">
                   <i class="fa-solid fa-hotel"></i>
                 </span>
@@ -1344,11 +1375,11 @@
                 <span class="text-xs px-2.5 py-0.5 rounded-full bg-indigo-100 text-indigo-700 font-bold border border-indigo-200">
                   ${zhidaRooms.length} 間房
                 </span>
+                <button onclick="openZhidaModal()" class="px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white text-xs font-bold shadow-sm transition-all flex items-center gap-1.5">
+                  <i class="fa-solid fa-images"></i>
+                  <span>知達注意事項及房間照片</span>
+                </button>
               </div>
-              <button onclick="openZhidaModal()" class="px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-sm transition-all flex items-center gap-1.5">
-                <i class="fa-solid fa-circle-exclamation"></i>
-                <span>知達會館住宿注意事項</span>
-              </button>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               ${zhidaRooms.map(r => renderHouseCard(r, ZHIDA_CONTACTS, 'zhida')).join('')}
@@ -1423,7 +1454,7 @@
     }
 
     // ==========================================
-    // 9. 分頁：重啟-總表 (61位成員完整呈現，含魏志毓、吳全峰)
+    // 9. 分頁：重啟-總表
     // ==========================================
     function renderRoster(container, badge) {
       let list = memberData.filter(m => {
